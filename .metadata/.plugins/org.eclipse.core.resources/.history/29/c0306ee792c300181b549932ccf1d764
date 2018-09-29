@@ -1,0 +1,9 @@
+grammar org.xtext.compiler.pascal.Pascal with org.eclipse.xtext.common.Terminals
+
+generate pascal "http://www.xtext.org/compiler/pascal/Pascal"
+
+Model:
+	greetings+=Greeting*;
+	
+Greeting:
+	'Hello' name=ID '!';

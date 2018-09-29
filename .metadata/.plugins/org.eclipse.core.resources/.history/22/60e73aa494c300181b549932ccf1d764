@@ -1,0 +1,23 @@
+grammar org.xtext.compiler.pascal.Pascal with org.eclipse.xtext.common.Terminals
+
+generate pascal "http://www.xtext.org/compiler/pascal/Pascal"
+
+pascal:
+	program += program
+; 
+
+program:
+	heading=program_heading_block block=block "." 
+;
+
+program_heading_block:
+	"program" name=ID ( "(" identifiers=identifier_list ")" ) ? ";"	
+;
+
+identifier_list:
+	names+=ID ( "," names+=ID ) *	
+;
+
+block:
+	'Hello' name=ID '!'
+;

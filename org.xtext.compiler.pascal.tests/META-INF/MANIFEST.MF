@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: org.xtext.compiler.pascal.tests
+Bundle-ManifestVersion: 2
+Bundle-Name: org.xtext.compiler.pascal.tests
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: org.xtext.compiler.pascal.tests; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.xtext.compiler.pascal,
+ org.junit.jupiter.api;bundle-version="[5.0.0,6.0.0)",
+ org.eclipse.xtext.testing,
+ org.eclipse.xtext.xbase.testing,
+ org.eclipse.xtext.xbase.lib;bundle-version="2.14.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.xtext.compiler.pascal.tests;x-internal=true
+
