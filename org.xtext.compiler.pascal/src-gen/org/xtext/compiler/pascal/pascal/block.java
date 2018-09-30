@@ -3,6 +3,8 @@
  */
 package org.xtext.compiler.pascal.pascal;
 
+import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -14,6 +16,8 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.block#getConstantpart <em>Constantpart</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.block#getVariablepart <em>Variablepart</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.block#getStatement <em>Statement</em>}</li>
  * </ul>
  *
@@ -23,6 +27,38 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface block extends EObject
 {
+  /**
+   * Returns the value of the '<em><b>Constantpart</b></em>' containment reference list.
+   * The list contents are of type {@link org.xtext.compiler.pascal.pascal.constant_definition_part}.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Constantpart</em>' containment reference list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Constantpart</em>' containment reference list.
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getblock_Constantpart()
+   * @model containment="true"
+   * @generated
+   */
+  EList<constant_definition_part> getConstantpart();
+
+  /**
+   * Returns the value of the '<em><b>Variablepart</b></em>' containment reference list.
+   * The list contents are of type {@link org.xtext.compiler.pascal.pascal.variable_declaration_part}.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Variablepart</em>' containment reference list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Variablepart</em>' containment reference list.
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getblock_Variablepart()
+   * @model containment="true"
+   * @generated
+   */
+  EList<variable_declaration_part> getVariablepart();
+
   /**
    * Returns the value of the '<em><b>Statement</b></em>' containment reference.
    * <!-- begin-user-doc -->

@@ -12,6 +12,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -32,7 +34,7 @@ import org.xtext.compiler.pascal.pascal.set;
  *
  * @generated
  */
-public class setImpl extends factorImpl implements set
+public class setImpl extends MinimalEObjectImpl.Container implements set
 {
   /**
    * The cached value of the '{@link #getElements() <em>Elements</em>}' containment reference list.

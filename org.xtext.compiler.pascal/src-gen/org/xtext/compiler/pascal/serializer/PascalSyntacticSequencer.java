@@ -20,13 +20,13 @@ import org.xtext.compiler.pascal.services.PascalGrammarAccess;
 public class PascalSyntacticSequencer extends AbstractSyntacticSequencer {
 
 	protected PascalGrammarAccess grammarAccess;
-	protected AbstractElementAlias match_factor_NOTTerminalRuleCall_4_0_a;
+	protected AbstractElementAlias match_constant_SignParserRuleCall_1_0_q;
 	protected AbstractElementAlias match_variable_CircumflexAccentKeyword_1_3_a;
 	
 	@Inject
 	protected void init(IGrammarAccess access) {
 		grammarAccess = (PascalGrammarAccess) access;
-		match_factor_NOTTerminalRuleCall_4_0_a = new TokenAlias(true, true, grammarAccess.getFactorAccess().getNOTTerminalRuleCall_4_0());
+		match_constant_SignParserRuleCall_1_0_q = new TokenAlias(false, true, grammarAccess.getConstantAccess().getSignParserRuleCall_1_0());
 		match_variable_CircumflexAccentKeyword_1_3_a = new TokenAlias(true, true, grammarAccess.getVariableAccess().getCircumflexAccentKeyword_1_3());
 	}
 	
@@ -34,10 +34,14 @@ public class PascalSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected String getUnassignedRuleCallToken(EObject semanticObject, RuleCall ruleCall, INode node) {
 		if (ruleCall.getRule() == grammarAccess.getASSIGNRule())
 			return getASSIGNToken(semanticObject, ruleCall, node);
+		else if (ruleCall.getRule() == grammarAccess.getDOTDOTRule())
+			return getDOTDOTToken(semanticObject, ruleCall, node);
+		else if (ruleCall.getRule() == grammarAccess.getEQUALRule())
+			return getEQUALToken(semanticObject, ruleCall, node);
 		else if (ruleCall.getRule() == grammarAccess.getNOTRule())
 			return getNOTToken(semanticObject, ruleCall, node);
-		else if (ruleCall.getRule() == grammarAccess.getBoolRule())
-			return getboolToken(semanticObject, ruleCall, node);
+		else if (ruleCall.getRule() == grammarAccess.getSignRule())
+			return getsignToken(semanticObject, ruleCall, node);
 		return "";
 	}
 	
@@ -53,6 +57,28 @@ public class PascalSyntacticSequencer extends AbstractSyntacticSequencer {
 	}
 	
 	/**
+	 * terminal DOTDOT:
+	 * 	'..'
+	 * ;
+	 */
+	protected String getDOTDOTToken(EObject semanticObject, RuleCall ruleCall, INode node) {
+		if (node != null)
+			return getTokenText(node);
+		return "..";
+	}
+	
+	/**
+	 * terminal EQUAL: 
+	 * 	'='
+	 * ;
+	 */
+	protected String getEQUALToken(EObject semanticObject, RuleCall ruleCall, INode node) {
+		if (node != null)
+			return getTokenText(node);
+		return "=";
+	}
+	
+	/**
 	 * terminal NOT:
 	 * 	'not'
 	 * ;
@@ -64,14 +90,15 @@ public class PascalSyntacticSequencer extends AbstractSyntacticSequencer {
 	}
 	
 	/**
-	 * bool:
-	 * 	TRUE | FALSE
+	 * sign: 
+	 * 	 PLUS
+	 *    | MINUS
 	 * ;
 	 */
-	protected String getboolToken(EObject semanticObject, RuleCall ruleCall, INode node) {
+	protected String getsignToken(EObject semanticObject, RuleCall ruleCall, INode node) {
 		if (node != null)
 			return getTokenText(node);
-		return "true";
+		return "+";
 	}
 	
 	@Override
@@ -80,8 +107,8 @@ public class PascalSyntacticSequencer extends AbstractSyntacticSequencer {
 		List<INode> transitionNodes = collectNodes(fromNode, toNode);
 		for (AbstractElementAlias syntax : transition.getAmbiguousSyntaxes()) {
 			List<INode> syntaxNodes = getNodesFor(transitionNodes, syntax);
-			if (match_factor_NOTTerminalRuleCall_4_0_a.equals(syntax))
-				emit_factor_NOTTerminalRuleCall_4_0_a(semanticObject, getLastNavigableState(), syntaxNodes);
+			if (match_constant_SignParserRuleCall_1_0_q.equals(syntax))
+				emit_constant_SignParserRuleCall_1_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_variable_CircumflexAccentKeyword_1_3_a.equals(syntax))
 				emit_variable_CircumflexAccentKeyword_1_3_a(semanticObject, getLastNavigableState(), syntaxNodes);
 			else acceptNodes(getLastNavigableState(), syntaxNodes);
@@ -90,20 +117,15 @@ public class PascalSyntacticSequencer extends AbstractSyntacticSequencer {
 
 	/**
 	 * Ambiguous syntax:
-	 *     NOT*
+	 *     sign?
 	 *
 	 * This ambiguous syntax occurs at:
-	 *     (rule start) (ambiguity) '(' expressions+=simple_expression
-	 *     (rule start) (ambiguity) '(.' elements+=elementList
-	 *     (rule start) (ambiguity) '[' elements+=elementList
-	 *     (rule start) (ambiguity) bool (rule start)
-	 *     (rule start) (ambiguity) char+=constant_chr
-	 *     (rule start) (ambiguity) nil+=NIL
-	 *     (rule start) (ambiguity) number+=unsigned_number
-	 *     (rule start) (ambiguity) string+=STRING
-	 *     (rule start) (ambiguity) variable=variable
+	 *     (rule start) (ambiguity) numbers+=unsigned_integer
+	 *     (rule start) (ambiguity) numbers+=unsigned_real
+	 *     name=ID EQUAL (ambiguity) numbers+=unsigned_integer
+	 *     name=ID EQUAL (ambiguity) numbers+=unsigned_real
 	 */
-	protected void emit_factor_NOTTerminalRuleCall_4_0_a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_constant_SignParserRuleCall_1_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

@@ -70,6 +70,11 @@ public class PascalFactoryImpl extends EFactoryImpl implements PascalFactory
       case PascalPackage.PROGRAM_HEADING_BLOCK: return createprogram_heading_block();
       case PascalPackage.IDENTIFIER_LIST: return createidentifier_list();
       case PascalPackage.BLOCK: return createblock();
+      case PascalPackage.CONSTANT_DEFINITION_PART: return createconstant_definition_part();
+      case PascalPackage.CONSTANT_DEFINITION: return createconstant_definition();
+      case PascalPackage.CONSTANT: return createconstant();
+      case PascalPackage.VARIABLE_DECLARATION_PART: return createvariable_declaration_part();
+      case PascalPackage.VARIABLE_DECLARATION: return createvariable_declaration();
       case PascalPackage.COMPOUND_STATEMENT: return createcompound_statement();
       case PascalPackage.STATEMENTS: return createstatements();
       case PascalPackage.STATEMENT: return createstatement();
@@ -86,6 +91,12 @@ public class PascalFactoryImpl extends EFactoryImpl implements PascalFactory
       case PascalPackage.SET: return createset();
       case PascalPackage.ELEMENT_LIST: return createelementList();
       case PascalPackage.ELEMENT: return createelement();
+      case PascalPackage.TYPE: return createtype();
+      case PascalPackage.SIMPLE_TYPE: return createsimple_type();
+      case PascalPackage.SCALAR_TYPE: return createscalar_type();
+      case PascalPackage.SUBRANGE_TYPE: return createsubrange_type();
+      case PascalPackage.TYPE_IDENTIFIER: return createtype_identifier();
+      case PascalPackage.STRING_TYPE: return createstring_type();
       case PascalPackage.UNSIGNED_CONSTANT: return createunsigned_constant();
       case PascalPackage.UNSIGNED_NUMBER: return createunsigned_number();
       case PascalPackage.CONSTANT_CHR: return createconstant_chr();
@@ -147,6 +158,61 @@ public class PascalFactoryImpl extends EFactoryImpl implements PascalFactory
   {
     blockImpl block = new blockImpl();
     return block;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public constant_definition_part createconstant_definition_part()
+  {
+    constant_definition_partImpl constant_definition_part = new constant_definition_partImpl();
+    return constant_definition_part;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public constant_definition createconstant_definition()
+  {
+    constant_definitionImpl constant_definition = new constant_definitionImpl();
+    return constant_definition;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public constant createconstant()
+  {
+    constantImpl constant = new constantImpl();
+    return constant;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public variable_declaration_part createvariable_declaration_part()
+  {
+    variable_declaration_partImpl variable_declaration_part = new variable_declaration_partImpl();
+    return variable_declaration_part;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public variable_declaration createvariable_declaration()
+  {
+    variable_declarationImpl variable_declaration = new variable_declarationImpl();
+    return variable_declaration;
   }
 
   /**
@@ -323,6 +389,72 @@ public class PascalFactoryImpl extends EFactoryImpl implements PascalFactory
   {
     elementImpl element = new elementImpl();
     return element;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public type createtype()
+  {
+    typeImpl type = new typeImpl();
+    return type;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public simple_type createsimple_type()
+  {
+    simple_typeImpl simple_type = new simple_typeImpl();
+    return simple_type;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public scalar_type createscalar_type()
+  {
+    scalar_typeImpl scalar_type = new scalar_typeImpl();
+    return scalar_type;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public subrange_type createsubrange_type()
+  {
+    subrange_typeImpl subrange_type = new subrange_typeImpl();
+    return subrange_type;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public type_identifier createtype_identifier()
+  {
+    type_identifierImpl type_identifier = new type_identifierImpl();
+    return type_identifier;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public string_type createstring_type()
+  {
+    string_typeImpl string_type = new string_typeImpl();
+    return string_type;
   }
 
   /**

@@ -15,7 +15,10 @@ import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.assignment_statement;
 import org.xtext.compiler.pascal.pascal.block;
 import org.xtext.compiler.pascal.pascal.compound_statement;
+import org.xtext.compiler.pascal.pascal.constant;
 import org.xtext.compiler.pascal.pascal.constant_chr;
+import org.xtext.compiler.pascal.pascal.constant_definition;
+import org.xtext.compiler.pascal.pascal.constant_definition_part;
 import org.xtext.compiler.pascal.pascal.element;
 import org.xtext.compiler.pascal.pascal.elementList;
 import org.xtext.compiler.pascal.pascal.expression;
@@ -25,17 +28,25 @@ import org.xtext.compiler.pascal.pascal.label;
 import org.xtext.compiler.pascal.pascal.pascal;
 import org.xtext.compiler.pascal.pascal.program;
 import org.xtext.compiler.pascal.pascal.program_heading_block;
+import org.xtext.compiler.pascal.pascal.scalar_type;
 import org.xtext.compiler.pascal.pascal.set;
 import org.xtext.compiler.pascal.pascal.signed_factor;
 import org.xtext.compiler.pascal.pascal.simple_expression;
 import org.xtext.compiler.pascal.pascal.simple_statement;
+import org.xtext.compiler.pascal.pascal.simple_type;
 import org.xtext.compiler.pascal.pascal.statement;
 import org.xtext.compiler.pascal.pascal.statements;
+import org.xtext.compiler.pascal.pascal.string_type;
+import org.xtext.compiler.pascal.pascal.subrange_type;
 import org.xtext.compiler.pascal.pascal.term;
+import org.xtext.compiler.pascal.pascal.type;
+import org.xtext.compiler.pascal.pascal.type_identifier;
 import org.xtext.compiler.pascal.pascal.unlabelled_statement;
 import org.xtext.compiler.pascal.pascal.unsigned_constant;
 import org.xtext.compiler.pascal.pascal.unsigned_number;
 import org.xtext.compiler.pascal.pascal.variable;
+import org.xtext.compiler.pascal.pascal.variable_declaration;
+import org.xtext.compiler.pascal.pascal.variable_declaration_part;
 
 /**
  * <!-- begin-user-doc -->
@@ -79,6 +90,41 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * @generated
    */
   private EClass blockEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass constant_definition_partEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass constant_definitionEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass constantEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass variable_declaration_partEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass variable_declarationEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -191,6 +237,48 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * @generated
    */
   private EClass elementEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass typeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass simple_typeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass scalar_typeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass subrange_typeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass type_identifierEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass string_typeEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -381,6 +469,16 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EReference getidentifier_list_Types()
+  {
+    return (EReference)identifier_listEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getblock()
   {
     return blockEClass;
@@ -391,9 +489,139 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getblock_Statement()
+  public EReference getblock_Constantpart()
   {
     return (EReference)blockEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getblock_Variablepart()
+  {
+    return (EReference)blockEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getblock_Statement()
+  {
+    return (EReference)blockEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getconstant_definition_part()
+  {
+    return constant_definition_partEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getconstant_definition_part_Constants()
+  {
+    return (EReference)constant_definition_partEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getconstant_definition()
+  {
+    return constant_definitionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getconstant_definition_Name()
+  {
+    return (EAttribute)constant_definitionEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getconstant()
+  {
+    return constantEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getconstant_Names()
+  {
+    return (EAttribute)constantEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getconstant_String()
+  {
+    return (EAttribute)constantEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getconstant_Numbers()
+  {
+    return (EAttribute)constantEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getvariable_declaration_part()
+  {
+    return variable_declaration_partEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getvariable_declaration_part_Variable()
+  {
+    return (EReference)variable_declaration_partEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getvariable_declaration()
+  {
+    return variable_declarationEClass;
   }
 
   /**
@@ -781,6 +1009,56 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EReference getfactor_Expression()
+  {
+    return (EReference)factorEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getfactor_Constant()
+  {
+    return (EReference)factorEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getfactor_Set()
+  {
+    return (EReference)factorEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getfactor_Factor()
+  {
+    return (EReference)factorEClass.getEStructuralFeatures().get(4);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getfactor_Boolean()
+  {
+    return (EAttribute)factorEClass.getEStructuralFeatures().get(5);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getset()
   {
     return setEClass;
@@ -851,6 +1129,136 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass gettype()
+  {
+    return typeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference gettype_Type()
+  {
+    return (EReference)typeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getsimple_type()
+  {
+    return simple_typeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getsimple_type_Types()
+  {
+    return (EReference)simple_typeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getscalar_type()
+  {
+    return scalar_typeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getsubrange_type()
+  {
+    return subrange_typeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getsubrange_type_Constants()
+  {
+    return (EReference)subrange_typeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass gettype_identifier()
+  {
+    return type_identifierEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute gettype_identifier_Names()
+  {
+    return (EAttribute)type_identifierEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute gettype_identifier_Type()
+  {
+    return (EAttribute)type_identifierEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getstring_type()
+  {
+    return string_typeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getstring_type_Names()
+  {
+    return (EAttribute)string_typeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getstring_type_Number()
+  {
+    return (EReference)string_typeEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getunsigned_constant()
   {
     return unsigned_constantEClass;
@@ -911,29 +1319,9 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getunsigned_number_Numbers()
-  {
-    return (EAttribute)unsigned_numberEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EClass getconstant_chr()
   {
     return constant_chrEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getconstant_chr_Numbers()
-  {
-    return (EAttribute)constant_chrEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -979,9 +1367,28 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
 
     identifier_listEClass = createEClass(IDENTIFIER_LIST);
     createEAttribute(identifier_listEClass, IDENTIFIER_LIST__NAMES);
+    createEReference(identifier_listEClass, IDENTIFIER_LIST__TYPES);
 
     blockEClass = createEClass(BLOCK);
+    createEReference(blockEClass, BLOCK__CONSTANTPART);
+    createEReference(blockEClass, BLOCK__VARIABLEPART);
     createEReference(blockEClass, BLOCK__STATEMENT);
+
+    constant_definition_partEClass = createEClass(CONSTANT_DEFINITION_PART);
+    createEReference(constant_definition_partEClass, CONSTANT_DEFINITION_PART__CONSTANTS);
+
+    constant_definitionEClass = createEClass(CONSTANT_DEFINITION);
+    createEAttribute(constant_definitionEClass, CONSTANT_DEFINITION__NAME);
+
+    constantEClass = createEClass(CONSTANT);
+    createEAttribute(constantEClass, CONSTANT__NAMES);
+    createEAttribute(constantEClass, CONSTANT__STRING);
+    createEAttribute(constantEClass, CONSTANT__NUMBERS);
+
+    variable_declaration_partEClass = createEClass(VARIABLE_DECLARATION_PART);
+    createEReference(variable_declaration_partEClass, VARIABLE_DECLARATION_PART__VARIABLE);
+
+    variable_declarationEClass = createEClass(VARIABLE_DECLARATION);
 
     compound_statementEClass = createEClass(COMPOUND_STATEMENT);
     createEReference(compound_statementEClass, COMPOUND_STATEMENT__SEQUENCE);
@@ -1033,6 +1440,11 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
 
     factorEClass = createEClass(FACTOR);
     createEReference(factorEClass, FACTOR__VARIABLE);
+    createEReference(factorEClass, FACTOR__EXPRESSION);
+    createEReference(factorEClass, FACTOR__CONSTANT);
+    createEReference(factorEClass, FACTOR__SET);
+    createEReference(factorEClass, FACTOR__FACTOR);
+    createEAttribute(factorEClass, FACTOR__BOOLEAN);
 
     setEClass = createEClass(SET);
     createEReference(setEClass, SET__ELEMENTS);
@@ -1044,6 +1456,25 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
     createEReference(elementEClass, ELEMENT__EXPRESSIONS);
     createEAttribute(elementEClass, ELEMENT__DOTDOT);
 
+    typeEClass = createEClass(TYPE);
+    createEReference(typeEClass, TYPE__TYPE);
+
+    simple_typeEClass = createEClass(SIMPLE_TYPE);
+    createEReference(simple_typeEClass, SIMPLE_TYPE__TYPES);
+
+    scalar_typeEClass = createEClass(SCALAR_TYPE);
+
+    subrange_typeEClass = createEClass(SUBRANGE_TYPE);
+    createEReference(subrange_typeEClass, SUBRANGE_TYPE__CONSTANTS);
+
+    type_identifierEClass = createEClass(TYPE_IDENTIFIER);
+    createEAttribute(type_identifierEClass, TYPE_IDENTIFIER__NAMES);
+    createEAttribute(type_identifierEClass, TYPE_IDENTIFIER__TYPE);
+
+    string_typeEClass = createEClass(STRING_TYPE);
+    createEAttribute(string_typeEClass, STRING_TYPE__NAMES);
+    createEReference(string_typeEClass, STRING_TYPE__NUMBER);
+
     unsigned_constantEClass = createEClass(UNSIGNED_CONSTANT);
     createEReference(unsigned_constantEClass, UNSIGNED_CONSTANT__NUMBER);
     createEReference(unsigned_constantEClass, UNSIGNED_CONSTANT__CHAR);
@@ -1051,10 +1482,8 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
     createEAttribute(unsigned_constantEClass, UNSIGNED_CONSTANT__NIL);
 
     unsigned_numberEClass = createEClass(UNSIGNED_NUMBER);
-    createEAttribute(unsigned_numberEClass, UNSIGNED_NUMBER__NUMBERS);
 
     constant_chrEClass = createEClass(CONSTANT_CHR);
-    createEAttribute(constant_chrEClass, CONSTANT_CHR__NUMBERS);
   }
 
   /**
@@ -1086,9 +1515,11 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
     // Set bounds for type parameters
 
     // Add supertypes to classes
-    expressionEClass.getESuperTypes().add(this.getfactor());
-    setEClass.getESuperTypes().add(this.getfactor());
-    unsigned_constantEClass.getESuperTypes().add(this.getfactor());
+    identifier_listEClass.getESuperTypes().add(this.getvariable_declaration());
+    identifier_listEClass.getESuperTypes().add(this.getscalar_type());
+    constantEClass.getESuperTypes().add(this.getconstant_definition());
+    unsigned_numberEClass.getESuperTypes().add(this.getconstant());
+    constant_chrEClass.getESuperTypes().add(this.getconstant());
 
     // Initialize classes and features; add operations and parameters
     initEClass(pascalEClass, pascal.class, "pascal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1104,9 +1535,28 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
 
     initEClass(identifier_listEClass, identifier_list.class, "identifier_list", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getidentifier_list_Names(), ecorePackage.getEString(), "names", null, 0, -1, identifier_list.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getidentifier_list_Types(), this.gettype(), null, "types", null, 0, -1, identifier_list.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(blockEClass, block.class, "block", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getblock_Constantpart(), this.getconstant_definition_part(), null, "constantpart", null, 0, -1, block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getblock_Variablepart(), this.getvariable_declaration_part(), null, "variablepart", null, 0, -1, block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getblock_Statement(), this.getcompound_statement(), null, "statement", null, 0, 1, block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(constant_definition_partEClass, constant_definition_part.class, "constant_definition_part", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getconstant_definition_part_Constants(), this.getconstant_definition(), null, "constants", null, 0, -1, constant_definition_part.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(constant_definitionEClass, constant_definition.class, "constant_definition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getconstant_definition_Name(), ecorePackage.getEString(), "name", null, 0, 1, constant_definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(constantEClass, constant.class, "constant", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getconstant_Names(), ecorePackage.getEString(), "names", null, 0, -1, constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getconstant_String(), ecorePackage.getEString(), "string", null, 0, -1, constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getconstant_Numbers(), ecorePackage.getEString(), "numbers", null, 0, -1, constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(variable_declaration_partEClass, variable_declaration_part.class, "variable_declaration_part", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getvariable_declaration_part_Variable(), this.getvariable_declaration(), null, "variable", null, 0, -1, variable_declaration_part.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(variable_declarationEClass, variable_declaration.class, "variable_declaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(compound_statementEClass, compound_statement.class, "compound_statement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getcompound_statement_Sequence(), this.getstatements(), null, "sequence", null, 0, 1, compound_statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1158,6 +1608,11 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
 
     initEClass(factorEClass, factor.class, "factor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getfactor_Variable(), this.getvariable(), null, "variable", null, 0, 1, factor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getfactor_Expression(), this.getexpression(), null, "expression", null, 0, 1, factor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getfactor_Constant(), this.getunsigned_constant(), null, "constant", null, 0, 1, factor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getfactor_Set(), this.getset(), null, "set", null, 0, 1, factor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getfactor_Factor(), this.getfactor(), null, "factor", null, 0, 1, factor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getfactor_Boolean(), ecorePackage.getEString(), "boolean", null, 0, -1, factor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(setEClass, set.class, "set", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getset_Elements(), this.getelementList(), null, "elements", null, 0, -1, set.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1169,6 +1624,25 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
     initEReference(getelement_Expressions(), this.getexpression(), null, "expressions", null, 0, -1, element.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getelement_Dotdot(), ecorePackage.getEString(), "dotdot", null, 0, -1, element.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(typeEClass, type.class, "type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(gettype_Type(), this.getsimple_type(), null, "type", null, 0, -1, type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(simple_typeEClass, simple_type.class, "simple_type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getsimple_type_Types(), ecorePackage.getEObject(), null, "types", null, 0, -1, simple_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(scalar_typeEClass, scalar_type.class, "scalar_type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(subrange_typeEClass, subrange_type.class, "subrange_type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getsubrange_type_Constants(), this.getconstant(), null, "constants", null, 0, -1, subrange_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(type_identifierEClass, type_identifier.class, "type_identifier", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(gettype_identifier_Names(), ecorePackage.getEString(), "names", null, 0, -1, type_identifier.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(gettype_identifier_Type(), ecorePackage.getEString(), "type", null, 0, -1, type_identifier.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(string_typeEClass, string_type.class, "string_type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getstring_type_Names(), ecorePackage.getEString(), "names", null, 0, -1, string_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getstring_type_Number(), this.getunsigned_number(), null, "number", null, 0, -1, string_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(unsigned_constantEClass, unsigned_constant.class, "unsigned_constant", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getunsigned_constant_Number(), this.getunsigned_number(), null, "number", null, 0, -1, unsigned_constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getunsigned_constant_Char(), this.getconstant_chr(), null, "char", null, 0, -1, unsigned_constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1176,10 +1650,8 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
     initEAttribute(getunsigned_constant_Nil(), ecorePackage.getEString(), "nil", null, 0, -1, unsigned_constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(unsigned_numberEClass, unsigned_number.class, "unsigned_number", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getunsigned_number_Numbers(), ecorePackage.getEString(), "numbers", null, 0, -1, unsigned_number.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(constant_chrEClass, constant_chr.class, "constant_chr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getconstant_chr_Numbers(), ecorePackage.getEString(), "numbers", null, 0, -1, constant_chr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Create resource
     createResource(eNS_URI);

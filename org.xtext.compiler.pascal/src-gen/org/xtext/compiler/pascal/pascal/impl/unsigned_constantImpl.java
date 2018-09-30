@@ -12,6 +12,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import org.eclipse.emf.ecore.util.EDataTypeEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -37,7 +39,7 @@ import org.xtext.compiler.pascal.pascal.unsigned_number;
  *
  * @generated
  */
-public class unsigned_constantImpl extends factorImpl implements unsigned_constant
+public class unsigned_constantImpl extends MinimalEObjectImpl.Container implements unsigned_constant
 {
   /**
    * The cached value of the '{@link #getNumber() <em>Number</em>}' containment reference list.

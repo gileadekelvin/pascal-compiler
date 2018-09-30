@@ -5,6 +5,8 @@ package org.xtext.compiler.pascal.pascal;
 
 import org.eclipse.emf.common.util.EList;
 
+import org.eclipse.emf.ecore.EObject;
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>unsigned constant</b></em>'.
@@ -24,7 +26,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface unsigned_constant extends factor
+public interface unsigned_constant extends EObject
 {
   /**
    * Returns the value of the '<em><b>Number</b></em>' containment reference list.

@@ -3,6 +3,8 @@
  */
 package org.xtext.compiler.pascal.pascal;
 
+import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -15,6 +17,11 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.compiler.pascal.pascal.factor#getVariable <em>Variable</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.factor#getExpression <em>Expression</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.factor#getConstant <em>Constant</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.factor#getSet <em>Set</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.factor#getFactor <em>Factor</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.factor#getBoolean <em>Boolean</em>}</li>
  * </ul>
  *
  * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfactor()
@@ -48,5 +55,125 @@ public interface factor extends EObject
    * @generated
    */
   void setVariable(variable value);
+
+  /**
+   * Returns the value of the '<em><b>Expression</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Expression</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Expression</em>' containment reference.
+   * @see #setExpression(expression)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfactor_Expression()
+   * @model containment="true"
+   * @generated
+   */
+  expression getExpression();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.factor#getExpression <em>Expression</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Expression</em>' containment reference.
+   * @see #getExpression()
+   * @generated
+   */
+  void setExpression(expression value);
+
+  /**
+   * Returns the value of the '<em><b>Constant</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Constant</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Constant</em>' containment reference.
+   * @see #setConstant(unsigned_constant)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfactor_Constant()
+   * @model containment="true"
+   * @generated
+   */
+  unsigned_constant getConstant();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.factor#getConstant <em>Constant</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Constant</em>' containment reference.
+   * @see #getConstant()
+   * @generated
+   */
+  void setConstant(unsigned_constant value);
+
+  /**
+   * Returns the value of the '<em><b>Set</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Set</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Set</em>' containment reference.
+   * @see #setSet(set)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfactor_Set()
+   * @model containment="true"
+   * @generated
+   */
+  set getSet();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.factor#getSet <em>Set</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Set</em>' containment reference.
+   * @see #getSet()
+   * @generated
+   */
+  void setSet(set value);
+
+  /**
+   * Returns the value of the '<em><b>Factor</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Factor</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Factor</em>' containment reference.
+   * @see #setFactor(factor)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfactor_Factor()
+   * @model containment="true"
+   * @generated
+   */
+  factor getFactor();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.factor#getFactor <em>Factor</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Factor</em>' containment reference.
+   * @see #getFactor()
+   * @generated
+   */
+  void setFactor(factor value);
+
+  /**
+   * Returns the value of the '<em><b>Boolean</b></em>' attribute list.
+   * The list contents are of type {@link java.lang.String}.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Boolean</em>' attribute list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Boolean</em>' attribute list.
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfactor_Boolean()
+   * @model unique="false"
+   * @generated
+   */
+  EList<String> getBoolean();
 
 } // factor

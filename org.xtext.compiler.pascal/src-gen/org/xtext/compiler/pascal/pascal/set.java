@@ -5,6 +5,8 @@ package org.xtext.compiler.pascal.pascal;
 
 import org.eclipse.emf.common.util.EList;
 
+import org.eclipse.emf.ecore.EObject;
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>set</b></em>'.
@@ -21,7 +23,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface set extends factor
+public interface set extends EObject
 {
   /**
    * Returns the value of the '<em><b>Elements</b></em>' containment reference list.

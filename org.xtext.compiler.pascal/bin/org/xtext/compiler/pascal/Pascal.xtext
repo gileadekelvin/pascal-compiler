@@ -19,7 +19,32 @@ identifier_list:
 ;
 
 block:
-	statement=compound_statement
+	(constantpart+=constant_definition_part | variablepart+=variable_declaration_part)* statement=compound_statement
+;
+
+constant_definition_part: 
+	'const' (constants+=constant_definition ';') +
+;
+
+constant_definition: 
+	name=ID EQUAL constant
+;
+
+constant: 
+	 unsigned_number
+   | sign unsigned_number
+   | names+=ID
+   | sign names+=ID
+   | string+=STRING
+   | constant_chr
+;
+
+variable_declaration_part
+   : 'var' variable+=variable_declaration (";" variable+=variable_declaration)* ";"
+;
+
+variable_declaration
+   : identifier_list ":" types+=type
 ;
 
 compound_statement:
@@ -72,12 +97,12 @@ signed_factor:
 
 factor: 
 	 variable=variable
-   | "(" expression ")"
+   | "(" expression=expression ")"
    //| functionDesignator
-   | unsigned_constant
-   | set
-   | NOT factor
-   | bool
+   | constant=unsigned_constant
+   | set=set
+   | NOT factor=factor
+   | boolean+=bool
 ;
 
 set: 
@@ -91,6 +116,36 @@ elementList:
 
 element: 
 	expressions+=expression (dotdot+=DOTDOT expressions+=expression)?
+;
+
+type: 
+	 type+=simple_type
+   //| type+=structured_type
+   //| type+=pointer_type
+;
+
+simple_type:
+ 	 types+=scalar_type
+   | types+=subrange_type
+   | types+=type_identifier
+   | types+=string_type
+;
+
+scalar_type
+   : "(" identifier_list ")"
+;
+
+subrange_type: 
+	constants+=constant DOTDOT constants+=constant
+;
+
+type_identifier: 
+	names+=ID
+   	| (type+='CHAR' | type+='boolean' | type+='integer' | type+='real' | type+='string')
+;
+
+string_type:
+	'string' '[' ( names+=ID | number+=unsigned_number ) ']'
 ;
 
 unsigned_constant:
@@ -155,6 +210,11 @@ relational_operator:
 
 bool:
 	TRUE | FALSE
+;
+
+sign: 
+	 PLUS
+   | MINUS
 ;
 
 terminal NIL:

@@ -3,8 +3,12 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -12,9 +16,14 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.block;
 import org.xtext.compiler.pascal.pascal.compound_statement;
+import org.xtext.compiler.pascal.pascal.constant_definition_part;
+import org.xtext.compiler.pascal.pascal.variable_declaration_part;
 
 /**
  * <!-- begin-user-doc -->
@@ -24,6 +33,8 @@ import org.xtext.compiler.pascal.pascal.compound_statement;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.blockImpl#getConstantpart <em>Constantpart</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.blockImpl#getVariablepart <em>Variablepart</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.impl.blockImpl#getStatement <em>Statement</em>}</li>
  * </ul>
  *
@@ -31,6 +42,26 @@ import org.xtext.compiler.pascal.pascal.compound_statement;
  */
 public class blockImpl extends MinimalEObjectImpl.Container implements block
 {
+  /**
+   * The cached value of the '{@link #getConstantpart() <em>Constantpart</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getConstantpart()
+   * @generated
+   * @ordered
+   */
+  protected EList<constant_definition_part> constantpart;
+
+  /**
+   * The cached value of the '{@link #getVariablepart() <em>Variablepart</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getVariablepart()
+   * @generated
+   * @ordered
+   */
+  protected EList<variable_declaration_part> variablepart;
+
   /**
    * The cached value of the '{@link #getStatement() <em>Statement</em>}' containment reference.
    * <!-- begin-user-doc -->
@@ -60,6 +91,34 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
   protected EClass eStaticClass()
   {
     return PascalPackage.Literals.BLOCK;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EList<constant_definition_part> getConstantpart()
+  {
+    if (constantpart == null)
+    {
+      constantpart = new EObjectContainmentEList<constant_definition_part>(constant_definition_part.class, this, PascalPackage.BLOCK__CONSTANTPART);
+    }
+    return constantpart;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EList<variable_declaration_part> getVariablepart()
+  {
+    if (variablepart == null)
+    {
+      variablepart = new EObjectContainmentEList<variable_declaration_part>(variable_declaration_part.class, this, PascalPackage.BLOCK__VARIABLEPART);
+    }
+    return variablepart;
   }
 
   /**
@@ -120,6 +179,10 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
   {
     switch (featureID)
     {
+      case PascalPackage.BLOCK__CONSTANTPART:
+        return ((InternalEList<?>)getConstantpart()).basicRemove(otherEnd, msgs);
+      case PascalPackage.BLOCK__VARIABLEPART:
+        return ((InternalEList<?>)getVariablepart()).basicRemove(otherEnd, msgs);
       case PascalPackage.BLOCK__STATEMENT:
         return basicSetStatement(null, msgs);
     }
@@ -136,6 +199,10 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
   {
     switch (featureID)
     {
+      case PascalPackage.BLOCK__CONSTANTPART:
+        return getConstantpart();
+      case PascalPackage.BLOCK__VARIABLEPART:
+        return getVariablepart();
       case PascalPackage.BLOCK__STATEMENT:
         return getStatement();
     }
@@ -147,11 +214,20 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
+      case PascalPackage.BLOCK__CONSTANTPART:
+        getConstantpart().clear();
+        getConstantpart().addAll((Collection<? extends constant_definition_part>)newValue);
+        return;
+      case PascalPackage.BLOCK__VARIABLEPART:
+        getVariablepart().clear();
+        getVariablepart().addAll((Collection<? extends variable_declaration_part>)newValue);
+        return;
       case PascalPackage.BLOCK__STATEMENT:
         setStatement((compound_statement)newValue);
         return;
@@ -169,6 +245,12 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
   {
     switch (featureID)
     {
+      case PascalPackage.BLOCK__CONSTANTPART:
+        getConstantpart().clear();
+        return;
+      case PascalPackage.BLOCK__VARIABLEPART:
+        getVariablepart().clear();
+        return;
       case PascalPackage.BLOCK__STATEMENT:
         setStatement((compound_statement)null);
         return;
@@ -186,6 +268,10 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
   {
     switch (featureID)
     {
+      case PascalPackage.BLOCK__CONSTANTPART:
+        return constantpart != null && !constantpart.isEmpty();
+      case PascalPackage.BLOCK__VARIABLEPART:
+        return variablepart != null && !variablepart.isEmpty();
       case PascalPackage.BLOCK__STATEMENT:
         return statement != null;
     }

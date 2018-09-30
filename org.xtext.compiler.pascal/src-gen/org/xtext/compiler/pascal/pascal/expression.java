@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface expression extends factor
+public interface expression extends EObject
 {
   /**
    * Returns the value of the '<em><b>Expressions</b></em>' containment reference list.

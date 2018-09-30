@@ -69,6 +69,51 @@ public interface PascalFactory extends EFactory
   block createblock();
 
   /**
+   * Returns a new object of class '<em>constant definition part</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>constant definition part</em>'.
+   * @generated
+   */
+  constant_definition_part createconstant_definition_part();
+
+  /**
+   * Returns a new object of class '<em>constant definition</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>constant definition</em>'.
+   * @generated
+   */
+  constant_definition createconstant_definition();
+
+  /**
+   * Returns a new object of class '<em>constant</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>constant</em>'.
+   * @generated
+   */
+  constant createconstant();
+
+  /**
+   * Returns a new object of class '<em>variable declaration part</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>variable declaration part</em>'.
+   * @generated
+   */
+  variable_declaration_part createvariable_declaration_part();
+
+  /**
+   * Returns a new object of class '<em>variable declaration</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>variable declaration</em>'.
+   * @generated
+   */
+  variable_declaration createvariable_declaration();
+
+  /**
    * Returns a new object of class '<em>compound statement</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -211,6 +256,60 @@ public interface PascalFactory extends EFactory
    * @generated
    */
   element createelement();
+
+  /**
+   * Returns a new object of class '<em>type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>type</em>'.
+   * @generated
+   */
+  type createtype();
+
+  /**
+   * Returns a new object of class '<em>simple type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>simple type</em>'.
+   * @generated
+   */
+  simple_type createsimple_type();
+
+  /**
+   * Returns a new object of class '<em>scalar type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>scalar type</em>'.
+   * @generated
+   */
+  scalar_type createscalar_type();
+
+  /**
+   * Returns a new object of class '<em>subrange type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>subrange type</em>'.
+   * @generated
+   */
+  subrange_type createsubrange_type();
+
+  /**
+   * Returns a new object of class '<em>type identifier</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>type identifier</em>'.
+   * @generated
+   */
+  type_identifier createtype_identifier();
+
+  /**
+   * Returns a new object of class '<em>string type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>string type</em>'.
+   * @generated
+   */
+  string_type createstring_type();
 
   /**
    * Returns a new object of class '<em>unsigned constant</em>'.

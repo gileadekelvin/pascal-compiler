@@ -19,10 +19,28 @@
     </genClasses>
     <genClasses ecoreClass="Pascal.ecore#//identifier_list">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Pascal.ecore#//identifier_list/names"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Pascal.ecore#//identifier_list/types"/>
     </genClasses>
     <genClasses ecoreClass="Pascal.ecore#//block">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Pascal.ecore#//block/constantpart"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Pascal.ecore#//block/variablepart"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Pascal.ecore#//block/statement"/>
     </genClasses>
+    <genClasses ecoreClass="Pascal.ecore#//constant_definition_part">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Pascal.ecore#//constant_definition_part/constants"/>
+    </genClasses>
+    <genClasses ecoreClass="Pascal.ecore#//constant_definition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Pascal.ecore#//constant_definition/name"/>
+    </genClasses>
+    <genClasses ecoreClass="Pascal.ecore#//constant">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Pascal.ecore#//constant/names"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Pascal.ecore#//constant/string"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Pascal.ecore#//constant/numbers"/>
+    </genClasses>
+    <genClasses ecoreClass="Pascal.ecore#//variable_declaration_part">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Pascal.ecore#//variable_declaration_part/variable"/>
+    </genClasses>
+    <genClasses ecoreClass="Pascal.ecore#//variable_declaration"/>
     <genClasses ecoreClass="Pascal.ecore#//compound_statement">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Pascal.ecore#//compound_statement/sequence"/>
     </genClasses>
@@ -73,6 +91,11 @@
     </genClasses>
     <genClasses ecoreClass="Pascal.ecore#//factor">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Pascal.ecore#//factor/variable"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Pascal.ecore#//factor/expression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Pascal.ecore#//factor/constant"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Pascal.ecore#//factor/set"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Pascal.ecore#//factor/factor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Pascal.ecore#//factor/boolean"/>
     </genClasses>
     <genClasses ecoreClass="Pascal.ecore#//set">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Pascal.ecore#//set/elements"/>
@@ -84,17 +107,31 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Pascal.ecore#//element/expressions"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Pascal.ecore#//element/dotdot"/>
     </genClasses>
+    <genClasses ecoreClass="Pascal.ecore#//type">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Pascal.ecore#//type/type"/>
+    </genClasses>
+    <genClasses ecoreClass="Pascal.ecore#//simple_type">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Pascal.ecore#//simple_type/types"/>
+    </genClasses>
+    <genClasses ecoreClass="Pascal.ecore#//scalar_type"/>
+    <genClasses ecoreClass="Pascal.ecore#//subrange_type">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Pascal.ecore#//subrange_type/constants"/>
+    </genClasses>
+    <genClasses ecoreClass="Pascal.ecore#//type_identifier">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Pascal.ecore#//type_identifier/names"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Pascal.ecore#//type_identifier/type"/>
+    </genClasses>
+    <genClasses ecoreClass="Pascal.ecore#//string_type">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Pascal.ecore#//string_type/names"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Pascal.ecore#//string_type/number"/>
+    </genClasses>
     <genClasses ecoreClass="Pascal.ecore#//unsigned_constant">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Pascal.ecore#//unsigned_constant/number"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Pascal.ecore#//unsigned_constant/char"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Pascal.ecore#//unsigned_constant/string"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Pascal.ecore#//unsigned_constant/nil"/>
     </genClasses>
-    <genClasses ecoreClass="Pascal.ecore#//unsigned_number">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Pascal.ecore#//unsigned_number/numbers"/>
-    </genClasses>
-    <genClasses ecoreClass="Pascal.ecore#//constant_chr">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Pascal.ecore#//constant_chr/numbers"/>
-    </genClasses>
+    <genClasses ecoreClass="Pascal.ecore#//unsigned_number"/>
+    <genClasses ecoreClass="Pascal.ecore#//constant_chr"/>
   </genPackages>
 </genmodel:GenModel>

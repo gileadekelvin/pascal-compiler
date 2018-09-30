@@ -3,15 +3,7 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
-import java.util.Collection;
-
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
-
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
-import org.eclipse.emf.ecore.util.EDataTypeEList;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.unsigned_number;
@@ -20,27 +12,11 @@ import org.xtext.compiler.pascal.pascal.unsigned_number;
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>unsigned number</b></em>'.
  * <!-- end-user-doc -->
- * <p>
- * The following features are implemented:
- * </p>
- * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.unsigned_numberImpl#getNumbers <em>Numbers</em>}</li>
- * </ul>
  *
  * @generated
  */
-public class unsigned_numberImpl extends MinimalEObjectImpl.Container implements unsigned_number
+public class unsigned_numberImpl extends constantImpl implements unsigned_number
 {
-  /**
-   * The cached value of the '{@link #getNumbers() <em>Numbers</em>}' attribute list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getNumbers()
-   * @generated
-   * @ordered
-   */
-  protected EList<String> numbers;
-
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -60,105 +36,6 @@ public class unsigned_numberImpl extends MinimalEObjectImpl.Container implements
   protected EClass eStaticClass()
   {
     return PascalPackage.Literals.UNSIGNED_NUMBER;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EList<String> getNumbers()
-  {
-    if (numbers == null)
-    {
-      numbers = new EDataTypeEList<String>(String.class, this, PascalPackage.UNSIGNED_NUMBER__NUMBERS);
-    }
-    return numbers;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public Object eGet(int featureID, boolean resolve, boolean coreType)
-  {
-    switch (featureID)
-    {
-      case PascalPackage.UNSIGNED_NUMBER__NUMBERS:
-        return getNumbers();
-    }
-    return super.eGet(featureID, resolve, coreType);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @SuppressWarnings("unchecked")
-  @Override
-  public void eSet(int featureID, Object newValue)
-  {
-    switch (featureID)
-    {
-      case PascalPackage.UNSIGNED_NUMBER__NUMBERS:
-        getNumbers().clear();
-        getNumbers().addAll((Collection<? extends String>)newValue);
-        return;
-    }
-    super.eSet(featureID, newValue);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void eUnset(int featureID)
-  {
-    switch (featureID)
-    {
-      case PascalPackage.UNSIGNED_NUMBER__NUMBERS:
-        getNumbers().clear();
-        return;
-    }
-    super.eUnset(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public boolean eIsSet(int featureID)
-  {
-    switch (featureID)
-    {
-      case PascalPackage.UNSIGNED_NUMBER__NUMBERS:
-        return numbers != null && !numbers.isEmpty();
-    }
-    return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (numbers: ");
-    result.append(numbers);
-    result.append(')');
-    return result.toString();
   }
 
 } //unsigned_numberImpl

@@ -5,16 +5,20 @@ package org.xtext.compiler.pascal.pascal.impl;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
-
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.util.EDataTypeEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.identifier_list;
+import org.xtext.compiler.pascal.pascal.type;
 
 /**
  * <!-- begin-user-doc -->
@@ -25,11 +29,12 @@ import org.xtext.compiler.pascal.pascal.identifier_list;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.compiler.pascal.pascal.impl.identifier_listImpl#getNames <em>Names</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.identifier_listImpl#getTypes <em>Types</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class identifier_listImpl extends MinimalEObjectImpl.Container implements identifier_list
+public class identifier_listImpl extends variable_declarationImpl implements identifier_list
 {
   /**
    * The cached value of the '{@link #getNames() <em>Names</em>}' attribute list.
@@ -40,6 +45,16 @@ public class identifier_listImpl extends MinimalEObjectImpl.Container implements
    * @ordered
    */
   protected EList<String> names;
+
+  /**
+   * The cached value of the '{@link #getTypes() <em>Types</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getTypes()
+   * @generated
+   * @ordered
+   */
+  protected EList<type> types;
 
   /**
    * <!-- begin-user-doc -->
@@ -81,6 +96,36 @@ public class identifier_listImpl extends MinimalEObjectImpl.Container implements
    * <!-- end-user-doc -->
    * @generated
    */
+  public EList<type> getTypes()
+  {
+    if (types == null)
+    {
+      types = new EObjectContainmentEList<type>(type.class, this, PascalPackage.IDENTIFIER_LIST__TYPES);
+    }
+    return types;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
+    {
+      case PascalPackage.IDENTIFIER_LIST__TYPES:
+        return ((InternalEList<?>)getTypes()).basicRemove(otherEnd, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   @Override
   public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
@@ -88,6 +133,8 @@ public class identifier_listImpl extends MinimalEObjectImpl.Container implements
     {
       case PascalPackage.IDENTIFIER_LIST__NAMES:
         return getNames();
+      case PascalPackage.IDENTIFIER_LIST__TYPES:
+        return getTypes();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -107,6 +154,10 @@ public class identifier_listImpl extends MinimalEObjectImpl.Container implements
         getNames().clear();
         getNames().addAll((Collection<? extends String>)newValue);
         return;
+      case PascalPackage.IDENTIFIER_LIST__TYPES:
+        getTypes().clear();
+        getTypes().addAll((Collection<? extends type>)newValue);
+        return;
     }
     super.eSet(featureID, newValue);
   }
@@ -124,6 +175,9 @@ public class identifier_listImpl extends MinimalEObjectImpl.Container implements
       case PascalPackage.IDENTIFIER_LIST__NAMES:
         getNames().clear();
         return;
+      case PascalPackage.IDENTIFIER_LIST__TYPES:
+        getTypes().clear();
+        return;
     }
     super.eUnset(featureID);
   }
@@ -140,6 +194,8 @@ public class identifier_listImpl extends MinimalEObjectImpl.Container implements
     {
       case PascalPackage.IDENTIFIER_LIST__NAMES:
         return names != null && !names.isEmpty();
+      case PascalPackage.IDENTIFIER_LIST__TYPES:
+        return types != null && !types.isEmpty();
     }
     return super.eIsSet(featureID);
   }
