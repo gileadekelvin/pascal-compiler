@@ -4,14 +4,17 @@
 package org.xtext.compiler.pascal.pascal.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.block;
+import org.xtext.compiler.pascal.pascal.compound_statement;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,7 +24,7 @@ import org.xtext.compiler.pascal.pascal.block;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.blockImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.blockImpl#getStatement <em>Statement</em>}</li>
  * </ul>
  *
  * @generated
@@ -29,24 +32,14 @@ import org.xtext.compiler.pascal.pascal.block;
 public class blockImpl extends MinimalEObjectImpl.Container implements block
 {
   /**
-   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+   * The cached value of the '{@link #getStatement() <em>Statement</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getName()
+   * @see #getStatement()
    * @generated
    * @ordered
    */
-  protected static final String NAME_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getName()
-   * @generated
-   * @ordered
-   */
-  protected String name = NAME_EDEFAULT;
+  protected compound_statement statement;
 
   /**
    * <!-- begin-user-doc -->
@@ -74,9 +67,9 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getName()
+  public compound_statement getStatement()
   {
-    return name;
+    return statement;
   }
 
   /**
@@ -84,12 +77,53 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setName(String newName)
+  public NotificationChain basicSetStatement(compound_statement newStatement, NotificationChain msgs)
   {
-    String oldName = name;
-    name = newName;
+    compound_statement oldStatement = statement;
+    statement = newStatement;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.BLOCK__NAME, oldName, name));
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.BLOCK__STATEMENT, oldStatement, newStatement);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setStatement(compound_statement newStatement)
+  {
+    if (newStatement != statement)
+    {
+      NotificationChain msgs = null;
+      if (statement != null)
+        msgs = ((InternalEObject)statement).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.BLOCK__STATEMENT, null, msgs);
+      if (newStatement != null)
+        msgs = ((InternalEObject)newStatement).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.BLOCK__STATEMENT, null, msgs);
+      msgs = basicSetStatement(newStatement, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.BLOCK__STATEMENT, newStatement, newStatement));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
+    {
+      case PascalPackage.BLOCK__STATEMENT:
+        return basicSetStatement(null, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
   }
 
   /**
@@ -102,8 +136,8 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
   {
     switch (featureID)
     {
-      case PascalPackage.BLOCK__NAME:
-        return getName();
+      case PascalPackage.BLOCK__STATEMENT:
+        return getStatement();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -118,8 +152,8 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
   {
     switch (featureID)
     {
-      case PascalPackage.BLOCK__NAME:
-        setName((String)newValue);
+      case PascalPackage.BLOCK__STATEMENT:
+        setStatement((compound_statement)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -135,8 +169,8 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
   {
     switch (featureID)
     {
-      case PascalPackage.BLOCK__NAME:
-        setName(NAME_EDEFAULT);
+      case PascalPackage.BLOCK__STATEMENT:
+        setStatement((compound_statement)null);
         return;
     }
     super.eUnset(featureID);
@@ -152,27 +186,10 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
   {
     switch (featureID)
     {
-      case PascalPackage.BLOCK__NAME:
-        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      case PascalPackage.BLOCK__STATEMENT:
+        return statement != null;
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (name: ");
-    result.append(name);
-    result.append(')');
-    return result.toString();
   }
 
 } //blockImpl

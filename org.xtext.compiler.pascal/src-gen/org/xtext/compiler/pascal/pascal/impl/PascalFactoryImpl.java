@@ -70,6 +70,25 @@ public class PascalFactoryImpl extends EFactoryImpl implements PascalFactory
       case PascalPackage.PROGRAM_HEADING_BLOCK: return createprogram_heading_block();
       case PascalPackage.IDENTIFIER_LIST: return createidentifier_list();
       case PascalPackage.BLOCK: return createblock();
+      case PascalPackage.COMPOUND_STATEMENT: return createcompound_statement();
+      case PascalPackage.STATEMENTS: return createstatements();
+      case PascalPackage.STATEMENT: return createstatement();
+      case PascalPackage.UNLABELLED_STATEMENT: return createunlabelled_statement();
+      case PascalPackage.LABEL: return createlabel();
+      case PascalPackage.SIMPLE_STATEMENT: return createsimple_statement();
+      case PascalPackage.ASSIGNMENT_STATEMENT: return createassignment_statement();
+      case PascalPackage.VARIABLE: return createvariable();
+      case PascalPackage.EXPRESSION: return createexpression();
+      case PascalPackage.SIMPLE_EXPRESSION: return createsimple_expression();
+      case PascalPackage.TERM: return createterm();
+      case PascalPackage.SIGNED_FACTOR: return createsigned_factor();
+      case PascalPackage.FACTOR: return createfactor();
+      case PascalPackage.SET: return createset();
+      case PascalPackage.ELEMENT_LIST: return createelementList();
+      case PascalPackage.ELEMENT: return createelement();
+      case PascalPackage.UNSIGNED_CONSTANT: return createunsigned_constant();
+      case PascalPackage.UNSIGNED_NUMBER: return createunsigned_number();
+      case PascalPackage.CONSTANT_CHR: return createconstant_chr();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -128,6 +147,215 @@ public class PascalFactoryImpl extends EFactoryImpl implements PascalFactory
   {
     blockImpl block = new blockImpl();
     return block;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public compound_statement createcompound_statement()
+  {
+    compound_statementImpl compound_statement = new compound_statementImpl();
+    return compound_statement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public statements createstatements()
+  {
+    statementsImpl statements = new statementsImpl();
+    return statements;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public statement createstatement()
+  {
+    statementImpl statement = new statementImpl();
+    return statement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public unlabelled_statement createunlabelled_statement()
+  {
+    unlabelled_statementImpl unlabelled_statement = new unlabelled_statementImpl();
+    return unlabelled_statement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public label createlabel()
+  {
+    labelImpl label = new labelImpl();
+    return label;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public simple_statement createsimple_statement()
+  {
+    simple_statementImpl simple_statement = new simple_statementImpl();
+    return simple_statement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public assignment_statement createassignment_statement()
+  {
+    assignment_statementImpl assignment_statement = new assignment_statementImpl();
+    return assignment_statement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public variable createvariable()
+  {
+    variableImpl variable = new variableImpl();
+    return variable;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public expression createexpression()
+  {
+    expressionImpl expression = new expressionImpl();
+    return expression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public simple_expression createsimple_expression()
+  {
+    simple_expressionImpl simple_expression = new simple_expressionImpl();
+    return simple_expression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public term createterm()
+  {
+    termImpl term = new termImpl();
+    return term;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public signed_factor createsigned_factor()
+  {
+    signed_factorImpl signed_factor = new signed_factorImpl();
+    return signed_factor;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public factor createfactor()
+  {
+    factorImpl factor = new factorImpl();
+    return factor;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public set createset()
+  {
+    setImpl set = new setImpl();
+    return set;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public elementList createelementList()
+  {
+    elementListImpl elementList = new elementListImpl();
+    return elementList;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public element createelement()
+  {
+    elementImpl element = new elementImpl();
+    return element;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public unsigned_constant createunsigned_constant()
+  {
+    unsigned_constantImpl unsigned_constant = new unsigned_constantImpl();
+    return unsigned_constant;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public unsigned_number createunsigned_number()
+  {
+    unsigned_numberImpl unsigned_number = new unsigned_numberImpl();
+    return unsigned_number;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public constant_chr createconstant_chr()
+  {
+    constant_chrImpl constant_chr = new constant_chrImpl();
+    return constant_chr;
   }
 
   /**

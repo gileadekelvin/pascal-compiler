@@ -19,5 +19,236 @@ identifier_list:
 ;
 
 block:
-	"Hello" name=ID "!" ";"
+	statement=compound_statement
+;
+
+compound_statement:
+	"begin" sequence=statements "end"	
+;
+
+statements:
+	statements+=statement ( ";" statements+=statement ) *
+;
+
+statement:  
+	label=label ":" statement+=unlabelled_statement | {statement} (statement+=unlabelled_statement) ? 
+;
+
+unlabelled_statement:
+	simple=simple_statement | structured=structured_statement
+;
+
+label:
+	number=unsigned_integer
+;
+
+simple_statement:
+	assignment=assignment_statement | procedure=procedure_statement | goto=goto_statement	
+;
+
+assignment_statement: 
+	variable=variable ASSIGN expression=expression	
+;
+
+variable
+   : ('@' names+=ID | names+=ID) ('[' expression+=expression ("," expression+=expression)* ']' | "(." expression+=expression ("," expression+=expression)* ".)" | "." names+=ID | "^")*
+;
+
+expression:
+	expressions+=simple_expression (operators+=relational_operator expressions+=expression)?
+;
+
+simple_expression:
+	terms+=term (operators+=additive_operator expression+=simple_expression)?
+;
+
+term: 
+	factors+=signed_factor (operators+=multiplicative_operator terms+=term)?
+;
+
+signed_factor: 
+	(operators+=PLUS | operators+=MINUS)? factors+=factor
+;
+
+factor: 
+	 variable=variable
+   | "(" expression ")"
+   //| functionDesignator
+   | unsigned_constant
+   | set
+   | NOT factor
+   | bool
+;
+
+set: 
+	 "[" elements+=elementList "]"
+   | "(." elements+=elementList ".)"
+;
+
+elementList: 
+	elements+=element ("," elements+=element)*   
+;
+
+element: 
+	expressions+=expression (dotdot+=DOTDOT expressions+=expression)?
+;
+
+unsigned_constant:
+	 number+=unsigned_number
+   | char+=constant_chr
+   | string+=STRING
+   | nil+=NIL
+;
+
+unsigned_number: 
+	 numbers+=unsigned_integer
+   | numbers+=unsigned_real
+;
+
+constant_chr:
+	"chr" "(" numbers+=unsigned_integer ")"
+;
+
+procedure_statement:
+	"procedure"
+;
+
+goto_statement:
+	"goto"
+;
+
+structured_statement:
+	"structured"
+;
+
+unsigned_integer: 
+	NUM_INT
+;
+
+unsigned_real: 
+	NUM_REAL
+;
+
+additive_operator: 
+	 PLUS
+   | MINUS
+   | OR
+;
+
+multiplicative_operator
+   : STAR
+   | SLASH
+   | DIV
+   | MOD
+   | AND
+;
+
+relational_operator: 
+	 EQUAL
+   | NOT_EQUAL
+   | LT
+   | LE
+   | GE
+   | GT
+   | IN
+;
+
+bool:
+	TRUE | FALSE
+;
+
+terminal NIL:
+	'nil'
+;
+
+terminal DOTDOT:
+	'..'
+;
+
+terminal NOT:
+	'not'
+;
+
+terminal TRUE:
+	'true'
+;
+
+terminal FALSE:
+	'false'
+;
+
+terminal STAR:
+	'*'
+;
+
+terminal SLASH:
+	'/'
+;
+
+terminal DIV:
+	'div'
+;
+
+terminal MOD:
+	'mod'
+;
+
+terminal PLUS:
+	'+'
+;
+
+terminal MINUS:
+	'-'
+;
+
+terminal AND:
+	'and'
+;
+
+terminal OR:
+	'or'
+;
+
+terminal ASSIGN: 
+	':='
+;
+
+terminal NUM_INT: 
+	('0' .. '9') +
+;
+
+terminal NUM_REAL: 
+	('0' .. '9') + (('.' ('0' .. '9') + (EXPONENT)?)? | EXPONENT)
+;
+
+terminal fragment EXPONENT: 
+	('e') (PLUS | MINUS)? ('0' .. '9') +
+;
+
+terminal EQUAL: 
+	'='
+;
+
+terminal NOT_EQUAL: 
+	'<>'
+;
+
+terminal LT: 
+	'<'
+;
+
+terminal LE: 
+	'<='
+;
+
+terminal GE: 
+	'>='
+;
+
+terminal GT: 
+	'>'
+;
+
+terminal IN:
+	'in'	
 ;

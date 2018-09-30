@@ -108,6 +108,142 @@ public class PascalSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case PascalPackage.COMPOUND_STATEMENT:
+      {
+        compound_statement compound_statement = (compound_statement)theEObject;
+        T result = casecompound_statement(compound_statement);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.STATEMENTS:
+      {
+        statements statements = (statements)theEObject;
+        T result = casestatements(statements);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.STATEMENT:
+      {
+        statement statement = (statement)theEObject;
+        T result = casestatement(statement);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.UNLABELLED_STATEMENT:
+      {
+        unlabelled_statement unlabelled_statement = (unlabelled_statement)theEObject;
+        T result = caseunlabelled_statement(unlabelled_statement);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.LABEL:
+      {
+        label label = (label)theEObject;
+        T result = caselabel(label);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.SIMPLE_STATEMENT:
+      {
+        simple_statement simple_statement = (simple_statement)theEObject;
+        T result = casesimple_statement(simple_statement);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.ASSIGNMENT_STATEMENT:
+      {
+        assignment_statement assignment_statement = (assignment_statement)theEObject;
+        T result = caseassignment_statement(assignment_statement);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.VARIABLE:
+      {
+        variable variable = (variable)theEObject;
+        T result = casevariable(variable);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.EXPRESSION:
+      {
+        expression expression = (expression)theEObject;
+        T result = caseexpression(expression);
+        if (result == null) result = casefactor(expression);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.SIMPLE_EXPRESSION:
+      {
+        simple_expression simple_expression = (simple_expression)theEObject;
+        T result = casesimple_expression(simple_expression);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.TERM:
+      {
+        term term = (term)theEObject;
+        T result = caseterm(term);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.SIGNED_FACTOR:
+      {
+        signed_factor signed_factor = (signed_factor)theEObject;
+        T result = casesigned_factor(signed_factor);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.FACTOR:
+      {
+        factor factor = (factor)theEObject;
+        T result = casefactor(factor);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.SET:
+      {
+        set set = (set)theEObject;
+        T result = caseset(set);
+        if (result == null) result = casefactor(set);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.ELEMENT_LIST:
+      {
+        elementList elementList = (elementList)theEObject;
+        T result = caseelementList(elementList);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.ELEMENT:
+      {
+        element element = (element)theEObject;
+        T result = caseelement(element);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.UNSIGNED_CONSTANT:
+      {
+        unsigned_constant unsigned_constant = (unsigned_constant)theEObject;
+        T result = caseunsigned_constant(unsigned_constant);
+        if (result == null) result = casefactor(unsigned_constant);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.UNSIGNED_NUMBER:
+      {
+        unsigned_number unsigned_number = (unsigned_number)theEObject;
+        T result = caseunsigned_number(unsigned_number);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.CONSTANT_CHR:
+      {
+        constant_chr constant_chr = (constant_chr)theEObject;
+        T result = caseconstant_chr(constant_chr);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       default: return defaultCase(theEObject);
     }
   }
@@ -188,6 +324,310 @@ public class PascalSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseblock(block object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>compound statement</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>compound statement</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casecompound_statement(compound_statement object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>statements</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>statements</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casestatements(statements object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>statement</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>statement</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casestatement(statement object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>unlabelled statement</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>unlabelled statement</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseunlabelled_statement(unlabelled_statement object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>label</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>label</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caselabel(label object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>simple statement</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>simple statement</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casesimple_statement(simple_statement object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>assignment statement</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>assignment statement</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseassignment_statement(assignment_statement object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>variable</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>variable</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casevariable(variable object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>expression</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>expression</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseexpression(expression object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>simple expression</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>simple expression</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casesimple_expression(simple_expression object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>term</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>term</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseterm(term object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>signed factor</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>signed factor</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casesigned_factor(signed_factor object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>factor</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>factor</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casefactor(factor object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>set</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>set</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseset(set object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>element List</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>element List</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseelementList(elementList object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>element</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>element</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseelement(element object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>unsigned constant</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>unsigned constant</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseunsigned_constant(unsigned_constant object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>unsigned number</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>unsigned number</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseunsigned_number(unsigned_number object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>constant chr</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>constant chr</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseconstant_chr(constant_chr object)
   {
     return null;
   }

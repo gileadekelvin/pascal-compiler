@@ -10,6 +10,8 @@ import org.eclipse.xtext.IGrammarAccess;
 import org.eclipse.xtext.RuleCall;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.serializer.analysis.GrammarAlias.AbstractElementAlias;
+import org.eclipse.xtext.serializer.analysis.GrammarAlias.TokenAlias;
+import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISynNavigable;
 import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISynTransition;
 import org.eclipse.xtext.serializer.sequencer.AbstractSyntacticSequencer;
 import org.xtext.compiler.pascal.services.PascalGrammarAccess;
@@ -18,17 +20,59 @@ import org.xtext.compiler.pascal.services.PascalGrammarAccess;
 public class PascalSyntacticSequencer extends AbstractSyntacticSequencer {
 
 	protected PascalGrammarAccess grammarAccess;
+	protected AbstractElementAlias match_factor_NOTTerminalRuleCall_4_0_a;
+	protected AbstractElementAlias match_variable_CircumflexAccentKeyword_1_3_a;
 	
 	@Inject
 	protected void init(IGrammarAccess access) {
 		grammarAccess = (PascalGrammarAccess) access;
+		match_factor_NOTTerminalRuleCall_4_0_a = new TokenAlias(true, true, grammarAccess.getFactorAccess().getNOTTerminalRuleCall_4_0());
+		match_variable_CircumflexAccentKeyword_1_3_a = new TokenAlias(true, true, grammarAccess.getVariableAccess().getCircumflexAccentKeyword_1_3());
 	}
 	
 	@Override
 	protected String getUnassignedRuleCallToken(EObject semanticObject, RuleCall ruleCall, INode node) {
+		if (ruleCall.getRule() == grammarAccess.getASSIGNRule())
+			return getASSIGNToken(semanticObject, ruleCall, node);
+		else if (ruleCall.getRule() == grammarAccess.getNOTRule())
+			return getNOTToken(semanticObject, ruleCall, node);
+		else if (ruleCall.getRule() == grammarAccess.getBoolRule())
+			return getboolToken(semanticObject, ruleCall, node);
 		return "";
 	}
 	
+	/**
+	 * terminal ASSIGN: 
+	 * 	':='
+	 * ;
+	 */
+	protected String getASSIGNToken(EObject semanticObject, RuleCall ruleCall, INode node) {
+		if (node != null)
+			return getTokenText(node);
+		return ":=";
+	}
+	
+	/**
+	 * terminal NOT:
+	 * 	'not'
+	 * ;
+	 */
+	protected String getNOTToken(EObject semanticObject, RuleCall ruleCall, INode node) {
+		if (node != null)
+			return getTokenText(node);
+		return "not";
+	}
+	
+	/**
+	 * bool:
+	 * 	TRUE | FALSE
+	 * ;
+	 */
+	protected String getboolToken(EObject semanticObject, RuleCall ruleCall, INode node) {
+		if (node != null)
+			return getTokenText(node);
+		return "true";
+	}
 	
 	@Override
 	protected void emitUnassignedTokens(EObject semanticObject, ISynTransition transition, INode fromNode, INode toNode) {
@@ -36,8 +80,53 @@ public class PascalSyntacticSequencer extends AbstractSyntacticSequencer {
 		List<INode> transitionNodes = collectNodes(fromNode, toNode);
 		for (AbstractElementAlias syntax : transition.getAmbiguousSyntaxes()) {
 			List<INode> syntaxNodes = getNodesFor(transitionNodes, syntax);
-			acceptNodes(getLastNavigableState(), syntaxNodes);
+			if (match_factor_NOTTerminalRuleCall_4_0_a.equals(syntax))
+				emit_factor_NOTTerminalRuleCall_4_0_a(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_variable_CircumflexAccentKeyword_1_3_a.equals(syntax))
+				emit_variable_CircumflexAccentKeyword_1_3_a(semanticObject, getLastNavigableState(), syntaxNodes);
+			else acceptNodes(getLastNavigableState(), syntaxNodes);
 		}
 	}
 
+	/**
+	 * Ambiguous syntax:
+	 *     NOT*
+	 *
+	 * This ambiguous syntax occurs at:
+	 *     (rule start) (ambiguity) '(' expressions+=simple_expression
+	 *     (rule start) (ambiguity) '(.' elements+=elementList
+	 *     (rule start) (ambiguity) '[' elements+=elementList
+	 *     (rule start) (ambiguity) bool (rule start)
+	 *     (rule start) (ambiguity) char+=constant_chr
+	 *     (rule start) (ambiguity) nil+=NIL
+	 *     (rule start) (ambiguity) number+=unsigned_number
+	 *     (rule start) (ambiguity) string+=STRING
+	 *     (rule start) (ambiguity) variable=variable
+	 */
+	protected void emit_factor_NOTTerminalRuleCall_4_0_a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Ambiguous syntax:
+	 *     '^'*
+	 *
+	 * This ambiguous syntax occurs at:
+	 *     expression+=expression '.)' (ambiguity) '(.' expression+=expression
+	 *     expression+=expression '.)' (ambiguity) '.' names+=ID
+	 *     expression+=expression '.)' (ambiguity) '[' expression+=expression
+	 *     expression+=expression '.)' (ambiguity) (rule end)
+	 *     expression+=expression ']' (ambiguity) '(.' expression+=expression
+	 *     expression+=expression ']' (ambiguity) '.' names+=ID
+	 *     expression+=expression ']' (ambiguity) '[' expression+=expression
+	 *     expression+=expression ']' (ambiguity) (rule end)
+	 *     names+=ID (ambiguity) '(.' expression+=expression
+	 *     names+=ID (ambiguity) '.' names+=ID
+	 *     names+=ID (ambiguity) '[' expression+=expression
+	 *     names+=ID (ambiguity) (rule end)
+	 */
+	protected void emit_variable_CircumflexAccentKeyword_1_3_a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
 }

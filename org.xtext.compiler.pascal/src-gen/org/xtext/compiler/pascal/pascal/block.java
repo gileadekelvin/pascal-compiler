@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.block#getName <em>Name</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.block#getStatement <em>Statement</em>}</li>
  * </ul>
  *
  * @see org.xtext.compiler.pascal.pascal.PascalPackage#getblock()
@@ -24,29 +24,29 @@ import org.eclipse.emf.ecore.EObject;
 public interface block extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Name</b></em>' attribute.
+   * Returns the value of the '<em><b>Statement</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Name</em>' attribute isn't clear,
+   * If the meaning of the '<em>Statement</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Name</em>' attribute.
-   * @see #setName(String)
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getblock_Name()
-   * @model
+   * @return the value of the '<em>Statement</em>' containment reference.
+   * @see #setStatement(compound_statement)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getblock_Statement()
+   * @model containment="true"
    * @generated
    */
-  String getName();
+  compound_statement getStatement();
 
   /**
-   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.block#getName <em>Name</em>}' attribute.
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.block#getStatement <em>Statement</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Name</em>' attribute.
-   * @see #getName()
+   * @param value the new value of the '<em>Statement</em>' containment reference.
+   * @see #getStatement()
    * @generated
    */
-  void setName(String value);
+  void setStatement(compound_statement value);
 
 } // block

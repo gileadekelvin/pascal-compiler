@@ -69,6 +69,177 @@ public interface PascalFactory extends EFactory
   block createblock();
 
   /**
+   * Returns a new object of class '<em>compound statement</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>compound statement</em>'.
+   * @generated
+   */
+  compound_statement createcompound_statement();
+
+  /**
+   * Returns a new object of class '<em>statements</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>statements</em>'.
+   * @generated
+   */
+  statements createstatements();
+
+  /**
+   * Returns a new object of class '<em>statement</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>statement</em>'.
+   * @generated
+   */
+  statement createstatement();
+
+  /**
+   * Returns a new object of class '<em>unlabelled statement</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>unlabelled statement</em>'.
+   * @generated
+   */
+  unlabelled_statement createunlabelled_statement();
+
+  /**
+   * Returns a new object of class '<em>label</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>label</em>'.
+   * @generated
+   */
+  label createlabel();
+
+  /**
+   * Returns a new object of class '<em>simple statement</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>simple statement</em>'.
+   * @generated
+   */
+  simple_statement createsimple_statement();
+
+  /**
+   * Returns a new object of class '<em>assignment statement</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>assignment statement</em>'.
+   * @generated
+   */
+  assignment_statement createassignment_statement();
+
+  /**
+   * Returns a new object of class '<em>variable</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>variable</em>'.
+   * @generated
+   */
+  variable createvariable();
+
+  /**
+   * Returns a new object of class '<em>expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>expression</em>'.
+   * @generated
+   */
+  expression createexpression();
+
+  /**
+   * Returns a new object of class '<em>simple expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>simple expression</em>'.
+   * @generated
+   */
+  simple_expression createsimple_expression();
+
+  /**
+   * Returns a new object of class '<em>term</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>term</em>'.
+   * @generated
+   */
+  term createterm();
+
+  /**
+   * Returns a new object of class '<em>signed factor</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>signed factor</em>'.
+   * @generated
+   */
+  signed_factor createsigned_factor();
+
+  /**
+   * Returns a new object of class '<em>factor</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>factor</em>'.
+   * @generated
+   */
+  factor createfactor();
+
+  /**
+   * Returns a new object of class '<em>set</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>set</em>'.
+   * @generated
+   */
+  set createset();
+
+  /**
+   * Returns a new object of class '<em>element List</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>element List</em>'.
+   * @generated
+   */
+  elementList createelementList();
+
+  /**
+   * Returns a new object of class '<em>element</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>element</em>'.
+   * @generated
+   */
+  element createelement();
+
+  /**
+   * Returns a new object of class '<em>unsigned constant</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>unsigned constant</em>'.
+   * @generated
+   */
+  unsigned_constant createunsigned_constant();
+
+  /**
+   * Returns a new object of class '<em>unsigned number</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>unsigned number</em>'.
+   * @generated
+   */
+  unsigned_number createunsigned_number();
+
+  /**
+   * Returns a new object of class '<em>constant chr</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>constant chr</em>'.
+   * @generated
+   */
+  constant_chr createconstant_chr();
+
+  /**
    * Returns the package supported by this factory.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
