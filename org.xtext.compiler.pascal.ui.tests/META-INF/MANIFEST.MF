@@ -13,7 +13,11 @@ Require-Bundle: org.xtext.compiler.pascal.ui,
  org.eclipse.xtext.junit4,
  org.eclipse.xtext.xbase.junit,
  org.eclipse.core.runtime,
- org.eclipse.ui.workbench;resolution:=optional
+ org.eclipse.ui.workbench;resolution:=optional,
+ org.junit.platform.commons;bundle-version="1.1.0",
+ org.opentest4j;bundle-version="1.0.0",
+ org.junit.jupiter.engine;bundle-version="5.1.0",
+ org.junit.platform.engine;bundle-version="1.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.xtext.compiler.pascal.ui.tests;x-internal=true
 

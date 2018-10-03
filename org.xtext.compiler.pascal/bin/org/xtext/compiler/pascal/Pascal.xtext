@@ -218,7 +218,7 @@ sign:
 ;
 
 terminal NIL:
-	'nil'
+	('N'|'n')('I'|'i')('L'|'l')
 ;
 
 terminal DOTDOT:
@@ -226,15 +226,15 @@ terminal DOTDOT:
 ;
 
 terminal NOT:
-	'not'
+	('N'|'n')('O'|'o')('T'|'t')
 ;
 
 terminal TRUE:
-	'true'
+	('T'|'t')('R'|'r')('U'|'u')('e'|'E')
 ;
 
 terminal FALSE:
-	'false'
+	('F'|'f')('A'|'a')('L'|'l')('S'|'s')('E'|'e')
 ;
 
 terminal STAR:
@@ -246,11 +246,11 @@ terminal SLASH:
 ;
 
 terminal DIV:
-	'div'
+	('D'|'d')('I'|'i')('V'|'v')
 ;
 
 terminal MOD:
-	'mod'
+	('M'|'m')('O'|'o')('D'|'d')
 ;
 
 terminal PLUS:
@@ -262,11 +262,11 @@ terminal MINUS:
 ;
 
 terminal AND:
-	'and'
+	('A'|'a')('N'|'n')('D'|'d')
 ;
 
 terminal OR:
-	'or'
+	('O'|'o')('R'|'r')
 ;
 
 terminal ASSIGN: 
@@ -310,5 +310,5 @@ terminal GT:
 ;
 
 terminal IN:
-	'in'	
+	('I'|'i')('N'|'n')	
 ;
