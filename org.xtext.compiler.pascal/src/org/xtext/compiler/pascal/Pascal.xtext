@@ -101,7 +101,7 @@ signed_factor:
 factor: 
 	 variable=variable
    | "(" expression=expression ")"
-   //| functionDesignator
+   | function_designator
    | constant=unsigned_constant
    | set=set
    | NOT factor=factor
@@ -245,7 +245,11 @@ function_declaration:
 ;
 
 function_type:
-	names+=ID (types+=formal_parameter_list)? ':' types+=result_type
+	FUNCTION (types+=formal_parameter_list)? ':' types+=result_type
+;
+
+function_designator:
+	names+=ID '(' types+=parameter_list ')'
 ;
 
 
@@ -378,9 +382,9 @@ terminal IN:
 ;
 
 terminal PROCEDURE:
-	'procedure'
+	('P'|'p')('R'|'r')('O'|'o')('C'|'c')('E'|'e')('D'|'d')('U'|'u')('R'|'r')('E'|'e')
 ;
 
 terminal FUNCTION:
-	'function'
+	('F'|'f')('U'|'u')('N'|'n')('C'|'c')('T'|'t')('I'|'i')('O'|'o')('N'|'n')
 ;

@@ -10,7 +10,6 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.util.EDataTypeEList;
@@ -18,50 +17,51 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
-import org.xtext.compiler.pascal.pascal.expression;
+import org.xtext.compiler.pascal.pascal.function_designator;
+import org.xtext.compiler.pascal.pascal.parameter_list;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>expression</b></em>'.
+ * An implementation of the model object '<em><b>function designator</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.expressionImpl#getExpressions <em>Expressions</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.expressionImpl#getOperators <em>Operators</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.function_designatorImpl#getNames <em>Names</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.function_designatorImpl#getTypes <em>Types</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class expressionImpl extends actual_parameterImpl implements expression
+public class function_designatorImpl extends factorImpl implements function_designator
 {
   /**
-   * The cached value of the '{@link #getExpressions() <em>Expressions</em>}' containment reference list.
+   * The cached value of the '{@link #getNames() <em>Names</em>}' attribute list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getExpressions()
+   * @see #getNames()
    * @generated
    * @ordered
    */
-  protected EList<EObject> expressions;
+  protected EList<String> names;
 
   /**
-   * The cached value of the '{@link #getOperators() <em>Operators</em>}' attribute list.
+   * The cached value of the '{@link #getTypes() <em>Types</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getOperators()
+   * @see #getTypes()
    * @generated
    * @ordered
    */
-  protected EList<String> operators;
+  protected EList<parameter_list> types;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected expressionImpl()
+  protected function_designatorImpl()
   {
     super();
   }
@@ -74,7 +74,7 @@ public class expressionImpl extends actual_parameterImpl implements expression
   @Override
   protected EClass eStaticClass()
   {
-    return PascalPackage.Literals.EXPRESSION;
+    return PascalPackage.Literals.FUNCTION_DESIGNATOR;
   }
 
   /**
@@ -82,13 +82,13 @@ public class expressionImpl extends actual_parameterImpl implements expression
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<EObject> getExpressions()
+  public EList<String> getNames()
   {
-    if (expressions == null)
+    if (names == null)
     {
-      expressions = new EObjectContainmentEList<EObject>(EObject.class, this, PascalPackage.EXPRESSION__EXPRESSIONS);
+      names = new EDataTypeEList<String>(String.class, this, PascalPackage.FUNCTION_DESIGNATOR__NAMES);
     }
-    return expressions;
+    return names;
   }
 
   /**
@@ -96,13 +96,13 @@ public class expressionImpl extends actual_parameterImpl implements expression
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<String> getOperators()
+  public EList<parameter_list> getTypes()
   {
-    if (operators == null)
+    if (types == null)
     {
-      operators = new EDataTypeEList<String>(String.class, this, PascalPackage.EXPRESSION__OPERATORS);
+      types = new EObjectContainmentEList<parameter_list>(parameter_list.class, this, PascalPackage.FUNCTION_DESIGNATOR__TYPES);
     }
-    return operators;
+    return types;
   }
 
   /**
@@ -115,8 +115,8 @@ public class expressionImpl extends actual_parameterImpl implements expression
   {
     switch (featureID)
     {
-      case PascalPackage.EXPRESSION__EXPRESSIONS:
-        return ((InternalEList<?>)getExpressions()).basicRemove(otherEnd, msgs);
+      case PascalPackage.FUNCTION_DESIGNATOR__TYPES:
+        return ((InternalEList<?>)getTypes()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -131,10 +131,10 @@ public class expressionImpl extends actual_parameterImpl implements expression
   {
     switch (featureID)
     {
-      case PascalPackage.EXPRESSION__EXPRESSIONS:
-        return getExpressions();
-      case PascalPackage.EXPRESSION__OPERATORS:
-        return getOperators();
+      case PascalPackage.FUNCTION_DESIGNATOR__NAMES:
+        return getNames();
+      case PascalPackage.FUNCTION_DESIGNATOR__TYPES:
+        return getTypes();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -150,13 +150,13 @@ public class expressionImpl extends actual_parameterImpl implements expression
   {
     switch (featureID)
     {
-      case PascalPackage.EXPRESSION__EXPRESSIONS:
-        getExpressions().clear();
-        getExpressions().addAll((Collection<? extends EObject>)newValue);
+      case PascalPackage.FUNCTION_DESIGNATOR__NAMES:
+        getNames().clear();
+        getNames().addAll((Collection<? extends String>)newValue);
         return;
-      case PascalPackage.EXPRESSION__OPERATORS:
-        getOperators().clear();
-        getOperators().addAll((Collection<? extends String>)newValue);
+      case PascalPackage.FUNCTION_DESIGNATOR__TYPES:
+        getTypes().clear();
+        getTypes().addAll((Collection<? extends parameter_list>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -172,11 +172,11 @@ public class expressionImpl extends actual_parameterImpl implements expression
   {
     switch (featureID)
     {
-      case PascalPackage.EXPRESSION__EXPRESSIONS:
-        getExpressions().clear();
+      case PascalPackage.FUNCTION_DESIGNATOR__NAMES:
+        getNames().clear();
         return;
-      case PascalPackage.EXPRESSION__OPERATORS:
-        getOperators().clear();
+      case PascalPackage.FUNCTION_DESIGNATOR__TYPES:
+        getTypes().clear();
         return;
     }
     super.eUnset(featureID);
@@ -192,10 +192,10 @@ public class expressionImpl extends actual_parameterImpl implements expression
   {
     switch (featureID)
     {
-      case PascalPackage.EXPRESSION__EXPRESSIONS:
-        return expressions != null && !expressions.isEmpty();
-      case PascalPackage.EXPRESSION__OPERATORS:
-        return operators != null && !operators.isEmpty();
+      case PascalPackage.FUNCTION_DESIGNATOR__NAMES:
+        return names != null && !names.isEmpty();
+      case PascalPackage.FUNCTION_DESIGNATOR__TYPES:
+        return types != null && !types.isEmpty();
     }
     return super.eIsSet(featureID);
   }
@@ -211,10 +211,10 @@ public class expressionImpl extends actual_parameterImpl implements expression
     if (eIsProxy()) return super.toString();
 
     StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (operators: ");
-    result.append(operators);
+    result.append(" (names: ");
+    result.append(names);
     result.append(')');
     return result.toString();
   }
 
-} //expressionImpl
+} //function_designatorImpl

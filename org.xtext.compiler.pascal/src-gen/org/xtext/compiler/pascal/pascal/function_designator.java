@@ -5,26 +5,24 @@ package org.xtext.compiler.pascal.pascal;
 
 import org.eclipse.emf.common.util.EList;
 
-import org.eclipse.emf.ecore.EObject;
-
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>procedure statement</b></em>'.
+ * A representation of the model object '<em><b>function designator</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.procedure_statement#getNames <em>Names</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.procedure_statement#getTypes <em>Types</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.function_designator#getNames <em>Names</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.function_designator#getTypes <em>Types</em>}</li>
  * </ul>
  *
- * @see org.xtext.compiler.pascal.pascal.PascalPackage#getprocedure_statement()
+ * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfunction_designator()
  * @model
  * @generated
  */
-public interface procedure_statement extends EObject
+public interface function_designator extends factor
 {
   /**
    * Returns the value of the '<em><b>Names</b></em>' attribute list.
@@ -36,7 +34,7 @@ public interface procedure_statement extends EObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Names</em>' attribute list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getprocedure_statement_Names()
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfunction_designator_Names()
    * @model unique="false"
    * @generated
    */
@@ -52,10 +50,10 @@ public interface procedure_statement extends EObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Types</em>' containment reference list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getprocedure_statement_Types()
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfunction_designator_Types()
    * @model containment="true"
    * @generated
    */
   EList<parameter_list> getTypes();
 
-} // procedure_statement
+} // function_designator
