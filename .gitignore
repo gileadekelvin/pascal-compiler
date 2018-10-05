@@ -1,1 +1,54 @@
-/.metadata/*
+*target*
+*.jar
+*.war
+*.ear
+*.class
+
+# eclipse specific git ignore
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+/.m2/
+build/
+.gradle/
+*._trace
+.classpath
+.settings/
+.loadpath
+.project
+.metadata
+*.pydevproject
+local.properties
+org.eclipse.buildship.core.prefs
+
+# Mac Junk
+.DS_Store
+
+# Xtext Junk
+*.xtendbin
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT- autotools
+.autotools
+
+# Java annotation processor (APT)
+.factorypath
+
+# sbteclipse plugin
+.target
+
+# Code Recommenders
+.recommenders/
+
+# Annotation Processing
+.apt_generated/
+
+
