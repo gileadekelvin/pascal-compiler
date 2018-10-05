@@ -100,6 +100,20 @@ public class PascalFactoryImpl extends EFactoryImpl implements PascalFactory
       case PascalPackage.UNSIGNED_CONSTANT: return createunsigned_constant();
       case PascalPackage.UNSIGNED_NUMBER: return createunsigned_number();
       case PascalPackage.CONSTANT_CHR: return createconstant_chr();
+      case PascalPackage.PROCEDURE_STATEMENT: return createprocedure_statement();
+      case PascalPackage.PARAMETER_LIST: return createparameter_list();
+      case PascalPackage.ACTUAL_PARAMETER: return createactual_parameter();
+      case PascalPackage.PROCEDURE_AND_FUNCTION_DECLARATION_PART: return createprocedure_and_function_declaration_part();
+      case PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION: return createprocedure_or_function_declaration();
+      case PascalPackage.PROCEDURE_DECLARATION: return createprocedure_declaration();
+      case PascalPackage.TYPE_DEFINITION: return createtype_definition();
+      case PascalPackage.PROCEDURE_TYPE: return createprocedure_type();
+      case PascalPackage.FUNCTION_DECLARATION: return createfunction_declaration();
+      case PascalPackage.FUNCTION_TYPE: return createfunction_type();
+      case PascalPackage.FORMAL_PARAMETER_LIST: return createformal_parameter_list();
+      case PascalPackage.FORMAL_PARAMETER_SECTION: return createformal_parameter_section();
+      case PascalPackage.PARAMETER_GROUP: return createparameter_group();
+      case PascalPackage.RESULT_TYPE: return createresult_type();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -488,6 +502,160 @@ public class PascalFactoryImpl extends EFactoryImpl implements PascalFactory
   {
     constant_chrImpl constant_chr = new constant_chrImpl();
     return constant_chr;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public procedure_statement createprocedure_statement()
+  {
+    procedure_statementImpl procedure_statement = new procedure_statementImpl();
+    return procedure_statement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public parameter_list createparameter_list()
+  {
+    parameter_listImpl parameter_list = new parameter_listImpl();
+    return parameter_list;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public actual_parameter createactual_parameter()
+  {
+    actual_parameterImpl actual_parameter = new actual_parameterImpl();
+    return actual_parameter;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public procedure_and_function_declaration_part createprocedure_and_function_declaration_part()
+  {
+    procedure_and_function_declaration_partImpl procedure_and_function_declaration_part = new procedure_and_function_declaration_partImpl();
+    return procedure_and_function_declaration_part;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public procedure_or_function_declaration createprocedure_or_function_declaration()
+  {
+    procedure_or_function_declarationImpl procedure_or_function_declaration = new procedure_or_function_declarationImpl();
+    return procedure_or_function_declaration;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public procedure_declaration createprocedure_declaration()
+  {
+    procedure_declarationImpl procedure_declaration = new procedure_declarationImpl();
+    return procedure_declaration;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public type_definition createtype_definition()
+  {
+    type_definitionImpl type_definition = new type_definitionImpl();
+    return type_definition;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public procedure_type createprocedure_type()
+  {
+    procedure_typeImpl procedure_type = new procedure_typeImpl();
+    return procedure_type;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public function_declaration createfunction_declaration()
+  {
+    function_declarationImpl function_declaration = new function_declarationImpl();
+    return function_declaration;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public function_type createfunction_type()
+  {
+    function_typeImpl function_type = new function_typeImpl();
+    return function_type;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public formal_parameter_list createformal_parameter_list()
+  {
+    formal_parameter_listImpl formal_parameter_list = new formal_parameter_listImpl();
+    return formal_parameter_list;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public formal_parameter_section createformal_parameter_section()
+  {
+    formal_parameter_sectionImpl formal_parameter_section = new formal_parameter_sectionImpl();
+    return formal_parameter_section;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public parameter_group createparameter_group()
+  {
+    parameter_groupImpl parameter_group = new parameter_groupImpl();
+    return parameter_group;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public result_type createresult_type()
+  {
+    result_typeImpl result_type = new result_typeImpl();
+    return result_type;
   }
 
   /**

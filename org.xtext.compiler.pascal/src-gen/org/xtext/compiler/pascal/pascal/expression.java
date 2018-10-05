@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface expression extends EObject
+public interface expression extends actual_parameter
 {
   /**
    * Returns the value of the '<em><b>Expressions</b></em>' containment reference list.

@@ -23,6 +23,7 @@ import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.block;
 import org.xtext.compiler.pascal.pascal.compound_statement;
 import org.xtext.compiler.pascal.pascal.constant_definition_part;
+import org.xtext.compiler.pascal.pascal.procedure_and_function_declaration_part;
 import org.xtext.compiler.pascal.pascal.variable_declaration_part;
 
 /**
@@ -35,6 +36,7 @@ import org.xtext.compiler.pascal.pascal.variable_declaration_part;
  * <ul>
  *   <li>{@link org.xtext.compiler.pascal.pascal.impl.blockImpl#getConstantpart <em>Constantpart</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.impl.blockImpl#getVariablepart <em>Variablepart</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.blockImpl#getProcedure_function_part <em>Procedure function part</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.impl.blockImpl#getStatement <em>Statement</em>}</li>
  * </ul>
  *
@@ -61,6 +63,16 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
    * @ordered
    */
   protected EList<variable_declaration_part> variablepart;
+
+  /**
+   * The cached value of the '{@link #getProcedure_function_part() <em>Procedure function part</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getProcedure_function_part()
+   * @generated
+   * @ordered
+   */
+  protected EList<procedure_and_function_declaration_part> procedure_function_part;
 
   /**
    * The cached value of the '{@link #getStatement() <em>Statement</em>}' containment reference.
@@ -126,6 +138,20 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
    * <!-- end-user-doc -->
    * @generated
    */
+  public EList<procedure_and_function_declaration_part> getProcedure_function_part()
+  {
+    if (procedure_function_part == null)
+    {
+      procedure_function_part = new EObjectContainmentEList<procedure_and_function_declaration_part>(procedure_and_function_declaration_part.class, this, PascalPackage.BLOCK__PROCEDURE_FUNCTION_PART);
+    }
+    return procedure_function_part;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public compound_statement getStatement()
   {
     return statement;
@@ -183,6 +209,8 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
         return ((InternalEList<?>)getConstantpart()).basicRemove(otherEnd, msgs);
       case PascalPackage.BLOCK__VARIABLEPART:
         return ((InternalEList<?>)getVariablepart()).basicRemove(otherEnd, msgs);
+      case PascalPackage.BLOCK__PROCEDURE_FUNCTION_PART:
+        return ((InternalEList<?>)getProcedure_function_part()).basicRemove(otherEnd, msgs);
       case PascalPackage.BLOCK__STATEMENT:
         return basicSetStatement(null, msgs);
     }
@@ -203,6 +231,8 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
         return getConstantpart();
       case PascalPackage.BLOCK__VARIABLEPART:
         return getVariablepart();
+      case PascalPackage.BLOCK__PROCEDURE_FUNCTION_PART:
+        return getProcedure_function_part();
       case PascalPackage.BLOCK__STATEMENT:
         return getStatement();
     }
@@ -228,6 +258,10 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
         getVariablepart().clear();
         getVariablepart().addAll((Collection<? extends variable_declaration_part>)newValue);
         return;
+      case PascalPackage.BLOCK__PROCEDURE_FUNCTION_PART:
+        getProcedure_function_part().clear();
+        getProcedure_function_part().addAll((Collection<? extends procedure_and_function_declaration_part>)newValue);
+        return;
       case PascalPackage.BLOCK__STATEMENT:
         setStatement((compound_statement)newValue);
         return;
@@ -251,6 +285,9 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
       case PascalPackage.BLOCK__VARIABLEPART:
         getVariablepart().clear();
         return;
+      case PascalPackage.BLOCK__PROCEDURE_FUNCTION_PART:
+        getProcedure_function_part().clear();
+        return;
       case PascalPackage.BLOCK__STATEMENT:
         setStatement((compound_statement)null);
         return;
@@ -272,6 +309,8 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
         return constantpart != null && !constantpart.isEmpty();
       case PascalPackage.BLOCK__VARIABLEPART:
         return variablepart != null && !variablepart.isEmpty();
+      case PascalPackage.BLOCK__PROCEDURE_FUNCTION_PART:
+        return procedure_function_part != null && !procedure_function_part.isEmpty();
       case PascalPackage.BLOCK__STATEMENT:
         return statement != null;
     }

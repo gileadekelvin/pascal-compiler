@@ -5,8 +5,6 @@ package org.xtext.compiler.pascal.pascal;
 
 import org.eclipse.emf.common.util.EList;
 
-import org.eclipse.emf.ecore.EObject;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>type identifier</b></em>'.
@@ -24,7 +22,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface type_identifier extends EObject
+public interface type_identifier extends result_type
 {
   /**
    * Returns the value of the '<em><b>Names</b></em>' attribute list.

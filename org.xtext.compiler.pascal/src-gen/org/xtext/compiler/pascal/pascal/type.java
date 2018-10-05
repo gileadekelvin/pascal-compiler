@@ -5,8 +5,6 @@ package org.xtext.compiler.pascal.pascal;
 
 import org.eclipse.emf.common.util.EList;
 
-import org.eclipse.emf.ecore.EObject;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>type</b></em>'.
@@ -23,7 +21,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface type extends EObject
+public interface type extends type_definition
 {
   /**
    * Returns the value of the '<em><b>Type</b></em>' containment reference list.

@@ -9,8 +9,6 @@ import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EDataTypeEList;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
@@ -30,7 +28,7 @@ import org.xtext.compiler.pascal.pascal.type_identifier;
  *
  * @generated
  */
-public class type_identifierImpl extends MinimalEObjectImpl.Container implements type_identifier
+public class type_identifierImpl extends result_typeImpl implements type_identifier
 {
   /**
    * The cached value of the '{@link #getNames() <em>Names</em>}' attribute list.

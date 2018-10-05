@@ -19,7 +19,10 @@ identifier_list:
 ;
 
 block:
-	(constantpart+=constant_definition_part | variablepart+=variable_declaration_part)* statement=compound_statement
+	(constantpart+=constant_definition_part | 
+	 variablepart+=variable_declaration_part | 
+	 procedure_function_part+=procedure_and_function_declaration_part
+	)* statement=compound_statement
 ;
 
 constant_definition_part: 
@@ -40,7 +43,7 @@ constant:
 ;
 
 variable_declaration_part
-   : 'var' variable+=variable_declaration (";" variable+=variable_declaration)* ";"
+   : VAR variable+=variable_declaration (";" variable+=variable_declaration)* ";"
 ;
 
 variable_declaration
@@ -165,7 +168,15 @@ constant_chr:
 ;
 
 procedure_statement:
-	"procedure"
+	names+=ID ('(' types+=parameter_list ')')?
+;
+
+parameter_list:
+	actual_parameter (',' types+=actual_parameter)*
+; 
+
+actual_parameter :
+	expression
 ;
 
 goto_statement:
@@ -208,6 +219,55 @@ relational_operator:
    | IN
 ;
 
+procedure_and_function_declaration_part:
+	procedure_or_function_declaration ";"
+;
+
+procedure_or_function_declaration:
+	procedure_declaration | function_declaration
+;
+
+procedure_declaration:
+	PROCEDURE names+=ID  (types+=formal_parameter_list)? ';' block=block
+;
+
+type_definition:
+	names+= ID EQUAL (type | function_type | procedure_type)
+;
+
+procedure_type: //Add action to ensure object creation?
+	 {procedure_type} PROCEDURE (types+=formal_parameter_list)?
+;
+
+function_declaration:
+	FUNCTION names+=ID (types+=formal_parameter_list)? ':' 
+	types+=result_type ';' block=block
+;
+
+function_type:
+	names+=ID (types+=formal_parameter_list)? ':' types+=result_type
+;
+
+
+formal_parameter_list:
+	'(' formal_parameter_section (';' types+=formal_parameter_section )* ')'
+;
+
+formal_parameter_section:
+	  parameter_group
+	| VAR parameter_group
+	| FUNCTION parameter_group
+	| PROCEDURE parameter_group
+;
+
+parameter_group:
+	identifier_list ":" types+=type_identifier
+;
+
+result_type:
+	type_identifier
+;
+
 bool:
 	TRUE | FALSE
 ;
@@ -215,6 +275,10 @@ bool:
 sign: 
 	 PLUS
    | MINUS
+;
+
+terminal VAR:
+	('V'|'v')('A'|'a')('R'|'r')
 ;
 
 terminal NIL:
@@ -311,4 +375,12 @@ terminal GT:
 
 terminal IN:
 	('I'|'i')('N'|'n')	
+;
+
+terminal PROCEDURE:
+	'procedure'
+;
+
+terminal FUNCTION:
+	'function'
 ;

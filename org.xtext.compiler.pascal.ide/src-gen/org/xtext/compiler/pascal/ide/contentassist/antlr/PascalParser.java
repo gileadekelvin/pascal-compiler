@@ -50,6 +50,9 @@ public class PascalParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getAdditive_operatorAccess().getAlternatives(), "rule__Additive_operator__Alternatives");
 			builder.put(grammarAccess.getMultiplicative_operatorAccess().getAlternatives(), "rule__Multiplicative_operator__Alternatives");
 			builder.put(grammarAccess.getRelational_operatorAccess().getAlternatives(), "rule__Relational_operator__Alternatives");
+			builder.put(grammarAccess.getProcedure_or_function_declarationAccess().getAlternatives(), "rule__Procedure_or_function_declaration__Alternatives");
+			builder.put(grammarAccess.getType_definitionAccess().getAlternatives_2(), "rule__Type_definition__Alternatives_2");
+			builder.put(grammarAccess.getFormal_parameter_sectionAccess().getAlternatives(), "rule__Formal_parameter_section__Alternatives");
 			builder.put(grammarAccess.getBoolAccess().getAlternatives(), "rule__Bool__Alternatives");
 			builder.put(grammarAccess.getSignAccess().getAlternatives(), "rule__Sign__Alternatives");
 			builder.put(grammarAccess.getProgramAccess().getGroup(), "rule__Program__Group__0");
@@ -98,6 +101,22 @@ public class PascalParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getSubrange_typeAccess().getGroup(), "rule__Subrange_type__Group__0");
 			builder.put(grammarAccess.getString_typeAccess().getGroup(), "rule__String_type__Group__0");
 			builder.put(grammarAccess.getConstant_chrAccess().getGroup(), "rule__Constant_chr__Group__0");
+			builder.put(grammarAccess.getProcedure_statementAccess().getGroup(), "rule__Procedure_statement__Group__0");
+			builder.put(grammarAccess.getProcedure_statementAccess().getGroup_1(), "rule__Procedure_statement__Group_1__0");
+			builder.put(grammarAccess.getParameter_listAccess().getGroup(), "rule__Parameter_list__Group__0");
+			builder.put(grammarAccess.getParameter_listAccess().getGroup_1(), "rule__Parameter_list__Group_1__0");
+			builder.put(grammarAccess.getProcedure_and_function_declaration_partAccess().getGroup(), "rule__Procedure_and_function_declaration_part__Group__0");
+			builder.put(grammarAccess.getProcedure_declarationAccess().getGroup(), "rule__Procedure_declaration__Group__0");
+			builder.put(grammarAccess.getType_definitionAccess().getGroup(), "rule__Type_definition__Group__0");
+			builder.put(grammarAccess.getProcedure_typeAccess().getGroup(), "rule__Procedure_type__Group__0");
+			builder.put(grammarAccess.getFunction_declarationAccess().getGroup(), "rule__Function_declaration__Group__0");
+			builder.put(grammarAccess.getFunction_typeAccess().getGroup(), "rule__Function_type__Group__0");
+			builder.put(grammarAccess.getFormal_parameter_listAccess().getGroup(), "rule__Formal_parameter_list__Group__0");
+			builder.put(grammarAccess.getFormal_parameter_listAccess().getGroup_2(), "rule__Formal_parameter_list__Group_2__0");
+			builder.put(grammarAccess.getFormal_parameter_sectionAccess().getGroup_1(), "rule__Formal_parameter_section__Group_1__0");
+			builder.put(grammarAccess.getFormal_parameter_sectionAccess().getGroup_2(), "rule__Formal_parameter_section__Group_2__0");
+			builder.put(grammarAccess.getFormal_parameter_sectionAccess().getGroup_3(), "rule__Formal_parameter_section__Group_3__0");
+			builder.put(grammarAccess.getParameter_groupAccess().getGroup(), "rule__Parameter_group__Group__0");
 			builder.put(grammarAccess.getPascalAccess().getProgramAssignment(), "rule__Pascal__ProgramAssignment");
 			builder.put(grammarAccess.getProgramAccess().getHeadingAssignment_0(), "rule__Program__HeadingAssignment_0");
 			builder.put(grammarAccess.getProgramAccess().getBlockAssignment_1(), "rule__Program__BlockAssignment_1");
@@ -107,6 +126,7 @@ public class PascalParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getIdentifier_listAccess().getNamesAssignment_1_1(), "rule__Identifier_list__NamesAssignment_1_1");
 			builder.put(grammarAccess.getBlockAccess().getConstantpartAssignment_0_0(), "rule__Block__ConstantpartAssignment_0_0");
 			builder.put(grammarAccess.getBlockAccess().getVariablepartAssignment_0_1(), "rule__Block__VariablepartAssignment_0_1");
+			builder.put(grammarAccess.getBlockAccess().getProcedure_function_partAssignment_0_2(), "rule__Block__Procedure_function_partAssignment_0_2");
 			builder.put(grammarAccess.getBlockAccess().getStatementAssignment_1(), "rule__Block__StatementAssignment_1");
 			builder.put(grammarAccess.getConstant_definition_partAccess().getConstantsAssignment_1_0(), "rule__Constant_definition_part__ConstantsAssignment_1_0");
 			builder.put(grammarAccess.getConstant_definitionAccess().getNameAssignment_0(), "rule__Constant_definition__NameAssignment_0");
@@ -184,6 +204,23 @@ public class PascalParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getUnsigned_numberAccess().getNumbersAssignment_0(), "rule__Unsigned_number__NumbersAssignment_0");
 			builder.put(grammarAccess.getUnsigned_numberAccess().getNumbersAssignment_1(), "rule__Unsigned_number__NumbersAssignment_1");
 			builder.put(grammarAccess.getConstant_chrAccess().getNumbersAssignment_2(), "rule__Constant_chr__NumbersAssignment_2");
+			builder.put(grammarAccess.getProcedure_statementAccess().getNamesAssignment_0(), "rule__Procedure_statement__NamesAssignment_0");
+			builder.put(grammarAccess.getProcedure_statementAccess().getTypesAssignment_1_1(), "rule__Procedure_statement__TypesAssignment_1_1");
+			builder.put(grammarAccess.getParameter_listAccess().getTypesAssignment_1_1(), "rule__Parameter_list__TypesAssignment_1_1");
+			builder.put(grammarAccess.getProcedure_declarationAccess().getNamesAssignment_1(), "rule__Procedure_declaration__NamesAssignment_1");
+			builder.put(grammarAccess.getProcedure_declarationAccess().getTypesAssignment_2(), "rule__Procedure_declaration__TypesAssignment_2");
+			builder.put(grammarAccess.getProcedure_declarationAccess().getBlockAssignment_4(), "rule__Procedure_declaration__BlockAssignment_4");
+			builder.put(grammarAccess.getType_definitionAccess().getNamesAssignment_0(), "rule__Type_definition__NamesAssignment_0");
+			builder.put(grammarAccess.getProcedure_typeAccess().getTypesAssignment_2(), "rule__Procedure_type__TypesAssignment_2");
+			builder.put(grammarAccess.getFunction_declarationAccess().getNamesAssignment_1(), "rule__Function_declaration__NamesAssignment_1");
+			builder.put(grammarAccess.getFunction_declarationAccess().getTypesAssignment_2(), "rule__Function_declaration__TypesAssignment_2");
+			builder.put(grammarAccess.getFunction_declarationAccess().getTypesAssignment_4(), "rule__Function_declaration__TypesAssignment_4");
+			builder.put(grammarAccess.getFunction_declarationAccess().getBlockAssignment_6(), "rule__Function_declaration__BlockAssignment_6");
+			builder.put(grammarAccess.getFunction_typeAccess().getNamesAssignment_0(), "rule__Function_type__NamesAssignment_0");
+			builder.put(grammarAccess.getFunction_typeAccess().getTypesAssignment_1(), "rule__Function_type__TypesAssignment_1");
+			builder.put(grammarAccess.getFunction_typeAccess().getTypesAssignment_3(), "rule__Function_type__TypesAssignment_3");
+			builder.put(grammarAccess.getFormal_parameter_listAccess().getTypesAssignment_2_1(), "rule__Formal_parameter_list__TypesAssignment_2_1");
+			builder.put(grammarAccess.getParameter_groupAccess().getTypesAssignment_2(), "rule__Parameter_group__TypesAssignment_2");
 		}
 	}
 	

@@ -15,14 +15,13 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.compiler.pascal.pascal.identifier_list#getNames <em>Names</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.identifier_list#getTypes <em>Types</em>}</li>
  * </ul>
  *
  * @see org.xtext.compiler.pascal.pascal.PascalPackage#getidentifier_list()
  * @model
  * @generated
  */
-public interface identifier_list extends variable_declaration, scalar_type
+public interface identifier_list extends variable_declaration, scalar_type, parameter_group
 {
   /**
    * Returns the value of the '<em><b>Names</b></em>' attribute list.
@@ -39,21 +38,5 @@ public interface identifier_list extends variable_declaration, scalar_type
    * @generated
    */
   EList<String> getNames();
-
-  /**
-   * Returns the value of the '<em><b>Types</b></em>' containment reference list.
-   * The list contents are of type {@link org.xtext.compiler.pascal.pascal.type}.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Types</em>' containment reference list isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Types</em>' containment reference list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getidentifier_list_Types()
-   * @model containment="true"
-   * @generated
-   */
-  EList<type> getTypes();
 
 } // identifier_list
