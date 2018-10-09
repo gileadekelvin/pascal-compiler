@@ -17,17 +17,17 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="identifiers" eType="#//identifier_list"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="identifier_list" eSuperTypes="#//variable_declaration #//scalar_type">
+  <eClassifiers xsi:type="ecore:EClass" name="identifier_list" eSuperTypes="#//variable_declaration #//scalar_type #//parameter_group">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="names" unique="false" upperBound="-1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="types" upperBound="-1"
-        eType="#//type" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="block">
     <eStructuralFeatures xsi:type="ecore:EReference" name="constantpart" upperBound="-1"
         eType="#//constant_definition_part" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="variablepart" upperBound="-1"
         eType="#//variable_declaration_part" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="procedure_function_part"
+        upperBound="-1" eType="#//procedure_and_function_declaration_part" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="statement" eType="#//compound_statement"
         containment="true"/>
   </eClassifiers>
@@ -76,7 +76,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="simple_statement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="assignment" eType="#//assignment_statement"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="procedure" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="procedure" eType="#//procedure_statement"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="goto" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="assignment_statement">
@@ -91,7 +92,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" upperBound="-1"
         eType="#//expression" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="expression">
+  <eClassifiers xsi:type="ecore:EClass" name="expression" eSuperTypes="#//actual_parameter">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expressions" upperBound="-1"
         eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operators" unique="false"
@@ -146,7 +147,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="dotdot" unique="false"
         upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="type">
+  <eClassifiers xsi:type="ecore:EClass" name="type" eSuperTypes="#//type_definition">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" upperBound="-1" eType="#//simple_type"
         containment="true"/>
   </eClassifiers>
@@ -159,7 +160,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="constants" upperBound="-1"
         eType="#//constant" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="type_identifier">
+  <eClassifiers xsi:type="ecore:EClass" name="type_identifier" eSuperTypes="#//result_type">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="names" unique="false" upperBound="-1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" unique="false" upperBound="-1"
@@ -183,4 +184,55 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="unsigned_number" eSuperTypes="#//constant"/>
   <eClassifiers xsi:type="ecore:EClass" name="constant_chr" eSuperTypes="#//constant"/>
+  <eClassifiers xsi:type="ecore:EClass" name="procedure_statement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="names" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="types" upperBound="-1"
+        eType="#//parameter_list" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="parameter_list"/>
+  <eClassifiers xsi:type="ecore:EClass" name="actual_parameter" eSuperTypes="#//parameter_list">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="types" upperBound="-1"
+        eType="#//actual_parameter" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="procedure_and_function_declaration_part"/>
+  <eClassifiers xsi:type="ecore:EClass" name="procedure_or_function_declaration" eSuperTypes="#//procedure_and_function_declaration_part">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="names" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="block" eType="#//block"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="procedure_declaration" eSuperTypes="#//procedure_or_function_declaration">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="types" upperBound="-1"
+        eType="#//formal_parameter_list" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="type_definition">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="names" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="procedure_type" eSuperTypes="#//type_definition">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="types" upperBound="-1"
+        eType="#//formal_parameter_list" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="function_declaration" eSuperTypes="#//procedure_or_function_declaration">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="types" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="function_type" eSuperTypes="#//type_definition">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="types" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="function_designator" eSuperTypes="#//factor">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="names" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="types" upperBound="-1"
+        eType="#//parameter_list" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="formal_parameter_list"/>
+  <eClassifiers xsi:type="ecore:EClass" name="formal_parameter_section" eSuperTypes="#//formal_parameter_list">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="types" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="parameter_group" eSuperTypes="#//formal_parameter_section"/>
+  <eClassifiers xsi:type="ecore:EClass" name="result_type"/>
 </ecore:EPackage>
