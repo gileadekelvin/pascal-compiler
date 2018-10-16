@@ -43,7 +43,7 @@ constant:
 ;
 
 variable_declaration_part
-   : VAR variable+=variable_declaration (";" variable+=variable_declaration)* ";"
+   : "var" variable+=variable_declaration (";" variable+=variable_declaration)* ";"
 ;
 
 variable_declaration
@@ -228,7 +228,7 @@ procedure_or_function_declaration:
 ;
 
 procedure_declaration:
-	PROCEDURE names+=ID  (types+=formal_parameter_list)? ';' block=block
+	procedure names+=ID  (types+=formal_parameter_list)? ';' block=block
 ;
 
 type_definition:
@@ -236,16 +236,16 @@ type_definition:
 ;
 
 procedure_type: //Add action to ensure object creation?
-	 {procedure_type} PROCEDURE (types+=formal_parameter_list)?
+	 {procedure_type} procedure (types+=formal_parameter_list)?
 ;
 
 function_declaration:
-	FUNCTION names+=ID (types+=formal_parameter_list)? ':' 
+	function names+=ID (types+=formal_parameter_list)? ':' 
 	types+=result_type ';' block=block
 ;
 
 function_type:
-	FUNCTION (types+=formal_parameter_list)? ':' types+=result_type
+	function (types+=formal_parameter_list)? ':' types+=result_type
 ;
 
 function_designator:
@@ -259,9 +259,9 @@ formal_parameter_list:
 
 formal_parameter_section:
 	  parameter_group
-	| VAR parameter_group
-	| FUNCTION parameter_group
-	| PROCEDURE parameter_group
+	| 'var' parameter_group
+	| function parameter_group
+	| procedure parameter_group
 ;
 
 parameter_group:
@@ -273,7 +273,15 @@ result_type:
 ;
 
 bool:
-	TRUE | FALSE
+	"true" | "false"
+;
+
+procedure:
+	'procedure'
+;
+
+function:
+	'function'
 ;
 
 sign: 
@@ -281,12 +289,8 @@ sign:
    | MINUS
 ;
 
-terminal VAR:
-	('V'|'v')('A'|'a')('R'|'r')
-;
-
 terminal NIL:
-	('N'|'n')('I'|'i')('L'|'l')
+	'nil'
 ;
 
 terminal DOTDOT:
@@ -294,15 +298,7 @@ terminal DOTDOT:
 ;
 
 terminal NOT:
-	('N'|'n')('O'|'o')('T'|'t')
-;
-
-terminal TRUE:
-	('T'|'t')('R'|'r')('U'|'u')('e'|'E')
-;
-
-terminal FALSE:
-	('F'|'f')('A'|'a')('L'|'l')('S'|'s')('E'|'e')
+	'not'
 ;
 
 terminal STAR:
@@ -314,11 +310,11 @@ terminal SLASH:
 ;
 
 terminal DIV:
-	('D'|'d')('I'|'i')('V'|'v')
+	'div'
 ;
 
 terminal MOD:
-	('M'|'m')('O'|'o')('D'|'d')
+	'mod'
 ;
 
 terminal PLUS:
@@ -330,11 +326,11 @@ terminal MINUS:
 ;
 
 terminal AND:
-	('A'|'a')('N'|'n')('D'|'d')
+	'and'
 ;
 
 terminal OR:
-	('O'|'o')('R'|'r')
+	'or'
 ;
 
 terminal ASSIGN: 
@@ -378,13 +374,5 @@ terminal GT:
 ;
 
 terminal IN:
-	('I'|'i')('N'|'n')	
-;
-
-terminal PROCEDURE:
-	('P'|'p')('R'|'r')('O'|'o')('C'|'c')('E'|'e')('D'|'d')('U'|'u')('R'|'r')('E'|'e')
-;
-
-terminal FUNCTION:
-	('F'|'f')('U'|'u')('N'|'n')('C'|'c')('T'|'t')('I'|'i')('O'|'o')('N'|'n')
+	'in'	
 ;
