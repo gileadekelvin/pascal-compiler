@@ -40,6 +40,7 @@ constant:
    | sign names+=ID
    | string+=STRING
    | constant_chr
+   | booltype+=bool
 ;
 
 variable_declaration_part
@@ -124,22 +125,16 @@ element:
 type: 
 	 type+=simple_type
    //| type+=structured_type
-   //| type+=pointer_type
 ;
 
 simple_type:
  	 types+=scalar_type
-   | types+=subrange_type
    | types+=type_identifier
    | types+=string_type
 ;
 
 scalar_type
    : "(" identifier_list ")"
-;
-
-subrange_type: 
-	constants+=constant DOTDOT constants+=constant
 ;
 
 type_identifier: 
@@ -197,7 +192,7 @@ case_list_element:
 ;
 
 const_list:
-	constants+=constant ( "," constants+= constant )*
+ 	constants+=constant ( "," constants+= constant )* 
 ;
 
 unsigned_integer: 
