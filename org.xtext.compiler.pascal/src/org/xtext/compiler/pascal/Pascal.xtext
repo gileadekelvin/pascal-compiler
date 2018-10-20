@@ -71,7 +71,7 @@ label:
 ;
 
 simple_statement:
-	assignment=assignment_statement | procedure=procedure_statement | goto=goto_statement	
+	assignment=assignment_statement | procedure=procedure_statement
 ;
 
 assignment_statement: 
@@ -179,12 +179,25 @@ actual_parameter :
 	expression
 ;
 
-goto_statement:
-	"goto"
+structured_statement:
+	compound_stat+=compound_statement
+	| conditional_stat+=conditional_statement
 ;
 
-structured_statement:
-	"structured"
+conditional_statement:
+	cond_statements+=case_statement
+;
+
+case_statement:
+	"case" exp+=expression "of" case_list+=case_list_element ( ";" case_list+=case_list_element )* ( ";" )? ("else" case_statements+=statements)? "end"
+;
+
+case_list_element:
+	consts+=const_list ":" case_statement+=statement
+;
+
+const_list:
+	constants+=constant ( "," constants+= constant )*
 ;
 
 unsigned_integer: 
