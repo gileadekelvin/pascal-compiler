@@ -284,9 +284,15 @@ function:
 	'function'
 ;
 
+
 sign: 
 	 PLUS
    | MINUS
+;
+
+@Override // Overrides the ML_COMMENT from "Terminals"
+terminal ML_COMMENT :
+	'(*' -> '*)' | '{' -> '}'
 ;
 
 terminal NIL:
