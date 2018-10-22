@@ -40,6 +40,7 @@ constant:
    | sign names+=ID
    | string+=STRING
    | constant_chr
+   | booltype+=bool
 ;
 
 variable_declaration_part
@@ -71,7 +72,7 @@ label:
 ;
 
 simple_statement:
-	assignment=assignment_statement | procedure=procedure_statement | goto=goto_statement	
+	assignment=assignment_statement | procedure=procedure_statement
 ;
 
 assignment_statement: 
@@ -124,22 +125,16 @@ element:
 type: 
 	 type+=simple_type
    //| type+=structured_type
-   //| type+=pointer_type
 ;
 
 simple_type:
  	 types+=scalar_type
-   | types+=subrange_type
    | types+=type_identifier
    | types+=string_type
 ;
 
 scalar_type
    : "(" identifier_list ")"
-;
-
-subrange_type: 
-	constants+=constant DOTDOT constants+=constant
 ;
 
 type_identifier: 
@@ -179,12 +174,25 @@ actual_parameter :
 	expression
 ;
 
-goto_statement:
-	"goto"
+structured_statement:
+	compound_stat+=compound_statement
+	| conditional_stat+=conditional_statement
 ;
 
-structured_statement:
-	"structured"
+conditional_statement:
+	cond_statements+=case_statement
+;
+
+case_statement:
+	"case" exp+=expression "of" case_list+=case_list_element ( ";" case_list+=case_list_element )* ( ";" )? ("else" case_statements+=statements)? "end"
+;
+
+case_list_element:
+	consts+=const_list ":" case_statement+=statement
+;
+
+const_list:
+ 	constants+=constant ( "," constants+= constant )* 
 ;
 
 unsigned_integer: 
