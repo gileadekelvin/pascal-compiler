@@ -148,12 +148,16 @@ structured_type:
 ;
 
 unpacked_structured_type:
-   array_type
+   array_type | dynamic=dynamic_array_type
 ;
 
 array_type:
 	"array" "[" type_list "]" "of" component+=component_type
    | "array" "(" type_list ")" "of" component+=component_type
+;
+
+dynamic_array_type:
+	"array" "of" type=type	
 ;
 
 type_list:
