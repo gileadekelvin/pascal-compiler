@@ -1,4 +1,6 @@
-grammar org.xtext.compiler.pascal.Pascal with org.eclipse.xtext.common.Terminals
+grammar org.xtext.compiler.pascal.Pascal hidden(WS, ML_COMMENT, SL_COMMENT)
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 
 generate pascal "http://www.xtext.org/compiler/pascal/Pascal"
 
@@ -292,15 +294,9 @@ function:
 	'function'
 ;
 
-
 sign: 
 	 PLUS
    | MINUS
-;
-
-@Override // Overrides the ML_COMMENT from "Terminals"
-terminal ML_COMMENT :
-	'(*' -> '*)' | '{' -> '}'
 ;
 
 terminal NIL:
@@ -390,3 +386,20 @@ terminal GT:
 terminal IN:
 	'in'	
 ;
+
+terminal ID: ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
+
+terminal STRING:
+			'"' ( '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\' */ | !('\\'|'"') )* '"' |
+			"'" ( '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\' */ | !('\\'|"'") )* "'"
+		;
+		
+terminal ML_COMMENT :
+	'(*' -> '*)' | '{' -> '}'
+;
+
+terminal SL_COMMENT : '//' !('\n'|'\r')* ('\r'? '\n')?;
+
+terminal WS         : (' '|'\t'|'\r'|'\n')+;
+
+terminal ANY_OTHER: .;
