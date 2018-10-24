@@ -13,7 +13,7 @@ program:
 ;
 
 program_heading_block:
-	"program" name=ID ( "(" identifiers=identifier_list ")" ) ? ";"	
+	"program" name=ID ";"	
 ;
 
 identifier_list:
@@ -41,7 +41,6 @@ constant:
    | names+=ID
    | sign names+=ID
    | string+=STRING
-   | constant_chr
    | booltype+=bool
 ;
 
@@ -62,15 +61,11 @@ statements:
 ;
 
 statement:  
-	label=label ":" statement+=unlabelled_statement | {statement} (statement+=unlabelled_statement) ? 
+	{statement} (statement+=unlabelled_statement) ? 
 ;
 
 unlabelled_statement:
 	simple=simple_statement | structured=structured_statement
-;
-
-label:
-	number=unsigned_integer
 ;
 
 simple_statement:
@@ -86,7 +81,7 @@ variable
 ;
 
 expression:
-	expressions+=simple_expression (operators+=relational_operator expressions+=expression)?
+	expressions+=simple_expression
 ;
 
 simple_expression:
@@ -105,23 +100,9 @@ factor:
 	 variable=variable
    | "(" expression=expression ")"
    | function_designator
-   | constant=unsigned_constant
-   | set=set
+   | constant=unsigned_constant   
    | NOT factor=factor
    | boolean+=bool
-;
-
-set: 
-	 "[" elements+=elementList "]"
-   | "(." elements+=elementList ".)"
-;
-
-elementList: 
-	elements+=element ("," elements+=element)*   
-;
-
-element: 
-	expressions+=expression (dotdot+=DOTDOT expressions+=expression)?
 ;
 
 type: 
@@ -129,28 +110,17 @@ type:
    //| type+=structured_type
 ;
 
-simple_type:
- 	 types+=scalar_type
-   | types+=type_identifier
-   | types+=string_type
-;
-
-scalar_type
-   : "(" identifier_list ")"
+simple_type: 
+   types+=type_identifier
 ;
 
 type_identifier: 
 	names+=ID
-   	| (type+='CHAR' | type+='boolean' | type+='integer' | type+='real' | type+='string')
-;
-
-string_type:
-	'string' '[' ( names+=ID | number+=unsigned_number ) ']'
+   	| (type+='boolean' | type+='integer' | type+='string')
 ;
 
 unsigned_constant:
 	 number+=unsigned_number
-   | char+=constant_chr
    | string+=STRING
    | nil+=NIL
 ;
@@ -160,9 +130,6 @@ unsigned_number:
    | numbers+=unsigned_real
 ;
 
-constant_chr:
-	"chr" "(" numbers+=unsigned_integer ")"
-;
 
 procedure_statement:
 	names+=ID ('(' types+=parameter_list ')')?
@@ -217,16 +184,6 @@ multiplicative_operator
    | DIV
    | MOD
    | AND
-;
-
-relational_operator: 
-	 EQUAL
-   | NOT_EQUAL
-   | LT
-   | LE
-   | GE
-   | GT
-   | IN
 ;
 
 procedure_and_function_declaration_part:
@@ -361,30 +318,6 @@ terminal fragment EXPONENT:
 
 terminal EQUAL: 
 	'='
-;
-
-terminal NOT_EQUAL: 
-	'<>'
-;
-
-terminal LT: 
-	'<'
-;
-
-terminal LE: 
-	'<='
-;
-
-terminal GE: 
-	'>='
-;
-
-terminal GT: 
-	'>'
-;
-
-terminal IN:
-	'in'	
 ;
 
 terminal ID: ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
