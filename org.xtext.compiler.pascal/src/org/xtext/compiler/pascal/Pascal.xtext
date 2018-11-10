@@ -17,7 +17,11 @@ program_heading_block:
 ;
 
 identifier_list:
-	names+=ID ( "," names+=ID ) *	
+	names+=identifier ( "," names+=identifier ) *	
+;
+
+identifier:
+	id=ID
 ;
 
 block:
@@ -49,7 +53,7 @@ variable_declaration_part
 ;
 
 variable_declaration
-   : identifier_list ":" types+=type
+   : list_names=identifier_list ":" type+=type
 ;
 
 compound_statement:
@@ -73,11 +77,11 @@ simple_statement:
 ;
 
 assignment_statement: 
-	variable=variable ASSIGN expression=expression	
+	declared_variable=variable ASSIGN expression=expression	
 ;
 
 variable
-   : ('@' names+=ID | names+=ID) ('[' expression+=expression ("," expression+=expression)* ']' | "(." expression+=expression ("," expression+=expression)* ".)" | "." names+=ID | "^")*
+   : ('@' variable_id=ID | variable_id=ID) ('[' expression+=expression ("," expression+=expression)* ']' | "(." expression+=expression ("," expression+=expression)* ".)" | "." names_exp+=ID | "^")*
 ;
 
 expression:
@@ -116,7 +120,7 @@ simple_type:
 
 type_identifier: 
 	names+=ID
-   	| (type+='boolean' | type+='integer' | type+='string')
+   	| (boolean+='boolean' | integer+='integer' | string+='string')
 ;
 
 unsigned_constant:
