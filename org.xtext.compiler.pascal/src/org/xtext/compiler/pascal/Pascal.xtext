@@ -85,28 +85,28 @@ variable
 ;
 
 expression:
-	expressions+=simple_expression
+	simple=simple_expression
 ;
 
 simple_expression:
-	terms+=term (operators+=additive_operator expression+=simple_expression)?
+	term_exp=term (operator=additive_operator expression=simple_expression)?
 ;
 
 term: 
-	factors+=signed_factor (operators+=multiplicative_operator terms+=term)?
+	factor=signed_factor (operator=multiplicative_operator term2=term)?
 ;
 
 signed_factor: 
-	(operators+=PLUS | operators+=MINUS)? factors+=factor
+	(signal=PLUS | signal=MINUS)? factor=factor
 ;
 
 factor: 
 	 variable=variable
    | "(" expression=expression ")"
-   | function_designator
+   | function=function_designator
    | constant=unsigned_constant   
-   | NOT factor=factor
-   | boolean+=bool
+   | NOT not_factor=factor
+   | bool_factor=bool
 ;
 
 type: 
@@ -124,14 +124,13 @@ type_identifier:
 ;
 
 unsigned_constant:
-	 number+=unsigned_number
-   | string+=STRING
-   | nil+=NIL
+	 number=unsigned_number
+   | string=STRING
+   | nil=NIL
 ;
 
 unsigned_number: 
 	 numbers+=unsigned_integer
-   | numbers+=unsigned_real
 ;
 
 
@@ -170,10 +169,6 @@ const_list:
 
 unsigned_integer: 
 	NUM_INT
-;
-
-unsigned_real: 
-	NUM_REAL
 ;
 
 additive_operator: 
@@ -281,11 +276,11 @@ terminal SLASH:
 ;
 
 terminal DIV:
-	'div'
+	('D'|'d') ('I'|'i') ('V'|'v')
 ;
 
 terminal MOD:
-	'mod'
+	('M'|'m') ('O'|'o') ('D'|'d')
 ;
 
 terminal PLUS:
@@ -297,11 +292,11 @@ terminal MINUS:
 ;
 
 terminal AND:
-	'and'
+	('A'|'a') ('N'|'n') ('D'|'d')
 ;
 
 terminal OR:
-	'or'
+	('O'|'o') ('R'|'r')
 ;
 
 terminal ASSIGN: 
@@ -310,14 +305,6 @@ terminal ASSIGN:
 
 terminal NUM_INT: 
 	('0' .. '9') +
-;
-
-terminal NUM_REAL: 
-	('0' .. '9') + (('.' ('0' .. '9') + (EXPONENT)?)? | EXPONENT)
-;
-
-terminal fragment EXPONENT: 
-	('e') (PLUS | MINUS)? ('0' .. '9') +
 ;
 
 terminal EQUAL: 
