@@ -10,6 +10,8 @@ import org.xtext.compiler.pascal.pascal.type_identifier;
 import org.xtext.compiler.pascal.pascal.pascal;
 import org.xtext.compiler.pascal.pascal.assignment_statement;
 import org.xtext.compiler.pascal.pascal.identifier;
+import org.xtext.compiler.pascal.pascal.type;
+import org.xtext.compiler.pascal.pascal.simple_type;
 import org.eclipse.xtext.validation.Check
 import java.util.Arrays
 import java.util.ArrayList
@@ -31,17 +33,21 @@ class PascalValidator extends AbstractPascalValidator {
 			return "boolean"
 		} else if (lit.integer !== null) {
 			return "integer"
-		} else {
+		} else if (lit.string !== null) {
 			return "string"
+		} else {
+			return lit.id;
 		}
 	}
 	
+	// Limpa as listas de variáveis e de funções
 	@Check
 	def restart(pascal pascal) {
 		variables.clear();
 		functions.clear();
 	}
 	
+	// Checa se a atribuição ocorre em uma variável não declarada
 	@Check
 	def checkNotDeclaredVariable(assignment_statement variable) {
 		var variable_id = variable.declared_variable.variable_id;
@@ -51,6 +57,7 @@ class PascalValidator extends AbstractPascalValidator {
 		}
 	}
 	
+	// Checa se uma variável já foi declarada senão adiciona na lista de variáveis
 	@Check
 	def checkVariableDeclaration(variable_declaration declared_variables) {
 		
@@ -70,8 +77,21 @@ class PascalValidator extends AbstractPascalValidator {
 				var error_message = String.format("Variável '%s' já foi declarada", name);  
 				error(error_message, null)
 			}
-		}
-				
+		}			
 	}
+	
+	// Tipos simples precisam ser boolean, integer ou string
+	@Check
+	def checkTypesOfDeclaredVariables(variable_declaration declared_variables) {
 		
+		var variable_type = declared_variables.type_variable; 
+				
+		if (variable_type.simple !== null){
+			var type = getType(variable_type.simple.type);
+			if (!type.equals("boolean") && !type.equals("integer") && !type.equals("string")) {				
+				var error_message = "Tipo precisa ser boolean, integer ou string"; 
+				error(error_message, null)
+			}			
+		}			
+	}		
 }

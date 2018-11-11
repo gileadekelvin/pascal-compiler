@@ -53,7 +53,7 @@ variable_declaration_part
 ;
 
 variable_declaration
-   : list_names=identifier_list ":" type+=type
+   : list_names=identifier_list ":" type_variable=type
 ;
 
 compound_statement:
@@ -110,17 +110,17 @@ factor:
 ;
 
 type: 
-	 type+=simple_type
+	 simple=simple_type
    //| type+=structured_type
 ;
 
 simple_type: 
-   types+=type_identifier
+   type=type_identifier
 ;
 
 type_identifier: 
-	names+=ID
-   	| (boolean+='boolean' | integer+='integer' | string+='string')
+	id=ID
+   	| (boolean='boolean' | integer='integer' | string='string')
 ;
 
 unsigned_constant:
