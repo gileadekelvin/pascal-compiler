@@ -28,7 +28,7 @@ import java.util.List
  */
 class PascalValidator extends AbstractPascalValidator {
 		
-	private var variables = new HashMap<String, variable_declaration>();
+	//private var variables = new HashMap<String, variable_declaration>();
 	
 	private var functions = <String, function_declaration>newHashMap();	
  	
@@ -47,7 +47,7 @@ class PascalValidator extends AbstractPascalValidator {
 	// Limpa as listas de variáveis e de funções
 	@Check
 	def restart(pascal pascal) {
-		variables.clear();
+		Structures.variables.clear();
 		functions.clear();
 	}
 	
@@ -55,7 +55,7 @@ class PascalValidator extends AbstractPascalValidator {
 	@Check
 	def checkNotDeclaredVariable(assignment_statement variable) {
 		var variable_id = variable.declared_variable.variable_id;
-		if (!variables.containsKey(variable_id)) {
+		if (!Structures.variables.containsKey(variable_id)) {
 			var error_message = String.format("Variável '%s' não foi declarada", variable_id);  			
 			error(error_message, null)
 		}
@@ -75,8 +75,8 @@ class PascalValidator extends AbstractPascalValidator {
 		}
 		
 		for(String name : new_variables) {
-			if (!variables.containsKey(name)) {						
-				variables.put(name, declared_variables);
+			if (!Structures.variables.containsKey(name)) {						
+				Structures.variables.put(name, declared_variables);
 			} else {
 				var error_message = String.format("Variável '%s' já foi declarada", name);  
 				error(error_message, null)
@@ -173,7 +173,7 @@ class PascalValidator extends AbstractPascalValidator {
 	@Check
 	def checkTypeAssignment(assignment_statement variable) {
 		var expression_type = ExpressionTypeHelper.getTypeExpression(variable.expression);
-		var id_type = getType(variables.get(variable.declared_variable.variable_id).type_variable.simple.type);
+		var id_type = getType(Structures.variables.get(variable.declared_variable.variable_id).type_variable.simple.type);
 		
 		if (!id_type.equalsIgnoreCase(expression_type)) {
 			var error_message = "Tipo da variável não condiz com o tipo da expressão atribuída"; 
