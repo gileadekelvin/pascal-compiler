@@ -156,11 +156,8 @@ class PascalValidator extends AbstractPascalValidator {
 				}
 			} else if (operator.equals("+")) {
 				// Se não for dois inteiros ou duas strings um erro é lançado
-				if (!(
-					(term1.equals("string") && simple_exp2.equals("string")) || 
-					(term1.equals("integer") && simple_exp2.equals("integer"))
-					)) {
-					var error_message = "Dois inteiros ou duas strings são necessárias para a operação aritmética '+'"; 
+				if (!(term1.equals("integer") && simple_exp2.equals("integer"))) {
+					var error_message = "Dois inteiros são necessários para a operação arimética '+'"; 
 					error(error_message, null);									
 				}
 			} else {

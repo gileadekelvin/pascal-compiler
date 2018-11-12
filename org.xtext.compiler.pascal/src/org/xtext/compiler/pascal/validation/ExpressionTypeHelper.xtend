@@ -83,9 +83,7 @@ class ExpressionTypeHelper {
 					return "boolean"
 				} 	
 			} else if (operator.equals("+")) {
-				if (term1.equals("string") && simple_exp2.equals("string")) {
-					return "string";
-				} else if (term1.equals("integer") && simple_exp2.equals("integer")) {
+				if (term1.equals("integer") && simple_exp2.equals("integer")) {
 					return "integer";
 				} else {					
 					return "erro_tipo";					

@@ -5,7 +5,7 @@ import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 generate pascal "http://www.xtext.org/compiler/pascal/Pascal"
 
 pascal:
-	program += program
+	program = program
 ; 
 
 program:
@@ -40,12 +40,12 @@ constant_definition:
 ;
 
 constant: 
-	 unsigned_number
-   | sign unsigned_number
-   | names+=ID
-   | sign names+=ID
-   | string+=STRING
-   | booltype+=bool
+	 uns_number=unsigned_number
+   | sign sig_number=unsigned_number
+   | name_id=ID
+   | sign sig_name_id=ID
+   | string=STRING
+   | booltype=bool
 ;
 
 variable_declaration_part
@@ -111,7 +111,7 @@ factor:
 
 type: 
 	 simple=simple_type
-   //| type+=structured_type
+   //| type=structured_type
 ;
 
 simple_type: 
@@ -130,16 +130,16 @@ unsigned_constant:
 ;
 
 unsigned_number: 
-	 numbers+=unsigned_integer
+	 numbers=unsigned_integer
 ;
 
 
 procedure_statement:
-	names+=ID ('(' types+=parameter_list ')')?
+	name_id=ID ('(' types+=parameter_list ')')?
 ;
 
 parameter_list:
-	actual_parameter (',' types+=actual_parameter)*
+	parameters+=actual_parameter (',' parameters+=actual_parameter)*
 ; 
 
 actual_parameter :
@@ -147,20 +147,20 @@ actual_parameter :
 ;
 
 structured_statement:
-	compound_stat+=compound_statement
-	| conditional_stat+=conditional_statement
+	compound_stat=compound_statement
+	| conditional_stat=conditional_statement
 ;
 
 conditional_statement:
-	cond_statements+=case_statement
+	cond_statements=case_statement
 ;
 
 case_statement:
-	"case" exp+=expression "of" case_list+=case_list_element ( ";" case_list+=case_list_element )* ( ";" )? ("else" case_statements+=statements)? "end"
+	"case" exp=expression "of" case_list+=case_list_element ( ";" case_list+=case_list_element )* ( ";" )? ("else" case_statements=statements)? "end"
 ;
 
 case_list_element:
-	consts+=const_list ":" case_statement+=statement
+	consts+=const_list ":" case_statement=statement
 ;
 
 const_list:
