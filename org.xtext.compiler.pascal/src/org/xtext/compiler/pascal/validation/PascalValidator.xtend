@@ -20,6 +20,7 @@ import org.eclipse.xtext.validation.Check
 import java.util.ArrayList
 import java.util.List
 
+
 /**
  * This class contains custom validation rules. 
  *
@@ -29,7 +30,7 @@ class PascalValidator extends AbstractPascalValidator {
 		
 	private var variables = new HashMap<String, variable_declaration>();
 	
-	private var functions = <String, function_declaration>newHashMap();
+	private var functions = <String, function_declaration>newHashMap();	
  	
  	def getType(type_identifier lit) {
 		if (lit.boolean !== null) {
@@ -60,7 +61,7 @@ class PascalValidator extends AbstractPascalValidator {
 		}
 	}
 	
-	// Checa se uma variável já foi declarada senão adiciona na lista de variáveis
+	// Checa se uma variável já foi declarada caso contrário adiciona na lista de variáveis
 	@Check
 	def checkVariableDeclaration(variable_declaration declared_variables) {
 		
@@ -83,7 +84,7 @@ class PascalValidator extends AbstractPascalValidator {
 		}			
 	}
 	
-	// Tipos simples precisam ser boolean, integer ou string
+	// Checa se tipos simples declarados a variáveis são boolean ou integer ou string
 	@Check
 	def checkTypesOfDeclaredVariables(variable_declaration declared_variables) {
 		
@@ -98,123 +99,83 @@ class PascalValidator extends AbstractPascalValidator {
 		}			
 	}
 	
-	// Checa se um sinal está sendo atribuído a um tipo que não é inteiro
+	// Checa se um sinal (+, -) está sendo atribuído a um tipo que não é inteiro
 	@Check
 	def checkTypeSignedFactor(signed_factor inst_signed_factor) {
 		if (inst_signed_factor.signal !== null) {
-			var type_factor = getTypeFactor(inst_signed_factor.factor);			
+			var type_factor = ExpressionTypeHelper.getTypeFactor(inst_signed_factor.factor);			
 			
 			if(!type_factor.equals("integer")){
-				var error_message = "Sinal inválido para o tipo utilizado"; 
-				error(error_message, null);					
+				var error_message = String.format("Sinal inválido para o tipo '%s' utilizado", type_factor);									
+				error(error_message, null);			
 			}			
 		}
 	}
-	
-	def String getTypeUnsConstant(unsigned_constant inst_constant) {
-		if (inst_constant.number !== null) {
-			return "integer";
-		} else if (inst_constant.string !== null) {
-			return "string";
-		} else {
-			return "nil";
-		}
-	}
-	
-	def String getTypeFactor(factor inst_factor) {
-		if(inst_factor.bool_factor !== null) {
-			return "boolean";
-		} else if (inst_factor.constant !== null) {
-			return getTypeUnsConstant(inst_factor.constant);
-		} else if (inst_factor.not_factor !== null){
-			return("boolean");
-		}
-		// TODO regras para variable, expression, function
-	}
-	
-	def String getTypeSignedFactor(signed_factor inst_signed_factor) {
-		return getTypeFactor(inst_signed_factor.factor);
-	}
-	
+		
+	// Checa se operações (and, *, /, div, mod) entre operandos de um termo são permitidas 
 	@Check
-	def String getTypeTerm(term inst_term) {
+	def checkTypeTerm(term inst_term) {
 		var operator = inst_term.operator;		
 		
 		if (operator === null) {
-			return getTypeSignedFactor(inst_term.factor);
+			return ExpressionTypeHelper.getTypeSignedFactor(inst_term.factor);
 		} else {
-			var factor_type = getTypeSignedFactor(inst_term.factor);
-			var term2_type = getTypeTerm(inst_term.term2);				
+			var factor_type = ExpressionTypeHelper.getTypeSignedFactor(inst_term.factor);
+			var term2_type = ExpressionTypeHelper.getTypeTerm(inst_term.term2);				
 			
 			// Se é uma operação booleana
 			if (operator.equalsIgnoreCase("AND")) {
 				if (!factor_type.equals("boolean") || !term2_type.equals("boolean")) {
 					var error_message = "A operação booleana AND exige dois fatores booleanos"; 
-					error(error_message, null);
-					return "erro_tipo";	
-				} else {
-					return "boolean"
-				} 					
+					error(error_message, null);					
+				}									 				
 			} else { // se é uma expressão aritmética (*, /, div, mod)
 				if (!factor_type.equals("integer") || !term2_type.equals("integer")) {
 					var error_message = String.format("Dois inteiros são necessários para a operação aritmética '%s'", operator);									
-					error(error_message, null);
-					return "erro_tipo";	
-				} else {
-					return "integer";
-				} 	
+					error(error_message, null);					
+				}									
 			}
 		}
 	}
 	
-	// Checa se operações (+, -, or) entre expressões são permitidas
+	// Checa se operações (+, -, or) entre operandos de uma expressão simple são permitidas.
 	@Check
-	def String getTypeSimpleExpression(simple_expression inst_simple_exp) {
+	def checkTypeSimpleExpression(simple_expression inst_simple_exp) {
 		var operator = inst_simple_exp.operator;
 		
 		if (operator === null) {
-			return getTypeTerm(inst_simple_exp.term_exp);
+			return ExpressionTypeHelper.getTypeTerm(inst_simple_exp.term_exp);
 		} else {
-			var term1 = getTypeTerm(inst_simple_exp.term_exp);
-			var simple_exp2 = getTypeSimpleExpression(inst_simple_exp.expression);			
+			var term1 = ExpressionTypeHelper.getTypeTerm(inst_simple_exp.term_exp);
+			var simple_exp2 = ExpressionTypeHelper.getTypeSimpleExpression(inst_simple_exp.expression);			
 			
 			if (operator.equalsIgnoreCase("OR")) {
 				if (!term1.equals("boolean") || !simple_exp2.equals("boolean")) {
 					var error_message = "A operação booleana OR exige dois fatores booleanos"; 
-					error(error_message, null);
-					return "erro_tipo";	
-				} else {
-					return "boolean"
-				} 	
+					error(error_message, null);						
+				}
 			} else if (operator.equals("+")) {
-				if (term1.equals("string") && simple_exp2.equals("string")) {
-					return "string";
-				} else if (term1.equals("integer") && simple_exp2.equals("integer")) {
-					return "integer";
-				} else {
-					var error_message = "Dois inteiros ou duas strings são necessárias para a operação aritmética +"; 
-					error(error_message, null);
-					return "erro_tipo";					
+				// Se não for dois inteiros ou duas strings um erro é lançado
+				if (!(
+					(term1.equals("string") && simple_exp2.equals("string")) || 
+					(term1.equals("integer") && simple_exp2.equals("integer"))
+					)) {
+					var error_message = "Dois inteiros ou duas strings são necessárias para a operação aritmética '+'"; 
+					error(error_message, null);									
 				}
 			} else {
-				if (term1.equals("integer") && simple_exp2.equals("integer")) {
-					return "integer";
-				} else {
-					var error_message = "Dois inteiros são necessários para a operação arimética -"; 
-					error(error_message, null);
-					return "erro_tipo";						
+				if (!term1.equals("integer") || !simple_exp2.equals("integer")) {					
+					var error_message = "Dois inteiros são necessários para a operação arimética '-'"; 
+					error(error_message, null);							
 				}
 			}
-		} 
-	}
-		
-	def String getTypeExpression(expression inst_expression) {
-		return getTypeSimpleExpression(inst_expression.simple);
+		}
 	}
 	
+	// Checa se uma expressão atribuída a uma variável é compatível com o tipo declarado da variável
 	@Check
 	def checkTypeAssignment(assignment_statement variable) {
-		var expression_type = getTypeExpression(variable.expression);
+		var expression_type = ExpressionTypeHelper.getTypeExpression(variable.expression);
 		var id_type = getType(variables.get(variable.declared_variable.variable_id).type_variable.simple.type);
 		
 		if (!id_type.equalsIgnoreCase(expression_type)) {
@@ -222,4 +183,5 @@ class PascalValidator extends AbstractPascalValidator {
 			error(error_message, null);		
 		}
 	}
+
 }
