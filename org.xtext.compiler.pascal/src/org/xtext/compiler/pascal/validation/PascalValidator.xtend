@@ -27,9 +27,7 @@ import java.util.List
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 class PascalValidator extends AbstractPascalValidator {
-		
-	//private var variables = new HashMap<String, variable_declaration>();
-	
+			
 	private var functions = <String, function_declaration>newHashMap();	
  	
  	def getType(type_identifier lit) {
