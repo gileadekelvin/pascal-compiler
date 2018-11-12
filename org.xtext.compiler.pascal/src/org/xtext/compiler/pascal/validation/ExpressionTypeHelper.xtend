@@ -7,9 +7,22 @@ import org.xtext.compiler.pascal.pascal.simple_expression;
 import org.xtext.compiler.pascal.pascal.expression;
 import org.xtext.compiler.pascal.pascal.term;
 import org.xtext.compiler.pascal.pascal.unsigned_constant;
+import org.xtext.compiler.pascal.pascal.type_identifier;
 
 
 class ExpressionTypeHelper {
+	
+	 def static getType(type_identifier lit) {
+		if (lit.boolean !== null) {
+			return "boolean"
+		} else if (lit.integer !== null) {
+			return "integer"
+		} else if (lit.string !== null) {
+			return "string"
+		} else {
+			return lit.id;
+		}
+	}
 
 		
 	def static String getTypeExpression(expression inst_expression) {
@@ -33,8 +46,11 @@ class ExpressionTypeHelper {
 			return getTypeUnsConstant(inst_factor.constant);
 		} else if (inst_factor.not_factor !== null){
 			return("boolean");
+		} else if (inst_factor.variable !== null) {
+			var id_type = getType(Structures.variables.get(inst_factor.variable.variable_id).type_variable.simple.type);
+			return(id_type);			
 		}
-		// TODO regras para variable, expression, function
+		// TODO regras para expression, function
 	}
 	
 	def static String getTypeSignedFactor(signed_factor inst_signed_factor) {

@@ -29,19 +29,7 @@ import java.util.List
 class PascalValidator extends AbstractPascalValidator {
 			
 	private var functions = <String, function_declaration>newHashMap();	
- 	
- 	def getType(type_identifier lit) {
-		if (lit.boolean !== null) {
-			return "boolean"
-		} else if (lit.integer !== null) {
-			return "integer"
-		} else if (lit.string !== null) {
-			return "string"
-		} else {
-			return lit.id;
-		}
-	}
-	
+ 		
 	// Limpa as listas de variáveis e de funções
 	@Check
 	def restart(pascal pascal) {
@@ -89,7 +77,7 @@ class PascalValidator extends AbstractPascalValidator {
 		var variable_type = declared_variables.type_variable; 
 				
 		if (variable_type.simple !== null){
-			var type = getType(variable_type.simple.type);
+			var type = ExpressionTypeHelper.getType(variable_type.simple.type);
 			if (!type.equals("boolean") && !type.equals("integer") && !type.equals("string")) {				
 				var error_message = "Tipo precisa ser boolean, integer ou string"; 
 				error(error_message, null)
@@ -171,7 +159,7 @@ class PascalValidator extends AbstractPascalValidator {
 	@Check
 	def checkTypeAssignment(assignment_statement variable) {
 		var expression_type = ExpressionTypeHelper.getTypeExpression(variable.expression);
-		var id_type = getType(Structures.variables.get(variable.declared_variable.variable_id).type_variable.simple.type);
+		var id_type = ExpressionTypeHelper.getType(Structures.variables.get(variable.declared_variable.variable_id).type_variable.simple.type);
 		
 		if (!id_type.equalsIgnoreCase(expression_type)) {
 			var error_message = "Tipo da variável não condiz com o tipo da expressão atribuída"; 
