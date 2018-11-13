@@ -6,9 +6,10 @@ import org.xtext.compiler.pascal.pascal.signed_factor;
 import org.xtext.compiler.pascal.pascal.simple_expression;
 import org.xtext.compiler.pascal.pascal.expression;
 import org.xtext.compiler.pascal.pascal.term;
+import org.xtext.compiler.pascal.pascal.constant;
 import org.xtext.compiler.pascal.pascal.unsigned_constant;
 import org.xtext.compiler.pascal.pascal.type_identifier;
-
+import java.util.HashMap
 
 class ExpressionTypeHelper {
 	
@@ -112,5 +113,39 @@ class ExpressionTypeHelper {
 				}
 			}
 		} 
+	}
+	
+	def static String getTypeConstant(constant inst_constant) {
+		if (inst_constant.uns_number !== null) {
+			return "integer";
+		} else if (inst_constant.sig_number !== null) {
+			return "integer";
+		} else if (inst_constant.string !== null){
+			return "string";
+		} else if (inst_constant.booltype !== null) {
+			return "boolean";
+		} else if (inst_constant.uns_number !== null) {
+			var variable_id = inst_constant.name_id;
+			if (!Structures.variables.containsKey(variable_id)) {
+				return "erro_tipo";  			
+			} else {
+				var id_type = getType(Structures.variables.get(variable_id).type_variable.simple.type);
+				return id_type;				
+			}
+		} else if (inst_constant.sig_name_id !== null) {
+			var variable_id = inst_constant.sig_name_id;
+			if (!Structures.variables.containsKey(variable_id)) {
+				return "erro_tipo";
+			} else {
+				var id_type = getType(Structures.variables.get(variable_id).type_variable.simple.type);
+				if (!id_type.equals("integer")){
+					return "erro_tipo";	
+				} else {
+					return "integer";
+				}
+			}
+		}
+		return "erro_tipo"
 	}	
+		
 }

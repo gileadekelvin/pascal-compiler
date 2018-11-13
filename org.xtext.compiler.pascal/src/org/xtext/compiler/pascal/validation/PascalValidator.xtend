@@ -16,6 +16,10 @@ import org.xtext.compiler.pascal.pascal.simple_expression;
 import org.xtext.compiler.pascal.pascal.expression;
 import org.xtext.compiler.pascal.pascal.term;
 import org.xtext.compiler.pascal.pascal.unsigned_constant;
+import org.xtext.compiler.pascal.pascal.constant;
+import org.xtext.compiler.pascal.pascal.case_statement;
+import org.xtext.compiler.pascal.pascal.case_list_element;
+import org.xtext.compiler.pascal.pascal.const_list;
 import org.eclipse.xtext.validation.Check
 import java.util.ArrayList
 import java.util.List
@@ -166,5 +170,30 @@ class PascalValidator extends AbstractPascalValidator {
 			error(error_message, null);		
 		}
 	}
+	
+		// Checa se o tipo da expressão do CASE é compatível com o tipo dos casos
+	@Check
+	def checkCaseTypeExpression(case_statement case_statement){
+		var expression_type = ExpressionTypeHelper.getTypeExpression(case_statement.expression_case);
+		
+		var case_list = case_statement.case_list;
+		
+		for (case_list_element case_elem : case_list) {
+			if (case_elem.consts === null) { 
+				var error_message = "O 'case' não pode ser usado sem as cláusulas de teste"; 
+				error(error_message, null);	
+			} else {
+				for (constant const : case_elem.consts.constants) {
+					var type = ExpressionTypeHelper.getTypeConstant(const)
+					if (type !== expression_type) {
+						var error_message = String.format("Tipo da expressão nas cláusulas são diferentes do tipo da expresão no 'case' (%s)", expression_type);									
+						error(error_message, null);	
+					}
+				}
+			}
+		}
+				
+	}  
+	
 
 }
