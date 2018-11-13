@@ -129,18 +129,18 @@ class ExpressionTypeHelper {
 			return "boolean";
 		} else if (inst_constant.uns_number !== null) {
 			var variable_id = inst_constant.name_id;
-			if (!Structures.variables.containsKey(variable_id)) {
+			if (!Structures.containsKey(variable_id)) {
 				return "erro_tipo";  			
 			} else {
-				var id_type = getType(Structures.variables.get(variable_id).type_variable.simple.type);
+				var id_type = getType(Structures.get(variable_id).type_variable.simple.type);
 				return id_type;				
 			}
 		} else if (inst_constant.sig_name_id !== null) {
 			var variable_id = inst_constant.sig_name_id;
-			if (!Structures.variables.containsKey(variable_id)) {
+			if (!Structures.containsKey(variable_id)) {
 				return "erro_tipo";
 			} else {
-				var id_type = getType(Structures.variables.get(variable_id).type_variable.simple.type);
+				var id_type = getType(Structures.get(variable_id).type_variable.simple.type);
 				if (!id_type.equals("integer")){
 					return "erro_tipo";	
 				} else {
