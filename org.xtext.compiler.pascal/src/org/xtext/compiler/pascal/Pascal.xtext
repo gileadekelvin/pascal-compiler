@@ -264,7 +264,7 @@ terminal DOTDOT:
 ;
 
 terminal NOT:
-	'not'
+	('N'|'n') ('O'|'o') ('T'|'t')	
 ;
 
 terminal STAR:

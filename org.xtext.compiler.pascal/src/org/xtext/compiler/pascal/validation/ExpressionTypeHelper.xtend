@@ -47,7 +47,7 @@ class ExpressionTypeHelper {
 		} else if (inst_factor.not_factor !== null){
 			return("boolean");
 		} else if (inst_factor.variable !== null) {
-			var id_type = getType(Structures.variables.get(inst_factor.variable.variable_id).type_variable.simple.type);
+			var id_type = getType(Structures.get(inst_factor.variable.variable_id).type_variable.simple.type);
 			return(id_type);			
 		} else if (inst_factor.expression !== null) {
 			var expression_type = getTypeExpression(inst_factor.expression);
