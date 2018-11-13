@@ -49,8 +49,11 @@ class ExpressionTypeHelper {
 		} else if (inst_factor.variable !== null) {
 			var id_type = getType(Structures.variables.get(inst_factor.variable.variable_id).type_variable.simple.type);
 			return(id_type);			
+		} else if (inst_factor.expression !== null) {
+			var expression_type = getTypeExpression(inst_factor.expression);
+			return expression_type;
 		}
-		// TODO regras para expression, function
+		// TODO regras para function
 	}
 	
 	def static String getTypeSignedFactor(signed_factor inst_signed_factor) {
