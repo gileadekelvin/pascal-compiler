@@ -183,10 +183,10 @@ class PascalValidator extends AbstractPascalValidator {
 	
 		// Checa se o tipo da expressão do CASE é compatível com o tipo dos casos
 	@Check
-	def checkCaseTypeExpression(case_statement case_statement){
-		var expression_type = ExpressionTypeHelper.getTypeExpression(case_statement.expression_case);
+	def checkCaseTypeExpression(case_statement inst_case){
+		var expression_type = ExpressionTypeHelper.getTypeExpression(inst_case.exp);
 		
-		var case_list = case_statement.case_list;
+		var case_list = inst_case.case_list;
 		
 		for (case_list_element case_elem : case_list) {
 			if (case_elem.consts === null) { 
@@ -196,7 +196,7 @@ class PascalValidator extends AbstractPascalValidator {
 				for (constant const : case_elem.consts.constants) {
 					var type = ExpressionTypeHelper.getTypeConstant(const)
 					if (type !== expression_type) {
-						var error_message = String.format("Tipo da expressão nas cláusulas são diferentes do tipo da expresão no 'case' (%s)", expression_type);									
+						var error_message = String.format("Tipo da expressão nas cláusulas são diferentes do tipo da expressão no 'case' (%s)", expression_type);									
 						error(error_message, null);	
 					}
 				}

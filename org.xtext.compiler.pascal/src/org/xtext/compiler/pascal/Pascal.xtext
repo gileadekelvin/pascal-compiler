@@ -160,7 +160,7 @@ case_statement:
 ;
 
 case_list_element:
-	consts+=const_list ":" case_statement=statement
+	consts=const_list ":" case_statement=statement
 ;
 
 const_list:
