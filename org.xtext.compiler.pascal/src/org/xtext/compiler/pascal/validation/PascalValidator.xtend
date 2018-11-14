@@ -56,6 +56,7 @@ class PascalValidator extends AbstractPascalValidator {
 	def checkVariableDeclaration(variable_declaration declared_variables) {
 		
 		var List<String> new_variables = new ArrayList<String>();
+		var type = declared_variables.type_variable.simple.type;
 		var names = declared_variables.list_names;
 		
 		if(names !== null && names.names !== null){
@@ -65,8 +66,9 @@ class PascalValidator extends AbstractPascalValidator {
 		}
 		
 		for(String name : new_variables) {
-			if (!Structures.containsKey(name)) {						
-				Structures.put(name, declared_variables);
+			if (!Structures.containsKey(name)) {
+                var Variable newVar = new Variable(new_variables, ExpressionTypeHelper.getType(type));
+				Structures.put(name, newVar);
 			} else {
 				var error_message = String.format("Variável '%s' já foi declarada", name);  
 				error(error_message, null)
@@ -173,7 +175,8 @@ class PascalValidator extends AbstractPascalValidator {
 	@Check
 	def checkTypeAssignment(assignment_statement variable) {
 		var expression_type = ExpressionTypeHelper.getTypeExpression(variable.expression);
-		var id_type = ExpressionTypeHelper.getType(Structures.get(variable.declared_variable.variable_id).type_variable.simple.type);
+		var id_type = Structures.get(variable.declared_variable.variable_id).getType();
+		
 		
 		if (!id_type.equalsIgnoreCase(expression_type)) {
 			var error_message = "Tipo da variável não condiz com o tipo da expressão atribuída"; 
@@ -204,6 +207,20 @@ class PascalValidator extends AbstractPascalValidator {
 		}
 				
 	}  
+	    // Adiciona a variável implicita à declaração de uma função de mesmo nome e tipo que a própria função
+	    @Check
+        def checkFunctionDeclaration(function_declaration variable) {
+                var names = variable.names;
+                var type = ExpressionTypeHelper.getType(variable.types.last as type_identifier);
+                var Variable newVar = new Variable(names, type);
+
+                for(Object id: names){
+                	var name = id.toString;
+                	Structures.put(name, newVar);
+                	
+                }                             
+
+        }
 	
 
 }

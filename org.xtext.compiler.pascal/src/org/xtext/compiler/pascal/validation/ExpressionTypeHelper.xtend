@@ -48,7 +48,7 @@ class ExpressionTypeHelper {
 		} else if (inst_factor.not_factor !== null){
 			return("boolean");
 		} else if (inst_factor.variable !== null) {
-			var id_type = getType(Structures.get(inst_factor.variable.variable_id).type_variable.simple.type);
+			var id_type = Structures.get(inst_factor.variable.variable_id).getType();
 			return(id_type);			
 		} else if (inst_factor.expression !== null) {
 			var expression_type = getTypeExpression(inst_factor.expression);
@@ -132,7 +132,7 @@ class ExpressionTypeHelper {
 			if (!Structures.containsKey(variable_id)) {
 				return "erro_tipo";  			
 			} else {
-				var id_type = getType(Structures.get(variable_id).type_variable.simple.type);
+				var id_type = Structures.get(variable_id).getType();
 				return id_type;				
 			}
 		} else if (inst_constant.sig_name_id !== null) {
@@ -140,7 +140,7 @@ class ExpressionTypeHelper {
 			if (!Structures.containsKey(variable_id)) {
 				return "erro_tipo";
 			} else {
-				var id_type = getType(Structures.get(variable_id).type_variable.simple.type);
+				var id_type = Structures.get(variable_id).getType();
 				if (!id_type.equals("integer")){
 					return "erro_tipo";	
 				} else {
