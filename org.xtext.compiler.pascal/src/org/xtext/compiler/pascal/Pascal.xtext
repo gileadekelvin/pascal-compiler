@@ -125,7 +125,12 @@ structured_type:
 ;
 
 unpacked_structured_type:
-   array_type
+   static=array_type
+   | dynamic=dynamic_array_type
+;
+
+dynamic_array_type:
+	"array" "of" type=type	
 ;
 
 array_type:
