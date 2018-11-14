@@ -106,12 +106,39 @@ factor:
 ;
 
 type: 
-	 type+=simple_type
-   //| type+=structured_type
+   type+=simple_type
+   | structured+=structured_type
 ;
 
 simple_type: 
    types+=type_identifier
+   | subrange_type+=subrange_type
+;
+
+subrange_type: 
+	constants+=constant DOTDOT constants+=constant
+;
+
+structured_type:
+	"PACKED" unpacked_structured_type
+   | unpacked_structured_type
+;
+
+unpacked_structured_type:
+   array_type
+;
+
+array_type:
+	"array" "[" type_list "]" "of" component+=component_type
+;
+ type_list:
+   indexes+=index_type ("," indexes+=index_type)*
+;
+ index_type:
+   simple_type
+;
+ component_type:
+   type
 ;
 
 type_identifier: 
