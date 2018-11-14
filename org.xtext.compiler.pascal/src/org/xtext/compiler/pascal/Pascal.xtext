@@ -23,6 +23,7 @@ identifier_list:
 block:
 	(constantpart+=constant_definition_part | 
 	 variablepart+=variable_declaration_part | 
+	 type_part+=type_definition_part |
 	 procedure_function_part+=procedure_and_function_declaration_part
 	)* statement=compound_statement
 ;
@@ -50,6 +51,10 @@ variable_declaration_part
 
 variable_declaration
    : identifier_list ":" types+=type
+;
+
+type_definition_part:
+	"type" ( types+=type_definition ";" ) +	
 ;
 
 compound_statement:
