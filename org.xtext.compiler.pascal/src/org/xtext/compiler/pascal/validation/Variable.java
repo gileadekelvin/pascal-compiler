@@ -25,4 +25,22 @@ public class Variable {
 		this.type = type;
 	}
 
+	@Override
+	public String toString() {
+		String text = "Variable [list_names=[";
+		
+		for(int i = 0; i < list_names.size(); i++) {
+			if (i == list_names.size() -1) {
+				text += list_names.get(i) + "]";
+			}
+			else {
+				text += list_names.get(i) + ",";				
+			}
+		}
+		text = text + ", type=" + type + "]";
+		return text ;
+	}
+	
+	
+
 }

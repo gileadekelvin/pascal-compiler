@@ -11,8 +11,11 @@ import org.xtext.compiler.pascal.pascal.case_list_element
 import org.xtext.compiler.pascal.pascal.case_statement
 import org.xtext.compiler.pascal.pascal.constant
 import org.xtext.compiler.pascal.pascal.factor
+import org.xtext.compiler.pascal.pascal.formal_parameter_list
+import org.xtext.compiler.pascal.pascal.formal_parameter_section
 import org.xtext.compiler.pascal.pascal.function_declaration
 import org.xtext.compiler.pascal.pascal.identifier
+import org.xtext.compiler.pascal.pascal.identifier_list
 import org.xtext.compiler.pascal.pascal.parameter_group
 import org.xtext.compiler.pascal.pascal.pascal
 import org.xtext.compiler.pascal.pascal.signed_factor
@@ -20,7 +23,6 @@ import org.xtext.compiler.pascal.pascal.simple_expression
 import org.xtext.compiler.pascal.pascal.term
 import org.xtext.compiler.pascal.pascal.type_identifier
 import org.xtext.compiler.pascal.pascal.variable_declaration
-import org.xtext.compiler.pascal.pascal.identifier_list
 
 /**
  * This class contains custom validation rules. 
@@ -43,7 +45,8 @@ class PascalValidator extends AbstractPascalValidator {
 	def checkNotDeclaredVariable(assignment_statement variable) {
 		var variable_id = variable.declared_variable.variable_id;
 		if (!Structures.containsKey(variable_id)) {
-			var error_message = String.format("Variável '%s' não foi declarada", variable_id);
+			var error_message = Structures.getInstance().toString;
+			//var error_message = String.format("Variável '%s' não foi declarada", variable_id);
 			error(error_message, null)
 		}
 	}
@@ -207,20 +210,6 @@ class PascalValidator extends AbstractPascalValidator {
 
 	}
 
-	// Adiciona a variável implicita à declaração de uma função de mesmo nome e tipo que a própria função
-	@Check
-	def checkFunctionDeclaration(function_declaration variable) {
-		var names = variable.names;
-		var type = ExpressionTypeHelper.getType(variable.types.last as type_identifier);
-		var Variable newVar = new Variable(names, type);
-
-		for (Object id : names) {
-			var name = id.toString;
-			Structures.put(name, newVar);
-
-		}
-	}
-
 	@Check
 	def checkParameterDeclaration(parameter_group parameter) {
 		var names = parameter.names;
@@ -241,5 +230,37 @@ class PascalValidator extends AbstractPascalValidator {
 				}
 			
 		}
+
 	}
+	
+
+	// Adiciona a variável implicita à declaração de uma função de mesmo nome e tipo que a própria função
+	@Check
+	def checkFunctionDeclaration(function_declaration variable) {
+		var names = variable.names;
+		var type = ExpressionTypeHelper.getType(variable.types.last as type_identifier);
+		var Variable newVar = new Variable(names, type);
+
+		for (Object id : names) {
+			var name = id.toString;
+			Structures.put(name, newVar);
+
+		}
+		for(formal_parameter_list params_list : variable.parameters){
+			checkParamsList(params_list);
+		}		
+	}
+	
+	@Check
+	def checkParamsList(formal_parameter_list variable) {
+		for(formal_parameter_section section : variable.parameters) {
+			for(parameter_group params: section.parameters) {
+				checkParameterDeclaration(params);
+			}
+		
+		}
+	}
+	
+
+
 }

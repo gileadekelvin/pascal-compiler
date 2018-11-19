@@ -194,7 +194,7 @@ procedure_or_function_declaration:
 ;
 
 procedure_declaration:
-	procedure names+=ID  (types+=formal_parameter_list)? ';' block=block
+	procedure names+=ID  (parameters+=formal_parameter_list)? ';' block=block
 ;
 
 type_definition:
@@ -206,7 +206,7 @@ procedure_type: //Add action to ensure object creation?
 ;
 
 function_declaration:
-	function names+=ID (types+=formal_parameter_list)? ':' 
+	function names+=ID (parameters+=formal_parameter_list)? ':' 
 	types+=result_type ';' block=block
 ;
 
@@ -220,18 +220,18 @@ function_designator:
 
 
 formal_parameter_list:
-	'(' formal_parameter_section (';' types+=formal_parameter_section )* ')'
+	'(' parameters+=formal_parameter_section (';' parameters+=formal_parameter_section )* ')'
 ;
 
 formal_parameter_section:
-	  parameter_group
-	| 'var' parameter_group
-	| function parameter_group
-	| procedure parameter_group
+	  parameters+=parameter_group
+	| 'var' parameters+=parameter_group
+	| function parameters+=parameter_group
+	| procedure parameters+=parameter_group
 ;
 
 parameter_group:
-	identifier_list ":" types+=type_identifier
+	names+=identifier_list ":" types+=type_identifier
 ;
 
 result_type:
