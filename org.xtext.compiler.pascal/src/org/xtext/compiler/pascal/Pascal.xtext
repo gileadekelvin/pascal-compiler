@@ -116,7 +116,7 @@ factor:
 
 type: 
 	 simple=simple_type
-   //| type=structured_type
+    | structured=structured_type
 ;
 
 simple_type: 

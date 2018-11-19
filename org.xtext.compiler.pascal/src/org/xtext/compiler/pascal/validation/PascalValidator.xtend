@@ -45,8 +45,7 @@ class PascalValidator extends AbstractPascalValidator {
 	def checkNotDeclaredVariable(assignment_statement variable) {
 		var variable_id = variable.declared_variable.variable_id;
 		if (!Structures.containsKey(variable_id)) {
-			var error_message = Structures.getInstance().toString;
-			//var error_message = String.format("Variável '%s' não foi declarada", variable_id);
+			var error_message = String.format("Variável '%s' não foi declarada", variable_id);
 			error(error_message, null)
 		}
 	}
