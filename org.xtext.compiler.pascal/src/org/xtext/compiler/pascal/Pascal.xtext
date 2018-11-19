@@ -27,6 +27,7 @@ identifier:
 block:
 	(constantpart+=constant_definition_part | 
 	 variablepart+=variable_declaration_part | 
+	 type_part+=type_definition_part |
 	 procedure_function_part+=procedure_and_function_declaration_part
 	)* statement=compound_statement
 ;
@@ -54,6 +55,10 @@ variable_declaration_part
 
 variable_declaration
    : list_names=identifier_list ":" type_variable=type
+;
+
+type_definition_part:
+	"type" ( types+=type_definition ";" ) +	
 ;
 
 compound_statement:
@@ -116,6 +121,38 @@ type:
 
 simple_type: 
    type=type_identifier
+   | subrange_type+=subrange_type
+;
+
+subrange_type: 
+	constants+=constant DOTDOT constants+=constant
+;
+
+structured_type:
+	"PACKED" unpacked_structured_type
+   | unpacked_structured_type
+;
+
+unpacked_structured_type:
+   static=array_type
+   | dynamic=dynamic_array_type
+;
+
+dynamic_array_type:
+	"array" "of" type=type	
+;
+
+array_type:
+	"array" "[" type_list "]" "of" component+=component_type
+;
+ type_list:
+   indexes+=index_type ("," indexes+=index_type)*
+;
+ index_type:
+   simple_type
+;
+ component_type:
+   type
 ;
 
 type_identifier: 
