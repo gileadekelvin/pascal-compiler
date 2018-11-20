@@ -9,7 +9,6 @@ import org.xtext.compiler.pascal.pascal.term;
 import org.xtext.compiler.pascal.pascal.constant;
 import org.xtext.compiler.pascal.pascal.unsigned_constant;
 import org.xtext.compiler.pascal.pascal.type_identifier;
-import java.util.HashMap
 
 class ExpressionTypeHelper {
 	
@@ -53,8 +52,10 @@ class ExpressionTypeHelper {
 		} else if (inst_factor.expression !== null) {
 			var expression_type = getTypeExpression(inst_factor.expression);
 			return expression_type;
-		}
-		// TODO regras para function
+		} else if (inst_factor.function !== null) {
+			var function_type = Structures.get(inst_factor.function.name_function).getType();
+			return function_type;
+		}	
 	}
 	
 	def static String getTypeSignedFactor(signed_factor inst_signed_factor) {

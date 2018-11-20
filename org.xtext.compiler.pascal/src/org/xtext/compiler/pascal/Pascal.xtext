@@ -252,7 +252,7 @@ function_type:
 ;
 
 function_designator:
-	names+=ID '(' types+=parameter_list ')'
+	name_function=ID '(' types+=parameter_list ')'
 ;
 
 
