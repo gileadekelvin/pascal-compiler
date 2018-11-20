@@ -127,12 +127,12 @@ class PascalValidator extends AbstractPascalValidator {
 			// Se é uma operação booleana
 			if (operator.equalsIgnoreCase("AND")) {
 				if (!factor_type.equals("boolean") || !term2_type.equals("boolean")) {
-					var error_message = "A operação booleana AND exige dois fatores booleanos";
+					var error_message = "Operandos incompatíveis com a operação. A operação booleana AND exige dois operandos booleanos";
 					error(error_message, null);
 				}
 			} else { // se é uma expressão aritmética (*, /, div, mod)
 				if (!factor_type.equals("integer") || !term2_type.equals("integer")) {
-					var error_message = String.format("Dois inteiros são necessários para a operação aritmética '%s'",
+					var error_message = String.format("Operandos incompatíveis com a operação. Dois inteiros são necessários para a operação aritmética '%s'",
 						operator);
 					error(error_message, null);
 				}
@@ -153,18 +153,18 @@ class PascalValidator extends AbstractPascalValidator {
 
 			if (operator.equalsIgnoreCase("OR")) {
 				if (!term1.equals("boolean") || !simple_exp2.equals("boolean")) {
-					var error_message = "A operação booleana OR exige dois fatores booleanos";
+					var error_message = "Operandos incompatíveis com a operação. A operação booleana OR exige dois operandos booleanos";
 					error(error_message, null);
 				}
 			} else if (operator.equals("+")) {
 				// Se não for dois inteiros ou duas strings um erro é lançado
 				if (!(term1.equals("integer") && simple_exp2.equals("integer"))) {
-					var error_message = "Dois inteiros são necessários para a operação arimética '+'";
+					var error_message = "Operandos incompatíveis com a operação. Dois inteiros são necessários para a operação arimética '+'";
 					error(error_message, null);
 				}
 			} else {
 				if (!term1.equals("integer") || !simple_exp2.equals("integer")) {
-					var error_message = "Dois inteiros são necessários para a operação arimética '-'";
+					var error_message = "Operandos incompatíveis com a operação. Dois inteiros são necessários para a operação arimética '-'";
 					error(error_message, null);
 				}
 			}
