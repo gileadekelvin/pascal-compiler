@@ -7,6 +7,7 @@ class Structures {
 
 	static HashMap<String, Variable> variables = null;
 	static HashMap<String, Function> functions = null;
+	static HashMap<String, Procedure> procedures = null;
 
 // Constructors
 
@@ -26,9 +27,18 @@ class Structures {
 		return functions;
 	}
 	
+	def static HashMap<String, Procedure> getProcInstance() {
+
+		if (procedures === null) {
+			procedures = new HashMap<String, Procedure>();
+		}
+		return procedures;
+	}
+	
 	def static clear() {
 		getVarsInstance().clear();
 		getFunsInstance().clear();
+		getProcInstance().clear();
 
 	}
 	
@@ -60,5 +70,21 @@ class Structures {
 	def static Function getFunc(String id) {
 		return getFunsInstance().get(id);
 	}
+	
+// Procedure related methods
+
+	def static boolean containsProc(String id) {
+		return getProcInstance().containsKey(id);
+	}
+
+	def static putProc(String id, List<Variable> parameters) {
+		var procedure = new Procedure(id, parameters);
+		getProcInstance().put(id, procedure);
+	}
+
+	def static Procedure getProc(String id) {
+		return getProcInstance().get(id);
+	}
+
 
 }

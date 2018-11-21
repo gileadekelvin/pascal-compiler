@@ -19,6 +19,8 @@ import org.xtext.compiler.pascal.pascal.function_designator
 import org.xtext.compiler.pascal.pascal.identifier
 import org.xtext.compiler.pascal.pascal.parameter_group
 import org.xtext.compiler.pascal.pascal.pascal
+import org.xtext.compiler.pascal.pascal.procedure_declaration
+import org.xtext.compiler.pascal.pascal.procedure_statement
 import org.xtext.compiler.pascal.pascal.signed_factor
 import org.xtext.compiler.pascal.pascal.simple_expression
 import org.xtext.compiler.pascal.pascal.term
@@ -179,7 +181,7 @@ class PascalValidator extends AbstractPascalValidator {
 
 		if (Structures.containsFunc(variable_id)) {
 			if (!id_type.equalsIgnoreCase(expression_type)) {
-				var error_message = String.format("Tipo do retorno da função '%s' difere do esperado",variable_id);
+				var error_message = String.format("Tipo do retorno da função '%s' difere do esperado", variable_id);
 				error(error_message, null)
 			}
 		}
@@ -272,7 +274,7 @@ class PascalValidator extends AbstractPascalValidator {
 	def checkFunctionDesignator(function_designator variable) {
 		var func_name = variable.name_function;
 		if (!Structures.containsFunc(func_name)) {
-			var error_message = String.format("Função '%s' não foi declarada", func_name);
+			var error_message = String.format("Subrotina '%s' não foi declarada", func_name);
 			error(error_message, null);
 		}
 
@@ -288,6 +290,59 @@ class PascalValidator extends AbstractPascalValidator {
 				parameters.get(index).getType())) {
 				var error_message = String.format("Tipo do parâmetro '%s' da função '%s' difere do esperado",
 					parameters.get(index).getName(), func_name);
+				error(error_message, null);
+
+			}
+			index++;
+		}
+
+	}
+
+	@Check
+	def checkProcedureDeclaration(procedure_declaration variable) {
+		var names = variable.names;
+
+		// instatiate parameters
+		var parameters = new ArrayList<Variable>();
+
+		for (formal_parameter_section section : variable.parameters.parameters) {
+			for (parameter_group params : section.parameters) {
+				var param_type = ExpressionTypeHelper.getType(params.types as type_identifier);
+				var Variable newParmVar;
+
+				var temp_names = params.names.names;
+				for (identifier id : temp_names) {
+					newParmVar = new Variable(id.id, param_type);
+					parameters.add(newParmVar);
+				}
+
+			}
+		}
+		Structures.putProc(names, parameters);
+		checkParamsList(variable.parameters);
+	}
+
+	@Check
+	def checkProcedureStatement(procedure_statement variable) {
+
+		var proc_name = variable.name_id;
+		if (!Structures.containsProc(proc_name)) {
+			var error_message = String.format("Subrotina '%s' não foi declarada", proc_name);
+			error(error_message, null);
+		}
+
+		var parameters = Structures.getProc(proc_name).parameters;
+		if (variable.parameters.parameters.size() != parameters.size()) {
+			var error_message = String.format("Número de  parâmetros do procedimento '%s' difere do esperado", proc_name);
+			error(error_message, null);
+		}
+
+		var index = 0;
+		for (actual_parameter observed : variable.parameters.parameters) {
+			if (!ExpressionTypeHelper.getTypeSimpleExpression(observed.content.simple).toString.equals(
+				parameters.get(index).getType())) {
+				var error_message = String.format("Tipo do parâmetro '%s' do procedimento '%s' difere do esperado",
+					parameters.get(index).getName(), proc_name);
 				error(error_message, null);
 
 			}
