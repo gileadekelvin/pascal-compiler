@@ -5,7 +5,7 @@ import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 generate pascal "http://www.xtext.org/compiler/pascal/Pascal"
 
 pascal:
-	program += program
+	program = program
 ; 
 
 program:
@@ -17,7 +17,11 @@ program_heading_block:
 ;
 
 identifier_list:
-	names+=ID ( "," names+=ID ) *	
+	names+=identifier ( "," names+=identifier ) *	
+;
+
+identifier:
+	id=ID
 ;
 
 block:
@@ -37,12 +41,12 @@ constant_definition:
 ;
 
 constant: 
-	 unsigned_number
-   | sign unsigned_number
-   | names+=ID
-   | sign names+=ID
-   | string+=STRING
-   | booltype+=bool
+	 uns_number=unsigned_number
+   | sign sig_number=unsigned_number
+   | name_id=ID
+   | sign sig_name_id=ID
+   | string=STRING
+   | booltype=bool
 ;
 
 variable_declaration_part
@@ -50,7 +54,7 @@ variable_declaration_part
 ;
 
 variable_declaration
-   : identifier_list ":" types+=type
+   : list_names=identifier_list ":" type_variable=type
 ;
 
 type_definition_part:
@@ -78,45 +82,45 @@ simple_statement:
 ;
 
 assignment_statement: 
-	variable=variable ASSIGN expression=expression	
+	declared_variable=variable ASSIGN expression=expression	
 ;
 
 variable
-   : ('@' names+=ID | names+=ID) ('[' expression+=expression ("," expression+=expression)* ']' | "(." expression+=expression ("," expression+=expression)* ".)" | "." names+=ID | "^")*
+   : ('@' variable_id=ID | variable_id=ID) ('[' expression+=expression ("," expression+=expression)* ']' | "(." expression+=expression ("," expression+=expression)* ".)" | "." names_exp+=ID | "^")*
 ;
 
 expression:
-	expressions+=simple_expression
+	simple=simple_expression
 ;
 
 simple_expression:
-	terms+=term (operators+=additive_operator expression+=simple_expression)?
+	term_exp=term (operator=additive_operator expression=simple_expression)?
 ;
 
 term: 
-	factors+=signed_factor (operators+=multiplicative_operator terms+=term)?
+	factor=signed_factor (operator=multiplicative_operator term2=term)?
 ;
 
 signed_factor: 
-	(operators+=PLUS | operators+=MINUS)? factors+=factor
+	(signal=PLUS | signal=MINUS)? factor=factor
 ;
 
 factor: 
 	 variable=variable
    | "(" expression=expression ")"
-   | function_designator
+   | function=function_designator
    | constant=unsigned_constant   
-   | NOT factor=factor
-   | boolean+=bool
+   | NOT not_factor=factor
+   | bool_factor=bool
 ;
 
 type: 
-   type+=simple_type
-   | structured+=structured_type
+	 simple=simple_type
+    | structured=structured_type
 ;
 
 simple_type: 
-   types+=type_identifier
+   type=type_identifier
    | subrange_type+=subrange_type
 ;
 
@@ -152,49 +156,48 @@ array_type:
 ;
 
 type_identifier: 
-	names+=ID
-   	| (type+='boolean' | type+='integer' | type+='string')
+	id=ID
+   	| (boolean='boolean' | integer='integer' | string='string')
 ;
 
 unsigned_constant:
-	 number+=unsigned_number
-   | string+=STRING
-   | nil+=NIL
+	 number=unsigned_number
+   | string=STRING
+   | nil=NIL
 ;
 
 unsigned_number: 
-	 numbers+=unsigned_integer
-   | numbers+=unsigned_real
+	 numbers=unsigned_integer
 ;
 
 
 procedure_statement:
-	names+=ID ('(' types+=parameter_list ')')?
+	name_id=ID ('(' parameters=parameter_list ')')?
 ;
 
 parameter_list:
-	actual_parameter (',' types+=actual_parameter)*
+	parameters+=actual_parameter (',' parameters+=actual_parameter)*
 ; 
 
 actual_parameter :
-	expression
+	content=expression
 ;
 
 structured_statement:
-	compound_stat+=compound_statement
-	| conditional_stat+=conditional_statement
+	compound_stat=compound_statement
+	| conditional_stat=conditional_statement
 ;
 
 conditional_statement:
-	cond_statements+=case_statement
+	cond_statements=case_statement
 ;
 
 case_statement:
-	"case" exp+=expression "of" case_list+=case_list_element ( ";" case_list+=case_list_element )* ( ";" )? ("else" case_statements+=statements)? "end"
+	"case" exp=expression "of" case_list+=case_list_element ( ";" case_list+=case_list_element )* ( ";" )? ("else" case_statements=statements)? "end"
 ;
 
 case_list_element:
-	consts+=const_list ":" case_statement+=statement
+	consts=const_list ":" case_statement=statement
 ;
 
 const_list:
@@ -203,10 +206,6 @@ const_list:
 
 unsigned_integer: 
 	NUM_INT
-;
-
-unsigned_real: 
-	NUM_REAL
 ;
 
 additive_operator: 
@@ -232,44 +231,44 @@ procedure_or_function_declaration:
 ;
 
 procedure_declaration:
-	procedure names+=ID  (types+=formal_parameter_list)? ';' block=block
+	procedure names=ID  (parameters=formal_parameter_list)? ';' block=block
 ;
 
 type_definition:
-	names+= ID EQUAL (type | function_type | procedure_type)
+	names= ID EQUAL (type | function_type | procedure_type)
 ;
 
 procedure_type: //Add action to ensure object creation?
-	 {procedure_type} procedure (types+=formal_parameter_list)?
+	 {procedure_type} procedure (types=formal_parameter_list)?
 ;
 
 function_declaration:
-	function names+=ID (types+=formal_parameter_list)? ':' 
-	types+=result_type ';' block=block
+	function names=ID (parameters=formal_parameter_list)? ':' 
+	types=result_type ';' block=block
 ;
 
 function_type:
-	function (types+=formal_parameter_list)? ':' types+=result_type
+	function (parameters=formal_parameter_list)? ':' types=result_type
 ;
 
 function_designator:
-	names+=ID '(' types+=parameter_list ')'
+	name_function=ID '(' parameters=parameter_list ')'
 ;
 
 
 formal_parameter_list:
-	'(' formal_parameter_section (';' types+=formal_parameter_section )* ')'
+	'(' parameters+=formal_parameter_section (';' parameters+=formal_parameter_section )* ')'
 ;
 
 formal_parameter_section:
-	  parameter_group
-	| 'var' parameter_group
-	| function parameter_group
-	| procedure parameter_group
+	  parameters+=parameter_group
+	| 'var' parameters+=parameter_group
+	| function parameters+=parameter_group
+	| procedure parameters+=parameter_group
 ;
 
 parameter_group:
-	identifier_list ":" types+=type_identifier
+	names=identifier_list ":" types=type_identifier
 ;
 
 result_type:
@@ -302,7 +301,7 @@ terminal DOTDOT:
 ;
 
 terminal NOT:
-	'not'
+	('N'|'n') ('O'|'o') ('T'|'t')	
 ;
 
 terminal STAR:
@@ -314,11 +313,11 @@ terminal SLASH:
 ;
 
 terminal DIV:
-	'div'
+	('D'|'d') ('I'|'i') ('V'|'v')
 ;
 
 terminal MOD:
-	'mod'
+	('M'|'m') ('O'|'o') ('D'|'d')
 ;
 
 terminal PLUS:
@@ -330,11 +329,11 @@ terminal MINUS:
 ;
 
 terminal AND:
-	'and'
+	('A'|'a') ('N'|'n') ('D'|'d')
 ;
 
 terminal OR:
-	'or'
+	('O'|'o') ('R'|'r')
 ;
 
 terminal ASSIGN: 
@@ -343,14 +342,6 @@ terminal ASSIGN:
 
 terminal NUM_INT: 
 	('0' .. '9') +
-;
-
-terminal NUM_REAL: 
-	('0' .. '9') + (('.' ('0' .. '9') + (EXPONENT)?)? | EXPONENT)
-;
-
-terminal fragment EXPONENT: 
-	('e') (PLUS | MINUS)? ('0' .. '9') +
 ;
 
 terminal EQUAL: 
