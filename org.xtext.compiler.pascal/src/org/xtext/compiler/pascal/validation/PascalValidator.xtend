@@ -14,6 +14,7 @@ import org.xtext.compiler.pascal.pascal.factor
 import org.xtext.compiler.pascal.pascal.formal_parameter_list
 import org.xtext.compiler.pascal.pascal.formal_parameter_section
 import org.xtext.compiler.pascal.pascal.function_declaration
+import org.xtext.compiler.pascal.pascal.function_designator
 import org.xtext.compiler.pascal.pascal.identifier
 import org.xtext.compiler.pascal.pascal.identifier_list
 import org.xtext.compiler.pascal.pascal.parameter_group
@@ -31,20 +32,17 @@ import org.xtext.compiler.pascal.pascal.variable_declaration
  */
 class PascalValidator extends AbstractPascalValidator {
 
-	private var functions = <String, function_declaration>newHashMap();
-
 	// Limpa as listas de variáveis e de funções
 	@Check
 	def restart(pascal pascal) {
 		Structures.clear();
-		functions.clear();
 	}
 
 	// Checa se a atribuição ocorre em uma variável não declarada
 	@Check
 	def checkNotDeclaredVariable(assignment_statement variable) {
 		var variable_id = variable.declared_variable.variable_id;
-		if (!Structures.containsKey(variable_id)) {
+		if (!Structures.containsVar(variable_id)) {
 			var error_message = String.format("Variável '%s' não foi declarada", variable_id);
 			error(error_message, null)
 		}
@@ -65,9 +63,9 @@ class PascalValidator extends AbstractPascalValidator {
 		}
 
 		for (String name : new_variables) {
-			if (!Structures.containsKey(name)) {
-				var Variable newVar = new Variable(new_variables, ExpressionTypeHelper.getType(type));
-				Structures.put(name, newVar);
+			if (!Structures.containsVar(name)) {
+				var Variable newVar = new Variable(name, ExpressionTypeHelper.getType(type));
+				Structures.putVariable(name, newVar);
 			} else {
 				var error_message = String.format("Variável '%s' já foi declarada", name);
 				error(error_message, null)
@@ -94,7 +92,7 @@ class PascalValidator extends AbstractPascalValidator {
 	@Check
 	def checkTypeFactor(factor inst_factor) {
 		var variable_id = inst_factor.variable.variable_id;
-		if (!Structures.containsKey(variable_id)) {
+		if (!Structures.containsVar(variable_id)) {
 			var error_message = String.format("Variável '%s' não foi declarada", variable_id);
 			error(error_message, null)
 		}
@@ -132,7 +130,8 @@ class PascalValidator extends AbstractPascalValidator {
 				}
 			} else { // se é uma expressão aritmética (*, /, div, mod)
 				if (!factor_type.equals("integer") || !term2_type.equals("integer")) {
-					var error_message = String.format("Operandos incompatíveis com a operação. Dois inteiros são necessários para a operação aritmética '%s'",
+					var error_message = String.format(
+						"Operandos incompatíveis com a operação. Dois inteiros são necessários para a operação aritmética '%s'",
 						operator);
 					error(error_message, null);
 				}
@@ -175,7 +174,7 @@ class PascalValidator extends AbstractPascalValidator {
 	@Check
 	def checkTypeAssignment(assignment_statement variable) {
 		var expression_type = ExpressionTypeHelper.getTypeExpression(variable.expression);
-		var id_type = Structures.get(variable.declared_variable.variable_id).getType();
+		var id_type = Structures.getVar(variable.declared_variable.variable_id).getType();
 
 		if (!id_type.equalsIgnoreCase(expression_type)) {
 			var error_message = "Tipo da variável não condiz com o tipo da expressão atribuída";
@@ -212,54 +211,36 @@ class PascalValidator extends AbstractPascalValidator {
 	@Check
 	def checkParameterDeclaration(parameter_group parameter) {
 		var names = parameter.names;
-		var type = ExpressionTypeHelper.getType(parameter.types.last as type_identifier);
-		var List<String> new_variables = new ArrayList<String>();
-        var Variable newVar ;
-        
-			for (identifier_list id_list : names) {
+		var type = ExpressionTypeHelper.getType(parameter.types as type_identifier);
+		var Variable newVar;
 
-				var temp_names = id_list.names;
-				for (identifier id : temp_names) {
-					new_variables.add(id.id);
-				}
-				newVar = new Variable(new_variables, type);
-
-				for (identifier id : temp_names) {
-					Structures.put(id.id, newVar);
-				}
-			
-		}
+			var temp_names = names.names;
+			for (identifier id : temp_names) {
+				newVar = new Variable(id.id, type);
+				Structures.putVariable(id.id, newVar);
+			}
 
 	}
-	
 
 	// Adiciona a variável implicita à declaração de uma função de mesmo nome e tipo que a própria função
 	@Check
 	def checkFunctionDeclaration(function_declaration variable) {
 		var names = variable.names;
-		var type = ExpressionTypeHelper.getType(variable.types.last as type_identifier);
+		var type = ExpressionTypeHelper.getType(variable.types as type_identifier);
+		
 		var Variable newVar = new Variable(names, type);
-
-		for (Object id : names) {
-			var name = id.toString;
-			Structures.put(name, newVar);
-
-		}
-		for(formal_parameter_list params_list : variable.parameters){
-			checkParamsList(params_list);
-		}		
+			Structures.putVariable(names, newVar);		
+				
+		checkParamsList(variable.parameters);
 	}
-	
+
 	@Check
 	def checkParamsList(formal_parameter_list variable) {
-		for(formal_parameter_section section : variable.parameters) {
-			for(parameter_group params: section.parameters) {
+		for (formal_parameter_section section : variable.parameters) {
+			for (parameter_group params : section.parameters) {
 				checkParameterDeclaration(params);
 			}
-		
+
 		}
 	}
-	
-
-
 }

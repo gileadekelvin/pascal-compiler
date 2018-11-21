@@ -172,7 +172,7 @@ unsigned_number:
 
 
 procedure_statement:
-	name_id=ID ('(' types+=parameter_list ')')?
+	name_id=ID ('(' parameters=parameter_list ')')?
 ;
 
 parameter_list:
@@ -231,28 +231,28 @@ procedure_or_function_declaration:
 ;
 
 procedure_declaration:
-	procedure names+=ID  (parameters+=formal_parameter_list)? ';' block=block
+	procedure names=ID  (parameters=formal_parameter_list)? ';' block=block
 ;
 
 type_definition:
-	names+= ID EQUAL (type | function_type | procedure_type)
+	names= ID EQUAL (type | function_type | procedure_type)
 ;
 
 procedure_type: //Add action to ensure object creation?
-	 {procedure_type} procedure (types+=formal_parameter_list)?
+	 {procedure_type} procedure (types=formal_parameter_list)?
 ;
 
 function_declaration:
-	function names+=ID (parameters+=formal_parameter_list)? ':' 
-	types+=result_type ';' block=block
+	function names=ID (parameters=formal_parameter_list)? ':' 
+	types=result_type ';' block=block
 ;
 
 function_type:
-	function (types+=formal_parameter_list)? ':' types+=result_type
+	function (parameters=formal_parameter_list)? ':' types=result_type
 ;
 
 function_designator:
-	name_function=ID '(' types+=parameter_list ')'
+	name_function=ID '(' parameters=parameter_list ')'
 ;
 
 
@@ -268,7 +268,7 @@ formal_parameter_section:
 ;
 
 parameter_group:
-	names+=identifier_list ":" types+=type_identifier
+	names=identifier_list ":" types=type_identifier
 ;
 
 result_type:

@@ -47,13 +47,13 @@ class ExpressionTypeHelper {
 		} else if (inst_factor.not_factor !== null){
 			return("boolean");
 		} else if (inst_factor.variable !== null) {
-			var id_type = Structures.get(inst_factor.variable.variable_id).getType();
+			var id_type = Structures.getVar(inst_factor.variable.variable_id).getType();
 			return(id_type);			
 		} else if (inst_factor.expression !== null) {
 			var expression_type = getTypeExpression(inst_factor.expression);
 			return expression_type;
 		} else if (inst_factor.function !== null) {
-			var function_type = Structures.get(inst_factor.function.name_function).getType();
+			var function_type = Structures.getVar(inst_factor.function.name_function).getType();
 			return function_type;
 		}	
 	}
@@ -130,18 +130,18 @@ class ExpressionTypeHelper {
 			return "boolean";
 		} else if (inst_constant.uns_number !== null) {
 			var variable_id = inst_constant.name_id;
-			if (!Structures.containsKey(variable_id)) {
+			if (!Structures.containsVar(variable_id)) {
 				return "erro_tipo";  			
 			} else {
-				var id_type = Structures.get(variable_id).getType();
+				var id_type = Structures.getVar(variable_id).getType();
 				return id_type;				
 			}
 		} else if (inst_constant.sig_name_id !== null) {
 			var variable_id = inst_constant.sig_name_id;
-			if (!Structures.containsKey(variable_id)) {
+			if (!Structures.containsVar(variable_id)) {
 				return "erro_tipo";
 			} else {
-				var id_type = Structures.get(variable_id).getType();
+				var id_type = Structures.getVar(variable_id).getType();
 				if (!id_type.equals("integer")){
 					return "erro_tipo";	
 				} else {
