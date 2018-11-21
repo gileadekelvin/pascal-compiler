@@ -175,6 +175,14 @@ class PascalValidator extends AbstractPascalValidator {
 	def checkTypeAssignment(assignment_statement variable) {
 		var expression_type = ExpressionTypeHelper.getTypeExpression(variable.expression);
 		var id_type = Structures.getVar(variable.declared_variable.variable_id).getType();
+		var variable_id = variable.declared_variable.variable_id;
+
+		if (Structures.containsFunc(variable_id)) {
+			if (!id_type.equalsIgnoreCase(expression_type)) {
+				var error_message = String.format("Tipo do retorno da função '%s' difere do esperado",variable_id);
+				error(error_message, null)
+			}
+		}
 
 		if (!id_type.equalsIgnoreCase(expression_type)) {
 			var error_message = "Tipo da variável não condiz com o tipo da expressão atribuída";
