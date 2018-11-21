@@ -12,11 +12,11 @@ public class Variable {
 		this.type = type;
 	}
 
-	public String getList_names() {
+	public String getName() {
 		return name;
 	}
 
-	public void setList_names(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 

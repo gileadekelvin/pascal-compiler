@@ -6,6 +6,7 @@ package org.xtext.compiler.pascal.validation
 import java.util.ArrayList
 import java.util.List
 import org.eclipse.xtext.validation.Check
+import org.xtext.compiler.pascal.pascal.actual_parameter
 import org.xtext.compiler.pascal.pascal.assignment_statement
 import org.xtext.compiler.pascal.pascal.case_list_element
 import org.xtext.compiler.pascal.pascal.case_statement
@@ -16,7 +17,6 @@ import org.xtext.compiler.pascal.pascal.formal_parameter_section
 import org.xtext.compiler.pascal.pascal.function_declaration
 import org.xtext.compiler.pascal.pascal.function_designator
 import org.xtext.compiler.pascal.pascal.identifier
-import org.xtext.compiler.pascal.pascal.identifier_list
 import org.xtext.compiler.pascal.pascal.parameter_group
 import org.xtext.compiler.pascal.pascal.pascal
 import org.xtext.compiler.pascal.pascal.signed_factor
@@ -214,11 +214,11 @@ class PascalValidator extends AbstractPascalValidator {
 		var type = ExpressionTypeHelper.getType(parameter.types as type_identifier);
 		var Variable newVar;
 
-			var temp_names = names.names;
-			for (identifier id : temp_names) {
-				newVar = new Variable(id.id, type);
-				Structures.putVariable(id.id, newVar);
-			}
+		var temp_names = names.names;
+		for (identifier id : temp_names) {
+			newVar = new Variable(id.id, type);
+			Structures.putVariable(id.id, newVar);
+		}
 
 	}
 
@@ -227,10 +227,26 @@ class PascalValidator extends AbstractPascalValidator {
 	def checkFunctionDeclaration(function_declaration variable) {
 		var names = variable.names;
 		var type = ExpressionTypeHelper.getType(variable.types as type_identifier);
-		
 		var Variable newVar = new Variable(names, type);
-			Structures.putVariable(names, newVar);		
-				
+		Structures.putVariable(names, newVar);
+
+		// instatiate parameters
+		var parameters = new ArrayList<Variable>();
+
+		for (formal_parameter_section section : variable.parameters.parameters) {
+			for (parameter_group params : section.parameters) {
+				var param_type = ExpressionTypeHelper.getType(params.types as type_identifier);
+				var Variable newParmVar;
+
+				var temp_names = params.names.names;
+				for (identifier id : temp_names) {
+					newParmVar = new Variable(id.id, param_type);
+					parameters.add(newParmVar);
+				}
+
+			}
+		}
+		Structures.putFunc(names, type, parameters);
 		checkParamsList(variable.parameters);
 	}
 
@@ -243,4 +259,33 @@ class PascalValidator extends AbstractPascalValidator {
 
 		}
 	}
+
+	@Check
+	def checkFunctionDesignator(function_designator variable) {
+		var func_name = variable.name_function;
+		if (!Structures.containsFunc(func_name)) {
+			var error_message = String.format("Função '%s' não foi declarada", func_name);
+			error(error_message, null);
+		}
+
+		var parameters = Structures.getFunc(func_name).parameters;
+		if (variable.parameters.parameters.size() != parameters.size()) {
+			var error_message = String.format("Número de  parâmetros da função '%s' difere do esperado", func_name);
+			error(error_message, null);
+		}
+
+		var index = 0;
+		for (actual_parameter observed : variable.parameters.parameters) {
+			if (!ExpressionTypeHelper.getTypeSimpleExpression(observed.content.simple).toString.equals(
+				parameters.get(index).getType())) {
+				var error_message = String.format("Tipo do parâmetro '%s' da função '%s' difere do esperado",
+					parameters.get(index).getName(), func_name);
+				error(error_message, null);
+
+			}
+			index++;
+		}
+
+	}
+
 }
