@@ -3,17 +3,24 @@
  */
 package org.xtext.compiler.pascal.generator
 
+import java.util.HashMap
 import java.util.Map
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
+import org.xtext.compiler.pascal.pascal.assignment_statement
 import org.xtext.compiler.pascal.pascal.block
 import org.xtext.compiler.pascal.pascal.program
+import org.xtext.compiler.pascal.pascal.simple_expression
+import org.xtext.compiler.pascal.pascal.simple_statement
+import org.xtext.compiler.pascal.pascal.statement
+import org.xtext.compiler.pascal.pascal.structured_statement
+import org.xtext.compiler.pascal.pascal.unlabelled_statement
 import org.xtext.compiler.pascal.pascal.unsigned_number
+import org.xtext.compiler.pascal.pascal.variable
 import org.xtext.compiler.pascal.pascal.variable_declaration
 import org.xtext.compiler.pascal.pascal.variable_declaration_part
-import java.util.HashMap
 
 /**
  * Generates code from your model files on save.
@@ -35,6 +42,12 @@ class PascalGenerator extends AbstractGenerator {
 		currentRegister++;
 		return String.format("R%s", currentRegister);
 	}
+	
+	def updateRegisterBank(String variable, String newRegister) {
+		registerBank.put(variable, newRegister);
+		return variable;
+	}
+	
 
 	def getNextLine() {
 		currentLine += LINE_LENGTH;
@@ -42,23 +55,80 @@ class PascalGenerator extends AbstractGenerator {
 	}
 
 	def compile(block block) '''
-	«getNextLine() + "LD SP #stackStart"»
-	«block.compileVarDeclaration»
-	«getNextLine() + "BR *0(SP)"»
+		«getNextLine() + "LD SP #stackStart"»
+		«block.compileVarDeclaration»
+		«block.compileAttribution»
+		«getNextLine() + "BR *0(SP)"»
 	'''
 
 	def compileVarDeclaration(block block) '''
 		«var var_declarations = block.variablepart»
 		«FOR variable_declaration_part declaration : var_declarations»
 			«FOR variable_declaration variable : declaration.variable»
-			«FOR name : variable.list_names.names»
-				«getNextLine() + "LD " + getNextRegister() + ", " + name.id »
-				«registerBank.put(name.id, getCurrentRegister())»
-			«ENDFOR»
+				«FOR name : variable.list_names.names»
+					«getNextLine() + "LD " + getNextRegister() + ", " + name.id »
+					«registerBank.put(name.id, getCurrentRegister())»
+				«ENDFOR»
 			«ENDFOR»
 		«ENDFOR»
 	'''
 
+	def compileAttribution(block block) '''
+		«var comp_statement = block.statement.sequence.statements»
+		«FOR statement statements : comp_statement»
+			«FOR unlabelled_statement single_statement : statements.statement»
+				«IF single_statement.simple !== null»
+					«compileSimpleStatement(single_statement.simple)»
+				«ENDIF»
+				«IF single_statement.structured !== null»
+					«compileStructuredStatement(single_statement.structured)»
+				«ENDIF»
+			«ENDFOR»			
+		«ENDFOR»
+	'''
+	
+	def compileStructuredStatement(structured_statement statement) {
+		//TODO
+	}
+	
+
+	def compileSimpleStatement(simple_statement statement) '''
+		«IF statement !== null»
+			«IF statement.assignment !== null»
+				«compileAssignment(statement.assignment)»
+			«ENDIF»					
+		«ENDIF»			
+	'''
+
+	def compileAssignment(assignment_statement variable) '''
+		«var declared = variable.declared_variable»
+		«compileExpression(variable.expression.simple)»
+		«getNextLine() + "ST " + updateRegisterBank(declared.variableName,getCurrentRegister) + ", " + getCurrentRegister»
+	'''
+	
+	def compileExpression(simple_expression expression)'''
+		«IF expression.operator.nullOrEmpty»
+			«var term1 = expression.term_exp.factor»
+		    	«IF term1.signal !== null»
+				«nextLine + "LD " + nextRegister + ", " + term1.signal.toString + term1.factor.constant.number.numbers.toString»
+				«ELSE»
+				«nextLine + "LD " + nextRegister + ", " + term1.factor.constant.number.numbers.toString»
+				«ENDIF»
+		«ENDIF»
+	'''
+	
+	
+	def getVariableName(variable varbl) {
+		if(varbl.expression.empty && varbl.names_exp.empty){
+			return varbl.variable_id;
+		}
+		else{
+			//TODO
+			// this is where I think the whole calculate array  indexing 
+			// would happen like for a[i] (will probably demand another method)
+		}
+	} 
+	
 	def getNumberContent(unsigned_number number) {
 		var output = "";
 		if (number.numbers !== null) {
@@ -71,7 +141,7 @@ class PascalGenerator extends AbstractGenerator {
 		for (p : resource.allContents.toIterable.filter(program)) {
 			currentRegister = 0;
 			currentLine = 0;
-			registerBank = new HashMap<String,String>();
+			registerBank = new HashMap<String, String>();
 			fsa.deleteFile("output.asm");
 			fsa.generateFile("output.asm", p.block.compile);
 //		fsa.generateFile('greetings.txt', 'People to greet: ' + 
