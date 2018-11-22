@@ -3,10 +3,17 @@
  */
 package org.xtext.compiler.pascal.generator
 
+import java.util.Map
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
+import org.xtext.compiler.pascal.pascal.block
+import org.xtext.compiler.pascal.pascal.program
+import org.xtext.compiler.pascal.pascal.unsigned_number
+import org.xtext.compiler.pascal.pascal.variable_declaration
+import org.xtext.compiler.pascal.pascal.variable_declaration_part
+import java.util.HashMap
 
 /**
  * Generates code from your model files on save.
@@ -15,11 +22,63 @@ import org.eclipse.xtext.generator.IGeneratorContext
  */
 class PascalGenerator extends AbstractGenerator {
 
+	long currentRegister;
+	long currentLine;
+	Map<String, String> registerBank;
+	public static final int LINE_LENGTH = 8;
+
+	def getCurrentRegister() {
+		return String.format("R%s", currentRegister);
+	}
+
+	def getNextRegister() {
+		currentRegister++;
+		return String.format("R%s", currentRegister);
+	}
+
+	def getNextLine() {
+		currentLine += LINE_LENGTH;
+		return String.format("%s: ", currentLine);
+	}
+
+	def compile(block block) '''
+	«getNextLine() + "LD SP #stackStart"»
+	«block.compileVarDeclaration»
+	«getNextLine() + "BR *0(SP)"»
+	'''
+
+	def compileVarDeclaration(block block) '''
+		«var var_declarations = block.variablepart»
+		«FOR variable_declaration_part declaration : var_declarations»
+			«FOR variable_declaration variable : declaration.variable»
+			«FOR name : variable.list_names.names»
+				«getNextLine() + "LD " + getNextRegister() + ", " + name.id »
+				«registerBank.put(name.id, getCurrentRegister())»
+			«ENDFOR»
+			«ENDFOR»
+		«ENDFOR»
+	'''
+
+	def getNumberContent(unsigned_number number) {
+		var output = "";
+		if (number.numbers !== null) {
+			output += number.numbers;
+		}
+		return output;
+	}
+
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
+		for (p : resource.allContents.toIterable.filter(program)) {
+			currentRegister = 0;
+			currentLine = 0;
+			registerBank = new HashMap<String,String>();
+			fsa.deleteFile("output.asm");
+			fsa.generateFile("output.asm", p.block.compile);
 //		fsa.generateFile('greetings.txt', 'People to greet: ' + 
 //			resource.allContents
 //				.filter(Greeting)
 //				.map[name]
 //				.join(', '))
+		}
 	}
 }
