@@ -14,6 +14,7 @@ import org.xtext.compiler.pascal.pascal.block
 import org.xtext.compiler.pascal.pascal.expression
 import org.xtext.compiler.pascal.pascal.program
 import org.xtext.compiler.pascal.pascal.simple_expression
+import org.xtext.compiler.pascal.pascal.signed_factor
 import org.xtext.compiler.pascal.pascal.simple_statement
 import org.xtext.compiler.pascal.pascal.statement
 import org.xtext.compiler.pascal.pascal.structured_statement
@@ -113,28 +114,42 @@ class PascalGenerator extends AbstractGenerator {
 		«getNextLine() + "ST " + updateRegisterBank(declared.variableName,getCurrentRegister) + ", " + getCurrentRegister»
 	'''
 
-// works only for constants right now
-	def compileTerm(term term) '''
-		«var term1 = term.factor»
-		«IF term1.factor.constant !== null»		
-			«IF term1.signal !== null»
-				«nextLine + "LD " + nextRegister + ", " + term1.signal.toString + term1.factor.constant.number.numbers.toString»
+// works only for constants, booleans right now
+	def compileFactor(signed_factor factor) '''
+		«IF factor.factor.constant !== null»		
+			«IF factor.signal !== null»
+				«nextLine + "LD " + nextRegister + ", " + factor.signal.toString + factor.factor.constant.number.numbers.toString»
 			«ELSE»
-				«nextLine + "LD " + nextRegister + ", " + term1.factor.constant.number.numbers.toString»
+				«nextLine + "LD " + nextRegister + ", " + factor.factor.constant.number.numbers.toString»
 			«ENDIF»
 		«ENDIF»
-		«IF term1.factor.bool_factor !== null»		
-			«nextLine + "LD " + nextRegister + ", " + term1.factor.bool_factor»
+		«IF factor.factor.bool_factor !== null»		
+			«nextLine + "LD " + nextRegister + ", " + factor.factor.bool_factor.toString»
 		«ENDIF»
 	'''
 
+	
+	def String compileRecTerm(term term) {
+		if(term.operator.nullOrEmpty || term.term2 === null) {
+			temporary += compileFactor(term.factor)
+			return getCurrentRegister();
+		} else {
+			var register2 = compileRecTerm(term.term2);
+			temporary+=compileFactor(term.factor);
+			var register1 = getCurrentRegister();
+			var mul_op = term.operator.toString;
+			temporary += compileOperation(register1, register2, mul_op)
+			return getCurrentRegister();
+		}
+	}
+
 	def String compileRecExpression(simple_expression expression) {
 		if (expression.operator.nullOrEmpty || expression.expression === null) {
-			temporary += compileTerm(expression.term_exp);
+			compileRecTerm(expression.term_exp);
 			return getCurrentRegister();
 		} else {
 			var register2 = compileRecExpression(expression.expression);
-			temporary += compileTerm(expression.term_exp);
+			compileRecTerm(expression.term_exp);
 			var register1 = getCurrentRegister();
 			var addtv_op = expression.operator.toString;
 			temporary += compileOperation(register1, register2, addtv_op);
@@ -150,8 +165,17 @@ class PascalGenerator extends AbstractGenerator {
 		«IF operator == "-"»
 		«nextLine+ "MINUS " + nextRegister + ", " + reg1 + ", " + reg2»
 		«ENDIF»
-		«IF operator == "OR"»
+		«IF operator.equalsIgnoreCase("OR")»
 		«nextLine+ "OR " + nextRegister + ", " + reg1 + ", " + reg2»
+		«ENDIF»
+		«IF operator.equalsIgnoreCase("AND")»
+		«nextLine+ "AND " + nextRegister + ", " + reg1 + ", " + reg2»
+		«ENDIF»
+		«IF operator == "*"»
+		«nextLine+ "MUL " + nextRegister + ", " + reg1 + ", " + reg2»
+		«ENDIF»
+		«IF operator == "/"»
+		«nextLine+ "DIV " + nextRegister + ", " + reg1 + ", " + reg2»
 		«ENDIF»
 	'''
 
