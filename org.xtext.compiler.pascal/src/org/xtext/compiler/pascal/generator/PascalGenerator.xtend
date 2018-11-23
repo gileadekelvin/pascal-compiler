@@ -116,10 +116,15 @@ class PascalGenerator extends AbstractGenerator {
 // works only for constants right now
 	def compileTerm(term term) '''
 		«var term1 = term.factor»
-		   	«IF term1.signal !== null»
-			«nextLine + "LD " + nextRegister + ", " + term1.signal.toString + term1.factor.constant.number.numbers.toString»
-		«ELSE»
-			«nextLine + "LD " + nextRegister + ", " + term1.factor.constant.number.numbers.toString»
+		«IF term1.factor.constant !== null»		
+			«IF term1.signal !== null»
+				«nextLine + "LD " + nextRegister + ", " + term1.signal.toString + term1.factor.constant.number.numbers.toString»
+			«ELSE»
+				«nextLine + "LD " + nextRegister + ", " + term1.factor.constant.number.numbers.toString»
+			«ENDIF»
+		«ENDIF»
+		«IF term1.factor.bool_factor !== null»		
+			«nextLine + "LD " + nextRegister + ", " + term1.factor.bool_factor»
 		«ENDIF»
 	'''
 
@@ -144,6 +149,9 @@ class PascalGenerator extends AbstractGenerator {
 		«ENDIF»
 		«IF operator == "-"»
 		«nextLine+ "MINUS " + nextRegister + ", " + reg1 + ", " + reg2»
+		«ENDIF»
+		«IF operator == "OR"»
+		«nextLine+ "OR " + nextRegister + ", " + reg1 + ", " + reg2»
 		«ENDIF»
 	'''
 
