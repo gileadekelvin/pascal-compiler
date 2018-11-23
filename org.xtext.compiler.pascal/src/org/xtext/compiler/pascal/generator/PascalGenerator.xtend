@@ -11,11 +11,13 @@ import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
 import org.xtext.compiler.pascal.pascal.assignment_statement
 import org.xtext.compiler.pascal.pascal.block
+import org.xtext.compiler.pascal.pascal.expression
 import org.xtext.compiler.pascal.pascal.program
 import org.xtext.compiler.pascal.pascal.simple_expression
 import org.xtext.compiler.pascal.pascal.simple_statement
 import org.xtext.compiler.pascal.pascal.statement
 import org.xtext.compiler.pascal.pascal.structured_statement
+import org.xtext.compiler.pascal.pascal.term
 import org.xtext.compiler.pascal.pascal.unlabelled_statement
 import org.xtext.compiler.pascal.pascal.unsigned_number
 import org.xtext.compiler.pascal.pascal.variable
@@ -31,6 +33,7 @@ class PascalGenerator extends AbstractGenerator {
 
 	long currentRegister;
 	long currentLine;
+	String temporary;
 	Map<String, String> registerBank;
 	public static final int LINE_LENGTH = 8;
 
@@ -42,12 +45,11 @@ class PascalGenerator extends AbstractGenerator {
 		currentRegister++;
 		return String.format("R%s", currentRegister);
 	}
-	
+
 	def updateRegisterBank(String variable, String newRegister) {
 		registerBank.put(variable, newRegister);
 		return variable;
 	}
-	
 
 	def getNextLine() {
 		currentLine += LINE_LENGTH;
@@ -66,11 +68,11 @@ class PascalGenerator extends AbstractGenerator {
 		«FOR variable_declaration_part declaration : var_declarations»
 			«FOR variable_declaration variable : declaration.variable»
 				«FOR name : variable.list_names.names»
-					«getNextLine() + "LD " + getNextRegister() + ", " + name.id »
+					«««					«getNextLine() + "LD " + getNextRegister() + ", " + name.id »
 					«registerBank.put(name.id, getCurrentRegister())»
+					«ENDFOR»
 				«ENDFOR»
 			«ENDFOR»
-		«ENDFOR»
 	'''
 
 	def compileAttribution(block block) '''
@@ -86,11 +88,10 @@ class PascalGenerator extends AbstractGenerator {
 			«ENDFOR»			
 		«ENDFOR»
 	'''
-	
+
 	def compileStructuredStatement(structured_statement statement) {
-		//TODO
+		// TODO
 	}
-	
 
 	def compileSimpleStatement(simple_statement statement) '''
 		«IF statement !== null»
@@ -99,36 +100,63 @@ class PascalGenerator extends AbstractGenerator {
 			«ENDIF»					
 		«ENDIF»			
 	'''
+	
+	def setTemporary(String content) {
+		this.temporary = content;
+	}
 
 	def compileAssignment(assignment_statement variable) '''
 		«var declared = variable.declared_variable»
-		«compileExpression(variable.expression.simple)»
+		«setTemporary('')»
+		«var resultingReg = compileRecExpression(variable.expression.simple)»
+		«temporary»
 		«getNextLine() + "ST " + updateRegisterBank(declared.variableName,getCurrentRegister) + ", " + getCurrentRegister»
 	'''
-	
-	def compileExpression(simple_expression expression)'''
-		«IF expression.operator.nullOrEmpty»
-			«var term1 = expression.term_exp.factor»
-		    	«IF term1.signal !== null»
-				«nextLine + "LD " + nextRegister + ", " + term1.signal.toString + term1.factor.constant.number.numbers.toString»
-				«ELSE»
-				«nextLine + "LD " + nextRegister + ", " + term1.factor.constant.number.numbers.toString»
-				«ENDIF»
+
+// works only for constants right now
+	def compileTerm(term term) '''
+		«var term1 = term.factor»
+		   	«IF term1.signal !== null»
+			«nextLine + "LD " + nextRegister + ", " + term1.signal.toString + term1.factor.constant.number.numbers.toString»
+		«ELSE»
+			«nextLine + "LD " + nextRegister + ", " + term1.factor.constant.number.numbers.toString»
 		«ENDIF»
 	'''
+
+	def String compileRecExpression(simple_expression expression) {
+		if (expression.operator.nullOrEmpty || expression.expression === null) {
+			temporary += compileTerm(expression.term_exp);
+			return getCurrentRegister();
+		} else {
+			var register2 = compileRecExpression(expression.expression);
+			temporary += compileTerm(expression.term_exp);
+			var register1 = getCurrentRegister();
+			var addtv_op = expression.operator.toString;
+			temporary += compileOperation(register1, register2, addtv_op);
+			return getCurrentRegister();
+		}
+
+	}
 	
-	
+	def String compileOperation(String reg1, String reg2, String operator)'''
+		«IF operator == "+"»
+		«nextLine+ "ADD " + nextRegister + ", " + reg1 + ", " + reg2»
+		«ENDIF»
+		«IF operator == "-"»
+		«nextLine+ "MINUS " + nextRegister + ", " + reg1 + ", " + reg2»
+		«ENDIF»
+	'''
+
 	def getVariableName(variable varbl) {
-		if(varbl.expression.empty && varbl.names_exp.empty){
+		if (varbl.expression.empty && varbl.names_exp.empty) {
 			return varbl.variable_id;
-		}
-		else{
-			//TODO
+		} else {
+			// TODO
 			// this is where I think the whole calculate array  indexing 
-			// would happen like for a[i] (will probably demand another method)
+			// would happen a[i] for instance (will probably demand another method)
 		}
-	} 
-	
+	}
+
 	def getNumberContent(unsigned_number number) {
 		var output = "";
 		if (number.numbers !== null) {
@@ -141,6 +169,7 @@ class PascalGenerator extends AbstractGenerator {
 		for (p : resource.allContents.toIterable.filter(program)) {
 			currentRegister = 0;
 			currentLine = 0;
+			temporary = '';
 			registerBank = new HashMap<String, String>();
 			fsa.deleteFile("output.asm");
 			fsa.generateFile("output.asm", p.block.compile);
