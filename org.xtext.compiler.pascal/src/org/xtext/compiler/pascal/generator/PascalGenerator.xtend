@@ -128,7 +128,7 @@ class PascalGenerator extends AbstractGenerator {
 				«nextLine + "LD " + nextRegister + ", " + constant.number.numbers.toString»
 			«ENDIF»
 			«IF constant.string !== null»
-				«nextLine + "LD " + nextRegister + ", " + "#\""+ constant.string + "\""»
+				«nextLine + "LD " + nextRegister + ", " + "#'"+ constant.string + "'"»
 			«ENDIF»
 		«ENDIF»
 	'''
