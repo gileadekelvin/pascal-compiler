@@ -125,25 +125,25 @@ simple_type:
 ;
 
 subrange_type: 
-	constants+=constant DOTDOT constants+=constant
+	constantInit+=constant DOTDOT constantFinal+=constant
 ;
 
 structured_type:
-	"PACKED" unpacked_structured_type
-   | unpacked_structured_type
+	//packed = "PACKED" unpacked_structured_type |
+   unpacked=unpacked_structured_type
 ;
 
 unpacked_structured_type:
-   static=array_type
+   static_array=array_type
    | dynamic=dynamic_array_type
 ;
 
 dynamic_array_type:
-	"array" "of" type=type	
+	"array" "of" type=type_identifier	
 ;
 
 array_type:
-	"array" "[" type_list "]" "of" component+=component_type
+	"array" "[" type_l=type_list "]" "of" type=type_identifier
 ;
  type_list:
    indexes+=index_type ("," indexes+=index_type)*
