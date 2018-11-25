@@ -383,7 +383,16 @@ class PascalValidator extends AbstractPascalValidator {
 	
 	@Check
 	def checkArrayRange(subrange_type range) {
-		//System.out.println(range.constantInit);
+		if (range.constantInit.uns_number === null) {
+			var error_message = String.format("Índice inicial do intervalo não é do tipo inteiro.");
+			error(error_message, null);
+		} else if (range.constantFinal.uns_number === null) {
+			var error_message = String.format("Índice final do intervalo não é do tipo inteiro.");
+			error(error_message, null);
+		} else if (range.constantFinal.uns_number.numbers < range.constantInit.uns_number.numbers) {
+			var error_message = String.format("Índice inicial do intervalo é maior que o índice final.");
+			error(error_message, null);
+		}	
 	}
 
 }

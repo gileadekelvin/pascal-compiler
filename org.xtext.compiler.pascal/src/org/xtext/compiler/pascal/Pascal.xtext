@@ -125,7 +125,7 @@ simple_type:
 ;
 
 subrange_type: 
-	constantInit+=constant DOTDOT constantFinal+=constant
+	constantInit=constant DOTDOT constantFinal=constant
 ;
 
 structured_type:
