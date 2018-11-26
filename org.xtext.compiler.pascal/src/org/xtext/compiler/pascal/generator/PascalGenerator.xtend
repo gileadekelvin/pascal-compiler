@@ -12,6 +12,7 @@ import org.eclipse.xtext.generator.IGeneratorContext
 import org.xtext.compiler.pascal.pascal.assignment_statement
 import org.xtext.compiler.pascal.pascal.block
 import org.xtext.compiler.pascal.pascal.expression
+import org.xtext.compiler.pascal.pascal.unsigned_constant
 import org.xtext.compiler.pascal.pascal.program
 import org.xtext.compiler.pascal.pascal.simple_expression
 import org.xtext.compiler.pascal.pascal.signed_factor
@@ -51,6 +52,10 @@ class PascalGenerator extends AbstractGenerator {
 		registerBank.put(variable, newRegister);
 		return variable;
 	}
+	
+	def String getVariableRegister(String variable) {
+		return registerBank.get(variable);
+	}
 
 	def getNextLine() {
 		currentLine += LINE_LENGTH;
@@ -69,7 +74,7 @@ class PascalGenerator extends AbstractGenerator {
 		«FOR variable_declaration_part declaration : var_declarations»
 			«FOR variable_declaration variable : declaration.variable»
 				«FOR name : variable.list_names.names»
-					«««					«getNextLine() + "LD " + getNextRegister() + ", " + name.id »
+					«««  «getNextLine() + "LD " + getNextRegister() + ", " + name.id »
 					«registerBank.put(name.id, getCurrentRegister())»
 					«ENDFOR»
 				«ENDFOR»
@@ -113,30 +118,51 @@ class PascalGenerator extends AbstractGenerator {
 		«temporary»
 		«getNextLine() + "ST " + updateRegisterBank(declared.variableName,getCurrentRegister) + ", " + getCurrentRegister»
 	'''
-
-// works only for constants, booleans right now
-	def compileFactor(signed_factor factor) '''
-		«IF factor.factor.constant !== null»		
-			«IF factor.signal !== null»
-				«nextLine + "LD " + nextRegister + ", " + factor.signal.toString + factor.factor.constant.number.numbers.toString»
-			«ELSE»
-				«nextLine + "LD " + nextRegister + ", " + factor.factor.constant.number.numbers.toString»
+	
+	def compileFactorAsConstant(signed_factor factor)'''
+		«IF factor.signal !== null»
+			«nextLine + "LD " + nextRegister + ", " + factor.signal.toString + factor.factor.constant.number.numbers.toString»
+		«ELSE»
+			«var constant = factor.factor.constant»
+			«IF constant.number !== null»
+				«nextLine + "LD " + nextRegister + ", " + constant.number.numbers.toString»
+			«ENDIF»
+			«IF constant.string !== null»
+				«nextLine + "LD " + nextRegister + ", " + "#'"+ constant.string + "'"»
 			«ENDIF»
 		«ENDIF»
-		«IF factor.factor.bool_factor !== null»		
-			«nextLine + "LD " + nextRegister + ", " + factor.factor.bool_factor.toString»
-		«ENDIF»
 	'''
+	
+	def compileFactorAsBool(signed_factor factor)'''
+		«nextLine + "LD " + nextRegister + ", " + factor.factor.bool_factor.toString»
+	'''
+	
+	def compileFactorAsVariable(signed_factor factor)'''
+		«nextLine + "LD " + nextRegister + ", " + getVariableRegister(factor.factor.variable.variableName)»
+	'''
+	
+	
+	def String compileFactor(signed_factor factor) {
+		var factorInst = factor.factor;
+		if (factorInst.constant !== null) {			
+			temporary+=compileFactorAsConstant(factor);
+			return getCurrentRegister();
+		} else if (factorInst.bool_factor !== null){
+			temporary+=compileFactorAsBool(factor);
+			return getCurrentRegister();
+		} else if (factorInst.variable !== null){
+			return getVariableRegister(factorInst.variable.variableName);
+		}
+	}
 
 	
 	def String compileRecTerm(term term) {
 		if(term.operator.nullOrEmpty || term.term2 === null) {
-			temporary += compileFactor(term.factor)
-			return getCurrentRegister();
+			var register1 = compileFactor(term.factor);			
+			return register1;			
 		} else {
-			var register2 = compileRecTerm(term.term2);
-			temporary+=compileFactor(term.factor);
-			var register1 = getCurrentRegister();
+			var register2 = compileRecTerm(term.term2);			
+			var register1 = compileFactor(term.factor);
 			var mul_op = term.operator.toString;
 			temporary += compileOperation(register1, register2, mul_op)
 			return getCurrentRegister();
@@ -145,12 +171,10 @@ class PascalGenerator extends AbstractGenerator {
 
 	def String compileRecExpression(simple_expression expression) {
 		if (expression.operator.nullOrEmpty || expression.expression === null) {
-			compileRecTerm(expression.term_exp);
-			return getCurrentRegister();
+			return compileRecTerm(expression.term_exp);			
 		} else {
-			var register2 = compileRecExpression(expression.expression);
-			compileRecTerm(expression.term_exp);
-			var register1 = getCurrentRegister();
+			var register2 = compileRecExpression(expression.expression);			
+			var register1 = compileRecTerm(expression.term_exp);
 			var addtv_op = expression.operator.toString;
 			temporary += compileOperation(register1, register2, addtv_op);
 			return getCurrentRegister();
