@@ -223,7 +223,7 @@ class PascalGenerator extends AbstractGenerator {
 					«nextLine + "BNEZ " + getCurrentRegister() + ", " + "%s"»
 				«ENDIF»
 			«ELSEIF !const_.string.isNullOrEmpty»
-				«nextLine + "LD " + nextRegister + ", " + const_.string»
+				«nextLine + "LD " + nextRegister + ", " + "#'" + const_.string + "'"»
 				«IF hasMoreConsts»
 					«nextLine + "BEQ " + expRegister + ", " + getCurrentRegister() + ", " + "B_EQUALS"»
 				«ELSE»
