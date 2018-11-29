@@ -18,13 +18,20 @@ import org.xtext.compiler.pascal.pascal.simple_expression
 import org.xtext.compiler.pascal.pascal.signed_factor
 import org.xtext.compiler.pascal.pascal.simple_statement
 import org.xtext.compiler.pascal.pascal.statement
+import org.xtext.compiler.pascal.pascal.statements
 import org.xtext.compiler.pascal.pascal.structured_statement
+import org.xtext.compiler.pascal.pascal.case_statement
+import org.xtext.compiler.pascal.pascal.case_list_element
+import org.xtext.compiler.pascal.pascal.conditional_statement
+import org.xtext.compiler.pascal.pascal.constant
 import org.xtext.compiler.pascal.pascal.term
 import org.xtext.compiler.pascal.pascal.unlabelled_statement
 import org.xtext.compiler.pascal.pascal.unsigned_number
 import org.xtext.compiler.pascal.pascal.variable
 import org.xtext.compiler.pascal.pascal.variable_declaration
 import org.xtext.compiler.pascal.pascal.variable_declaration_part
+import org.xtext.compiler.pascal.validation.ExpressionTypeHelper
+import org.eclipse.emf.common.util.EList
 
 /**
  * Generates code from your model files on save.
@@ -61,6 +68,12 @@ class PascalGenerator extends AbstractGenerator {
 		currentLine += LINE_LENGTH;
 		return String.format("%s: ", currentLine);
 	}
+	
+	def getValueOfNextLine() {
+		var newLine = currentLine;
+		newLine += LINE_LENGTH;
+		return String.format("%s", newLine)
+	}
 
 	def compile(block block) '''
 		«getNextLine() + "LD SP #stackStart"»
@@ -95,9 +108,11 @@ class PascalGenerator extends AbstractGenerator {
 		«ENDFOR»
 	'''
 
-	def compileStructuredStatement(structured_statement statement) {
-		// TODO
-	}
+	def compileStructuredStatement(structured_statement statement) '''
+		«IF statement.conditional_stat !== null»
+			«compileCase(statement.conditional_stat)»
+		«ENDIF»
+	'''
 
 	def compileSimpleStatement(simple_statement statement) '''
 		«IF statement !== null»
@@ -181,6 +196,80 @@ class PascalGenerator extends AbstractGenerator {
 		}
 
 	}
+	
+	def String compileCaseStatements(statement statement) '''
+		«FOR unlabelled_statement u_statement : statement.statement»
+			«IF u_statement.simple !== null»
+				«compileSimpleStatement(u_statement.simple)»
+			«ENDIF»
+		«ENDFOR»
+	'''
+	
+	def String compileCaseForTypes(EList<constant> constants, String expRegister) '''
+		«FOR constant const_: constants»
+			«var hasMoreConsts = constants.indexOf(const_) < constants.size - 1»
+			«IF const_.uns_number !== null»
+				«nextLine + "SUB " + nextRegister + ", " + expRegister + ", " + const_.uns_number.numberContent»
+				«IF hasMoreConsts»
+					«nextLine + "BEZ " + getCurrentRegister() + ", " + "B_EQUALS"»
+				«ELSE»
+					«nextLine + "BNEZ " + getCurrentRegister() + ", " + "%s"»
+				«ENDIF»
+			«ELSEIF const_.sig_number !== null»
+				«nextLine + "SUB " + nextRegister + ", " + expRegister + ", " + const_.sig_number.numberContent»
+				«IF hasMoreConsts»
+					«nextLine + "BEZ " + getCurrentRegister() + ", " + "B_EQUALS"»
+				«ELSE»
+					«nextLine + "BNEZ " + getCurrentRegister() + ", " + "%s"»
+				«ENDIF»
+			«ELSEIF !const_.string.isNullOrEmpty»
+				«nextLine + "LD " + nextRegister + ", " + "#'" + const_.string + "'"»
+				«IF hasMoreConsts»
+					«nextLine + "BEQ " + expRegister + ", " + getCurrentRegister() + ", " + "B_EQUALS"»
+				«ELSE»
+					«nextLine + "BNE " + expRegister + ", " + getCurrentRegister() + ", " + "%s"»
+				«ENDIF»
+			«ELSEIF !const_.booltype.isNullOrEmpty»
+				«nextLine + "LD " + nextRegister + ", " + const_.booltype»
+				«IF hasMoreConsts»
+					«nextLine + "BEQ " + expRegister + ", " + getCurrentRegister() + ", " + "B_EQUALS"»
+				«ELSE»
+					«nextLine + "BNE " + expRegister + ", " + getCurrentRegister() + ", " + "%s"»
+				«ENDIF»
+			«ENDIF»
+		«ENDFOR»
+	'''
+	
+	
+	def String compileCaseForBranch(case_list_element element, String expRegister) '''
+		«var constants = element.consts.constants»
+		«compileCaseForTypes(constants, expRegister).replace("B_EQUALS", valueOfNextLine)»
+		«compileCaseStatements(element.case_statement)»
+		«nextLine + "BR END_CASE"»
+	'''
+	
+	def String compileAllCases(case_statement case_statement, String expRegister) '''
+		«FOR case_list_element element : case_statement.case_list»
+			«String.format(compileCaseForBranch(element, expRegister), valueOfNextLine)»
+		«ENDFOR»
+		
+		«IF case_statement.case_statements !== null»
+			«FOR statement statement: case_statement.case_statements.statements»
+				«compileCaseStatements(statement)»
+			«ENDFOR»
+		«ENDIF»
+	'''
+	
+	def String compileCase(conditional_statement conditional_statement) '''
+		«var case_statement = conditional_statement.cond_statements»
+		«var expression = case_statement.exp»
+		«setTemporary('')»
+		«var resultingReg = compileRecExpression(expression.simple)»
+		«var expRegister = nextRegister»
+		«temporary»
+		«nextLine+ "LD " + expRegister + ", " + resultingReg»
+		«compileAllCases(case_statement, expRegister).replace("END_CASE", valueOfNextLine)»
+	'''
 	
 	def String compileOperation(String reg1, String reg2, String operator)'''
 		«IF operator == "+"»
