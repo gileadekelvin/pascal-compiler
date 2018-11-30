@@ -16,6 +16,7 @@ import org.xtext.compiler.pascal.pascal.unsigned_constant
 import org.xtext.compiler.pascal.pascal.program
 import org.xtext.compiler.pascal.pascal.simple_expression
 import org.xtext.compiler.pascal.pascal.signed_factor
+import org.xtext.compiler.pascal.pascal.factor
 import org.xtext.compiler.pascal.pascal.simple_statement
 import org.xtext.compiler.pascal.pascal.statement
 import org.xtext.compiler.pascal.pascal.statements
@@ -134,50 +135,64 @@ class PascalGenerator extends AbstractGenerator {
 		«getNextLine() + "ST " + updateRegisterBank(declared.variableName,getCurrentRegister) + ", " + getCurrentRegister»
 	'''
 	
-	def compileFactorAsConstant(signed_factor factor)'''
-		«IF factor.signal !== null»
-			«nextLine + "LD " + nextRegister + ", " + factor.signal.toString + factor.factor.constant.number.numbers.toString»
-		«ELSE»
-			«var constant = factor.factor.constant»
-			«IF constant.number !== null»
-				«nextLine + "LD " + nextRegister + ", " + constant.number.numbers.toString»
-			«ENDIF»
-			«IF constant.string !== null»
-				«nextLine + "LD " + nextRegister + ", " + "#'"+ constant.string + "'"»
-			«ENDIF»
+	def compileFactorAsConstant(factor factor)'''
+		«var constant = factor.constant»
+		«IF constant.number !== null»
+			«nextLine + "LD " + nextRegister + ", " + constant.number.numbers.toString»
 		«ENDIF»
+		«IF constant.string !== null»
+			«nextLine + "LD " + nextRegister + ", " + "#'"+ constant.string + "'"»
+		«ENDIF»		
 	'''
 	
-	def compileFactorAsBool(signed_factor factor)'''
-		«nextLine + "LD " + nextRegister + ", " + factor.factor.bool_factor.toString»
+	def compileFactorAsBool(factor factor)'''
+		«nextLine + "LD " + nextRegister + ", " + factor.bool_factor.toString»
 	'''
 	
-	def compileFactorAsVariable(signed_factor factor)'''
-		«nextLine + "LD " + nextRegister + ", " + getVariableRegister(factor.factor.variable.variableName)»
+	def compileFactorAsVariable(factor factor)'''
+		«nextLine + "LD " + nextRegister + ", " + getVariableRegister(factor.variable.variableName)»
 	'''
 	
+	def compileFactorNotOp(String register)'''
+		«nextLine + "NOT " + nextRegister + ", " + register»
+	''' 
+		
+	def compileFactorWithSignal(signed_factor factor)'''
+		«nextLine + "LD " + nextRegister + ", " + factor.signal.toString + factor.factor.constant.number.numbers.toString»		
+	'''
 	
-	def String compileFactor(signed_factor factor) {
-		var factorInst = factor.factor;
+	def String compileFactor(factor factorInst) {		
 		if (factorInst.constant !== null) {			
-			temporary+=compileFactorAsConstant(factor);
+			temporary+=compileFactorAsConstant(factorInst);
 			return getCurrentRegister();
 		} else if (factorInst.bool_factor !== null){
-			temporary+=compileFactorAsBool(factor);
+			temporary+=compileFactorAsBool(factorInst);
 			return getCurrentRegister();
 		} else if (factorInst.variable !== null){
 			return getVariableRegister(factorInst.variable.variableName);
+		} else if (factorInst.not_factor !== null) {			
+			var register = compileFactor(factorInst.not_factor);
+			temporary+=compileFactorNotOp(register);
+			return getCurrentRegister();			
 		}
 	}
-
+			
+	def String compileSignedFactor(signed_factor factor) {		
+		if (factor.signal !== null) {
+			temporary+=compileFactorWithSignal(factor);
+			return getCurrentRegister();
+		} else {
+			return compileFactor(factor.factor);
+		}
+	}
 	
 	def String compileRecTerm(term term) {
 		if(term.operator.nullOrEmpty || term.term2 === null) {
-			var register1 = compileFactor(term.factor);			
+			var register1 = compileSignedFactor(term.factor);			
 			return register1;			
 		} else {
 			var register2 = compileRecTerm(term.term2);			
-			var register1 = compileFactor(term.factor);
+			var register1 = compileSignedFactor(term.factor);
 			var mul_op = term.operator.toString;
 			temporary += compileOperation(register1, register2, mul_op)
 			return getCurrentRegister();
