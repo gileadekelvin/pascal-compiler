@@ -12,6 +12,8 @@ import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
 import org.xtext.compiler.pascal.pascal.assignment_statement
 import org.xtext.compiler.pascal.pascal.block
+import org.xtext.compiler.pascal.pascal.expression
+import org.xtext.compiler.pascal.pascal.unsigned_constant
 import org.xtext.compiler.pascal.pascal.case_list_element
 import org.xtext.compiler.pascal.pascal.case_statement
 import org.xtext.compiler.pascal.pascal.conditional_statement
@@ -23,17 +25,25 @@ import org.xtext.compiler.pascal.pascal.parameter_group
 import org.xtext.compiler.pascal.pascal.procedure_and_function_declaration_part
 import org.xtext.compiler.pascal.pascal.procedure_declaration
 import org.xtext.compiler.pascal.pascal.program
-import org.xtext.compiler.pascal.pascal.signed_factor
 import org.xtext.compiler.pascal.pascal.simple_expression
+import org.xtext.compiler.pascal.pascal.signed_factor
+import org.xtext.compiler.pascal.pascal.factor
 import org.xtext.compiler.pascal.pascal.simple_statement
 import org.xtext.compiler.pascal.pascal.statement
+import org.xtext.compiler.pascal.pascal.statements
 import org.xtext.compiler.pascal.pascal.structured_statement
+import org.xtext.compiler.pascal.pascal.case_statement
+import org.xtext.compiler.pascal.pascal.case_list_element
+import org.xtext.compiler.pascal.pascal.conditional_statement
+import org.xtext.compiler.pascal.pascal.constant
 import org.xtext.compiler.pascal.pascal.term
 import org.xtext.compiler.pascal.pascal.unlabelled_statement
 import org.xtext.compiler.pascal.pascal.unsigned_number
 import org.xtext.compiler.pascal.pascal.variable
 import org.xtext.compiler.pascal.pascal.variable_declaration
 import org.xtext.compiler.pascal.pascal.variable_declaration_part
+import org.xtext.compiler.pascal.validation.ExpressionTypeHelper
+import org.eclipse.emf.common.util.EList
 
 /**
  * Generates code from your model files on save.
@@ -180,7 +190,7 @@ class PascalGenerator extends AbstractGenerator {
 			«ENDIF»					
 		«ENDIF»			
 	'''
-
+	
 	def setTemporary(String content) {
 		this.temporary = content;
 	}
@@ -192,49 +202,68 @@ class PascalGenerator extends AbstractGenerator {
 		«temporary»
 		«getNextLine() + "ST " + updateRegisterBank(declared.variableName,resultReg) + ", " + resultReg»
 	'''
-
-	def compileFactorAsConstant(signed_factor factor) '''
-		«IF factor.signal !== null»
-			«nextLine + "LD " + nextRegister + ", " + factor.signal.toString + factor.factor.constant.number.numbers.toString»
-		«ELSE»
-			«var constant = factor.factor.constant»
-			«IF constant.number !== null»
-				«nextLine + "LD " + nextRegister + ", " + constant.number.numbers.toString»
-			«ENDIF»
-			«IF constant.string !== null»
-				«nextLine + "LD " + nextRegister + ", " + "#'"+ constant.string + "'"»
-			«ENDIF»
+	
+	def compileFactorAsConstant(factor factor)'''
+		«var constant = factor.constant»
+		«IF constant.number !== null»
+			«nextLine + "LD " + nextRegister + ", " + constant.number.numbers.toString»
 		«ENDIF»
+		«IF constant.string !== null»
+			«nextLine + "LD " + nextRegister + ", " + "#'"+ constant.string + "'"»
+		«ENDIF»		
 	'''
-
-	def compileFactorAsBool(signed_factor factor) '''
-		«nextLine + "LD " + nextRegister + ", " + factor.factor.bool_factor.toString»
+	
+	def compileFactorAsBool(factor factor)'''
+		«nextLine + "LD " + nextRegister + ", " + factor.bool_factor.toString»
 	'''
-
-	def compileFactorAsVariable(signed_factor factor) '''
-		«nextLine + "LD " + nextRegister + ", " + getVariableRegister(factor.factor.variable.variableName)»
+	
+	def compileFactorAsVariable(factor factor)'''
+		«nextLine + "LD " + nextRegister + ", " + getVariableRegister(factor.variable.variableName)»
 	'''
-
-	def String compileFactor(signed_factor factor) {
-		var factorInst = factor.factor;
-		if (factorInst.constant !== null) {
-			temporary += compileFactorAsConstant(factor);
+	
+	def compileFactorNotOp(String register)'''
+		«nextLine + "NOT " + nextRegister + ", " + register»
+	''' 
+		
+	def compileFactorWithSignal(signed_factor factor)'''
+		«nextLine + "LD " + nextRegister + ", " + factor.signal.toString + factor.factor.constant.number.numbers.toString»		
+	'''
+	
+	def String compileFactor(factor factorInst) {		
+		if (factorInst.constant !== null) {			
+			temporary+=compileFactorAsConstant(factorInst);
 			return getCurrentRegister();
-		} else if (factorInst.bool_factor !== null) {
-			temporary += compileFactorAsBool(factor);
+		} else if (factorInst.bool_factor !== null){
+			temporary+=compileFactorAsBool(factorInst);
 			return getCurrentRegister();
-		} else if (factorInst.variable !== null) {
+		} else if (factorInst.variable !== null){
 			return getVariableRegister(factorInst.variable.variableName);
+		} else if (factorInst.not_factor !== null) {			
+			var register = compileFactor(factorInst.not_factor);
+			temporary+=compileFactorNotOp(register);
+			return getCurrentRegister();			
+		} else if (factorInst.expression !== null){
+			var register = compileRecExpression(factorInst.expression.simple);
+			return register;
 		}
 	}
-
-	def String compileRecTerm(term term) {
-		if (term.operator.nullOrEmpty || term.term2 === null) {
-			var register1 = compileFactor(term.factor);
-			return register1;
+			
+	def String compileSignedFactor(signed_factor factor) {		
+		if (factor.signal !== null) {
+			temporary+=compileFactorWithSignal(factor);
+			return getCurrentRegister();
 		} else {
-			var register2 = compileRecTerm(term.term2);
-			var register1 = compileFactor(term.factor);
+			return compileFactor(factor.factor);
+		}
+	}
+	
+	def String compileRecTerm(term term) {
+		if(term.operator.nullOrEmpty || term.term2 === null) {
+			var register1 = compileSignedFactor(term.factor);			
+			return register1;			
+		} else {
+			var register2 = compileRecTerm(term.term2);			
+			var register1 = compileSignedFactor(term.factor);
 			var mul_op = term.operator.toString;
 			temporary += compileOperation(register1, register2, mul_op)
 			return getCurrentRegister();
@@ -243,9 +272,9 @@ class PascalGenerator extends AbstractGenerator {
 
 	def String compileRecExpression(simple_expression expression) {
 		if (expression.operator.nullOrEmpty || expression.expression === null) {
-			return compileRecTerm(expression.term_exp);
+			return compileRecTerm(expression.term_exp);			
 		} else {
-			var register2 = compileRecExpression(expression.expression);
+			var register2 = compileRecExpression(expression.expression);			
 			var register1 = compileRecTerm(expression.term_exp);
 			var addtv_op = expression.operator.toString;
 			temporary += compileOperation(register1, register2, addtv_op);
@@ -253,7 +282,7 @@ class PascalGenerator extends AbstractGenerator {
 		}
 
 	}
-
+	
 	def String compileCaseStatements(statement statement) '''
 		«FOR unlabelled_statement u_statement : statement.statement»
 			«IF u_statement.simple !== null»
@@ -261,9 +290,9 @@ class PascalGenerator extends AbstractGenerator {
 			«ENDIF»
 		«ENDFOR»
 	'''
-
+	
 	def String compileCaseForTypes(EList<constant> constants, String expRegister) '''
-		«FOR constant const_ : constants»
+		«FOR constant const_: constants»
 			«var hasMoreConsts = constants.indexOf(const_) < constants.size - 1»
 			«IF const_.uns_number !== null»
 				«nextLine + "SUB " + nextRegister + ", " + expRegister + ", " + const_.uns_number.numberContent»
@@ -296,14 +325,15 @@ class PascalGenerator extends AbstractGenerator {
 			«ENDIF»
 		«ENDFOR»
 	'''
-
+	
+	
 	def String compileCaseForBranch(case_list_element element, String expRegister) '''
 		«var constants = element.consts.constants»
 		«compileCaseForTypes(constants, expRegister).replace("B_EQUALS", valueOfNextLine)»
 		«compileCaseStatements(element.case_statement)»
 		«nextLine + "BR END_CASE"»
 	'''
-
+	
 	def String compileAllCases(case_statement case_statement, String expRegister) '''
 		«FOR case_list_element element : case_statement.case_list»
 			«String.format(compileCaseForBranch(element, expRegister), valueOfNextLine)»
@@ -315,7 +345,7 @@ class PascalGenerator extends AbstractGenerator {
 			«ENDFOR»
 		«ENDIF»
 	'''
-
+	
 	def String compileCase(conditional_statement conditional_statement) '''
 		«var case_statement = conditional_statement.cond_statements»
 		«var expression = case_statement.exp»
@@ -326,25 +356,25 @@ class PascalGenerator extends AbstractGenerator {
 		«nextLine+ "LD " + expRegister + ", " + resultingReg»
 		«compileAllCases(case_statement, expRegister).replace("END_CASE", valueOfNextLine)»
 	'''
-
-	def String compileOperation(String reg1, String reg2, String operator) '''
+	
+	def String compileOperation(String reg1, String reg2, String operator)'''
 		«IF operator == "+"»
-			«nextLine+ "ADD " + nextRegister + ", " + reg1 + ", " + reg2»
+		«nextLine+ "ADD " + nextRegister + ", " + reg1 + ", " + reg2»
 		«ENDIF»
 		«IF operator == "-"»
-			«nextLine+ "MINUS " + nextRegister + ", " + reg1 + ", " + reg2»
+		«nextLine+ "MINUS " + nextRegister + ", " + reg1 + ", " + reg2»
 		«ENDIF»
 		«IF operator.equalsIgnoreCase("OR")»
-			«nextLine+ "OR " + nextRegister + ", " + reg1 + ", " + reg2»
+		«nextLine+ "OR " + nextRegister + ", " + reg1 + ", " + reg2»
 		«ENDIF»
 		«IF operator.equalsIgnoreCase("AND")»
-			«nextLine+ "AND " + nextRegister + ", " + reg1 + ", " + reg2»
+		«nextLine+ "AND " + nextRegister + ", " + reg1 + ", " + reg2»
 		«ENDIF»
 		«IF operator == "*"»
-			«nextLine+ "MUL " + nextRegister + ", " + reg1 + ", " + reg2»
+		«nextLine+ "MUL " + nextRegister + ", " + reg1 + ", " + reg2»
 		«ENDIF»
 		«IF operator == "/"»
-			«nextLine+ "DIV " + nextRegister + ", " + reg1 + ", " + reg2»
+		«nextLine+ "DIV " + nextRegister + ", " + reg1 + ", " + reg2»
 		«ENDIF»
 	'''
 
