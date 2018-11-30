@@ -174,6 +174,9 @@ class PascalGenerator extends AbstractGenerator {
 			var register = compileFactor(factorInst.not_factor);
 			temporary+=compileFactorNotOp(register);
 			return getCurrentRegister();			
+		} else if (factorInst.expression !== null){
+			var register = compileRecExpression(factorInst.expression.simple);
+			return register;
 		}
 	}
 			
