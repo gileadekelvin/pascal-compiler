@@ -223,11 +223,11 @@ multiplicative_operator
 ;
 
 procedure_and_function_declaration_part:
-	procedure_or_function_declaration ";"
+	subroutine=procedure_or_function_declaration ";"
 ;
 
 procedure_or_function_declaration:
-	procedure_declaration | function_declaration
+	proc=procedure_declaration | func=function_declaration
 ;
 
 procedure_declaration:

@@ -5,33 +5,35 @@ package org.xtext.compiler.pascal.generator
 
 import java.util.HashMap
 import java.util.Map
+import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
 import org.xtext.compiler.pascal.pascal.assignment_statement
 import org.xtext.compiler.pascal.pascal.block
-import org.xtext.compiler.pascal.pascal.expression
-import org.xtext.compiler.pascal.pascal.unsigned_constant
-import org.xtext.compiler.pascal.pascal.program
-import org.xtext.compiler.pascal.pascal.simple_expression
-import org.xtext.compiler.pascal.pascal.signed_factor
-import org.xtext.compiler.pascal.pascal.simple_statement
-import org.xtext.compiler.pascal.pascal.statement
-import org.xtext.compiler.pascal.pascal.statements
-import org.xtext.compiler.pascal.pascal.structured_statement
-import org.xtext.compiler.pascal.pascal.case_statement
 import org.xtext.compiler.pascal.pascal.case_list_element
+import org.xtext.compiler.pascal.pascal.case_statement
 import org.xtext.compiler.pascal.pascal.conditional_statement
 import org.xtext.compiler.pascal.pascal.constant
+import org.xtext.compiler.pascal.pascal.formal_parameter_section
+import org.xtext.compiler.pascal.pascal.function_declaration
+import org.xtext.compiler.pascal.pascal.identifier
+import org.xtext.compiler.pascal.pascal.parameter_group
+import org.xtext.compiler.pascal.pascal.procedure_and_function_declaration_part
+import org.xtext.compiler.pascal.pascal.procedure_declaration
+import org.xtext.compiler.pascal.pascal.program
+import org.xtext.compiler.pascal.pascal.signed_factor
+import org.xtext.compiler.pascal.pascal.simple_expression
+import org.xtext.compiler.pascal.pascal.simple_statement
+import org.xtext.compiler.pascal.pascal.statement
+import org.xtext.compiler.pascal.pascal.structured_statement
 import org.xtext.compiler.pascal.pascal.term
 import org.xtext.compiler.pascal.pascal.unlabelled_statement
 import org.xtext.compiler.pascal.pascal.unsigned_number
 import org.xtext.compiler.pascal.pascal.variable
 import org.xtext.compiler.pascal.pascal.variable_declaration
 import org.xtext.compiler.pascal.pascal.variable_declaration_part
-import org.xtext.compiler.pascal.validation.ExpressionTypeHelper
-import org.eclipse.emf.common.util.EList
 
 /**
  * Generates code from your model files on save.
@@ -44,6 +46,7 @@ class PascalGenerator extends AbstractGenerator {
 	long currentLine;
 	String temporary;
 	Map<String, String> registerBank;
+	Map<String, Long> subroutineLocation;
 	public static final int LINE_LENGTH = 8;
 
 	def getCurrentRegister() {
@@ -59,7 +62,11 @@ class PascalGenerator extends AbstractGenerator {
 		registerBank.put(variable, newRegister);
 		return variable;
 	}
-	
+
+	def boolean variableExists(String variable) {
+		return registerBank.containsKey(variable);
+	}
+
 	def String getVariableRegister(String variable) {
 		return registerBank.get(variable);
 	}
@@ -68,7 +75,12 @@ class PascalGenerator extends AbstractGenerator {
 		currentLine += LINE_LENGTH;
 		return String.format("%s: ", currentLine);
 	}
-	
+
+	def long peekNextLine() {
+		currentLine += LINE_LENGTH;
+		return currentLine + LINE_LENGTH;
+	}
+
 	def getValueOfNextLine() {
 		var newLine = currentLine;
 		newLine += LINE_LENGTH;
@@ -76,10 +88,17 @@ class PascalGenerator extends AbstractGenerator {
 	}
 
 	def compile(block block) '''
-		«getNextLine() + "LD SP #stackStart"»
+		«getNextLine() + "LD SP, #stackStart"»
+		«String.format("BR %s\n"+block.compileSubRoutinesDeclaration, valueOfNextLine)»
 		«block.compileVarDeclaration»
 		«block.compileAttribution»
 		«getNextLine() + "BR *0(SP)"»
+	'''
+
+	def compileInnerBlock(block block) '''
+		«block.compileSubRoutinesDeclaration»
+		«block.compileVarDeclaration»
+		«block.compileAttribution»
 	'''
 
 	def compileVarDeclaration(block block) '''
@@ -87,11 +106,51 @@ class PascalGenerator extends AbstractGenerator {
 		«FOR variable_declaration_part declaration : var_declarations»
 			«FOR variable_declaration variable : declaration.variable»
 				«FOR name : variable.list_names.names»
-					«««  «getNextLine() + "LD " + getNextRegister() + ", " + name.id »
-					«registerBank.put(name.id, getCurrentRegister())»
-					«ENDFOR»
+					«IF !variableExists(name.id)»
+						«var bufferInhibitor = registerBank.put(name.id, getCurrentRegister())»
+					«ENDIF»
 				«ENDFOR»
 			«ENDFOR»
+			«ENDFOR»
+	'''
+
+	def String compileSubRoutinesDeclaration(block block) '''
+		«var subroutines = block.procedure_function_part»
+		«FOR procedure_and_function_declaration_part declaration : subroutines»
+			«var subroutine = declaration.subroutine»
+			«IF subroutine.func !== null»
+				«subroutine.func.compileFuncDeclaration»
+			«ENDIF»				
+			«IF subroutine.proc !== null»
+				«subroutine.proc.compileProcDeclaration»
+			«ENDIF»				
+		«ENDFOR»
+	'''
+
+	def String compileFuncDeclaration(function_declaration declaration) '''
+		«subroutineLocation.put(declaration.names,peekNextLine)»
+		«««	«registerBank.put(declaration.names,getNextRegister())»
+	«FOR formal_parameter_section section : declaration.parameters.parameters»
+			«FOR  parameter_group group  : section.parameters»
+				«FOR  identifier id  : group.names.names»
+					«registerBank.put(id.id,nextRegister)»
+				«ENDFOR»
+			«ENDFOR»
+		«ENDFOR»
+		«declaration.block.compileInnerBlock»
+	'''
+
+	def String compileProcDeclaration(procedure_declaration declaration) '''
+		«subroutineLocation.put(declaration.names,peekNextLine)»
+		«««	«registerBank.put(declaration.names,getNextRegister())»
+	«FOR formal_parameter_section section : declaration.parameters.parameters»
+			«FOR  parameter_group group  : section.parameters»
+				«FOR  identifier id  : group.names.names»
+					«registerBank.put(id.id,nextRegister)»
+				«ENDFOR»
+			«ENDFOR»
+		«ENDFOR»
+		«declaration.block.compileInnerBlock»
 	'''
 
 	def compileAttribution(block block) '''
@@ -121,7 +180,7 @@ class PascalGenerator extends AbstractGenerator {
 			«ENDIF»					
 		«ENDIF»			
 	'''
-	
+
 	def setTemporary(String content) {
 		this.temporary = content;
 	}
@@ -129,12 +188,12 @@ class PascalGenerator extends AbstractGenerator {
 	def compileAssignment(assignment_statement variable) '''
 		«var declared = variable.declared_variable»
 		«setTemporary('')»
-		«var resultingReg = compileRecExpression(variable.expression.simple)»
+		«var resultReg = compileRecExpression(variable.expression.simple)»
 		«temporary»
-		«getNextLine() + "ST " + updateRegisterBank(declared.variableName,getCurrentRegister) + ", " + getCurrentRegister»
+		«getNextLine() + "ST " + updateRegisterBank(declared.variableName,resultReg) + ", " + resultReg»
 	'''
-	
-	def compileFactorAsConstant(signed_factor factor)'''
+
+	def compileFactorAsConstant(signed_factor factor) '''
 		«IF factor.signal !== null»
 			«nextLine + "LD " + nextRegister + ", " + factor.signal.toString + factor.factor.constant.number.numbers.toString»
 		«ELSE»
@@ -147,36 +206,34 @@ class PascalGenerator extends AbstractGenerator {
 			«ENDIF»
 		«ENDIF»
 	'''
-	
-	def compileFactorAsBool(signed_factor factor)'''
+
+	def compileFactorAsBool(signed_factor factor) '''
 		«nextLine + "LD " + nextRegister + ", " + factor.factor.bool_factor.toString»
 	'''
-	
-	def compileFactorAsVariable(signed_factor factor)'''
+
+	def compileFactorAsVariable(signed_factor factor) '''
 		«nextLine + "LD " + nextRegister + ", " + getVariableRegister(factor.factor.variable.variableName)»
 	'''
-	
-	
+
 	def String compileFactor(signed_factor factor) {
 		var factorInst = factor.factor;
-		if (factorInst.constant !== null) {			
-			temporary+=compileFactorAsConstant(factor);
+		if (factorInst.constant !== null) {
+			temporary += compileFactorAsConstant(factor);
 			return getCurrentRegister();
-		} else if (factorInst.bool_factor !== null){
-			temporary+=compileFactorAsBool(factor);
+		} else if (factorInst.bool_factor !== null) {
+			temporary += compileFactorAsBool(factor);
 			return getCurrentRegister();
-		} else if (factorInst.variable !== null){
+		} else if (factorInst.variable !== null) {
 			return getVariableRegister(factorInst.variable.variableName);
 		}
 	}
 
-	
 	def String compileRecTerm(term term) {
-		if(term.operator.nullOrEmpty || term.term2 === null) {
-			var register1 = compileFactor(term.factor);			
-			return register1;			
+		if (term.operator.nullOrEmpty || term.term2 === null) {
+			var register1 = compileFactor(term.factor);
+			return register1;
 		} else {
-			var register2 = compileRecTerm(term.term2);			
+			var register2 = compileRecTerm(term.term2);
 			var register1 = compileFactor(term.factor);
 			var mul_op = term.operator.toString;
 			temporary += compileOperation(register1, register2, mul_op)
@@ -186,9 +243,9 @@ class PascalGenerator extends AbstractGenerator {
 
 	def String compileRecExpression(simple_expression expression) {
 		if (expression.operator.nullOrEmpty || expression.expression === null) {
-			return compileRecTerm(expression.term_exp);			
+			return compileRecTerm(expression.term_exp);
 		} else {
-			var register2 = compileRecExpression(expression.expression);			
+			var register2 = compileRecExpression(expression.expression);
 			var register1 = compileRecTerm(expression.term_exp);
 			var addtv_op = expression.operator.toString;
 			temporary += compileOperation(register1, register2, addtv_op);
@@ -196,7 +253,7 @@ class PascalGenerator extends AbstractGenerator {
 		}
 
 	}
-	
+
 	def String compileCaseStatements(statement statement) '''
 		«FOR unlabelled_statement u_statement : statement.statement»
 			«IF u_statement.simple !== null»
@@ -204,9 +261,9 @@ class PascalGenerator extends AbstractGenerator {
 			«ENDIF»
 		«ENDFOR»
 	'''
-	
+
 	def String compileCaseForTypes(EList<constant> constants, String expRegister) '''
-		«FOR constant const_: constants»
+		«FOR constant const_ : constants»
 			«var hasMoreConsts = constants.indexOf(const_) < constants.size - 1»
 			«IF const_.uns_number !== null»
 				«nextLine + "SUB " + nextRegister + ", " + expRegister + ", " + const_.uns_number.numberContent»
@@ -239,15 +296,14 @@ class PascalGenerator extends AbstractGenerator {
 			«ENDIF»
 		«ENDFOR»
 	'''
-	
-	
+
 	def String compileCaseForBranch(case_list_element element, String expRegister) '''
 		«var constants = element.consts.constants»
 		«compileCaseForTypes(constants, expRegister).replace("B_EQUALS", valueOfNextLine)»
 		«compileCaseStatements(element.case_statement)»
 		«nextLine + "BR END_CASE"»
 	'''
-	
+
 	def String compileAllCases(case_statement case_statement, String expRegister) '''
 		«FOR case_list_element element : case_statement.case_list»
 			«String.format(compileCaseForBranch(element, expRegister), valueOfNextLine)»
@@ -259,7 +315,7 @@ class PascalGenerator extends AbstractGenerator {
 			«ENDFOR»
 		«ENDIF»
 	'''
-	
+
 	def String compileCase(conditional_statement conditional_statement) '''
 		«var case_statement = conditional_statement.cond_statements»
 		«var expression = case_statement.exp»
@@ -270,25 +326,25 @@ class PascalGenerator extends AbstractGenerator {
 		«nextLine+ "LD " + expRegister + ", " + resultingReg»
 		«compileAllCases(case_statement, expRegister).replace("END_CASE", valueOfNextLine)»
 	'''
-	
-	def String compileOperation(String reg1, String reg2, String operator)'''
+
+	def String compileOperation(String reg1, String reg2, String operator) '''
 		«IF operator == "+"»
-		«nextLine+ "ADD " + nextRegister + ", " + reg1 + ", " + reg2»
+			«nextLine+ "ADD " + nextRegister + ", " + reg1 + ", " + reg2»
 		«ENDIF»
 		«IF operator == "-"»
-		«nextLine+ "MINUS " + nextRegister + ", " + reg1 + ", " + reg2»
+			«nextLine+ "MINUS " + nextRegister + ", " + reg1 + ", " + reg2»
 		«ENDIF»
 		«IF operator.equalsIgnoreCase("OR")»
-		«nextLine+ "OR " + nextRegister + ", " + reg1 + ", " + reg2»
+			«nextLine+ "OR " + nextRegister + ", " + reg1 + ", " + reg2»
 		«ENDIF»
 		«IF operator.equalsIgnoreCase("AND")»
-		«nextLine+ "AND " + nextRegister + ", " + reg1 + ", " + reg2»
+			«nextLine+ "AND " + nextRegister + ", " + reg1 + ", " + reg2»
 		«ENDIF»
 		«IF operator == "*"»
-		«nextLine+ "MUL " + nextRegister + ", " + reg1 + ", " + reg2»
+			«nextLine+ "MUL " + nextRegister + ", " + reg1 + ", " + reg2»
 		«ENDIF»
 		«IF operator == "/"»
-		«nextLine+ "DIV " + nextRegister + ", " + reg1 + ", " + reg2»
+			«nextLine+ "DIV " + nextRegister + ", " + reg1 + ", " + reg2»
 		«ENDIF»
 	'''
 
@@ -310,12 +366,17 @@ class PascalGenerator extends AbstractGenerator {
 		return output;
 	}
 
+//	
+//	def compileFuncDesignator(function_designator designator)'''
+			// TODO
+//	'''
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		for (p : resource.allContents.toIterable.filter(program)) {
 			currentRegister = 0;
 			currentLine = 0;
 			temporary = '';
 			registerBank = new HashMap<String, String>();
+			subroutineLocation = new HashMap<String, Long>();
 			fsa.deleteFile("output.asm");
 			fsa.generateFile("output.asm", p.block.compile);
 //		fsa.generateFile('greetings.txt', 'People to greet: ' + 
