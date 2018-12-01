@@ -7,7 +7,6 @@ import java.util.ArrayList
 import java.util.HashMap
 import java.util.Iterator
 import java.util.Map
-import java.util.Map.Entry
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
@@ -23,12 +22,14 @@ import org.xtext.compiler.pascal.pascal.constant
 import org.xtext.compiler.pascal.pascal.factor
 import org.xtext.compiler.pascal.pascal.formal_parameter_section
 import org.xtext.compiler.pascal.pascal.function_declaration
+import org.xtext.compiler.pascal.pascal.function_designator
 import org.xtext.compiler.pascal.pascal.identifier
 import org.xtext.compiler.pascal.pascal.parameter_group
 import org.xtext.compiler.pascal.pascal.procedure_and_function_declaration_part
 import org.xtext.compiler.pascal.pascal.procedure_declaration
 import org.xtext.compiler.pascal.pascal.procedure_statement
 import org.xtext.compiler.pascal.pascal.program
+import org.xtext.compiler.pascal.pascal.result_type
 import org.xtext.compiler.pascal.pascal.signed_factor
 import org.xtext.compiler.pascal.pascal.simple_expression
 import org.xtext.compiler.pascal.pascal.simple_statement
@@ -169,15 +170,21 @@ class PascalGenerator extends AbstractGenerator {
 	'''
 
 	def String compileFuncDeclaration(function_declaration declaration) '''
-		«subroutineLocation.put(declaration.names,peekNextLine)»
+		«shieldBuffer(subroutineLocation.put(declaration.names,peekNextLine))»
+		«var type = ExpressionTypeHelper.getType(declaration.types as type_identifier)»
+		«var parameters = new ArrayList<Variable>()»
 		«FOR formal_parameter_section section : declaration.parameters.parameters»
 			«FOR  parameter_group group  : section.parameters»
+				«var param_type = ExpressionTypeHelper.getType(group.types as type_identifier)»
 				«FOR  identifier id  : group.names.names»
 					«var addrVar = new AddressVariable(id.id,declaration.names)»
-					«registerBank.put(addrVar,nextRegister)»
+					«shieldBuffer(registerBank.put(addrVar,nextRegister))»
+					«var newParmVar = new Variable(id.id, param_type)»
+					«shieldBuffer(parameters.add(newParmVar))»
 				«ENDFOR»
 			«ENDFOR»
-		«ENDFOR»
+		«ENDFOR»	
+		«shieldBuffer(Structures.putFunc(declaration.names, type, parameters))»
 		«declaration.block.compileInnerBlock(declaration.names)»
 	'''
 
@@ -218,6 +225,27 @@ class PascalGenerator extends AbstractGenerator {
 	«nextLine + "SUB SP, SP, #" + procName + "size"»
 	'''
 
+	
+	def compileFuncDesignator(function_designator designator, String subRoutine)'''
+	«var idx = 0»
+	«var funcName = designator.name_function»
+	«var parameters = Structures.getFunc(funcName).parameters»
+	«FOR actual_parameter parameter : designator.parameters.parameters»
+			«var parm_name = parameters.get(idx).name»
+			«var register = getVariableRegister(parm_name, funcName)»
+			«setTemporary('')»
+			«var resultReg = compileRecExpression(parameter.content.simple, subRoutine)»
+			«temporary»
+			«nextLine +"LD " + register + ", " + resultReg»
+			«shieldBuffer(idx = idx + 1)»
+	«ENDFOR»
+	«nextLine + "ADD SP, SP, #" + funcName + "size"»
+	«nextLine + "ST, *SP, #" + getNthLine(currentLine + 2 * LINE_LENGTH)»
+	«nextLine + "BR " + subroutineLocation.get(funcName)»
+	«nextLine + "SUB SP, SP, #" + funcName + "size"»
+	«nextLine + "LD " + nextRegister +", " + funcName»
+	'''
+
 	def compileAttribution(block block, String subRoutine) '''
 		«var comp_statement = block.statement.sequence.statements»
 		«FOR statement statements : comp_statement»
@@ -252,7 +280,7 @@ class PascalGenerator extends AbstractGenerator {
 	def setTemporary(String content) {
 		this.temporary = content;
 	}
-
+	
 	def compileAssignment(assignment_statement variable, String subRoutine) '''
 		«var declared = variable.declared_variable»
 		«setTemporary('')»
@@ -297,6 +325,9 @@ class PascalGenerator extends AbstractGenerator {
 			return getCurrentRegister();
 		} else if (factorInst.variable !== null) {
 			return getVariableRegister(factorInst.variable.variableName, subRoutine);
+		} else if(factorInst.function !== null) {
+			temporary += compileFuncDesignator(factorInst.function, subRoutine);
+			return getCurrentRegister();
 		} else if (factorInst.not_factor !== null) {
 			var register = compileFactor(factorInst.not_factor, subRoutine);
 			temporary += compileFactorNotOp(register);
@@ -454,10 +485,6 @@ class PascalGenerator extends AbstractGenerator {
 		return output;
 	}
 
-//	
-//	def compileFuncDesignator(function_designator designator)'''
-	// TODO
-//	'''
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		for (p : resource.allContents.toIterable.filter(program)) {
 			currentRegister = 0;
