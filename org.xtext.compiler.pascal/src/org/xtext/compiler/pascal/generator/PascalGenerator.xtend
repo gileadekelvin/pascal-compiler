@@ -4,6 +4,7 @@
 package org.xtext.compiler.pascal.generator
 
 import java.util.HashMap
+import java.util.Iterator
 import java.util.Map
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.resource.Resource
@@ -12,12 +13,11 @@ import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
 import org.xtext.compiler.pascal.pascal.assignment_statement
 import org.xtext.compiler.pascal.pascal.block
-import org.xtext.compiler.pascal.pascal.expression
-import org.xtext.compiler.pascal.pascal.unsigned_constant
 import org.xtext.compiler.pascal.pascal.case_list_element
 import org.xtext.compiler.pascal.pascal.case_statement
 import org.xtext.compiler.pascal.pascal.conditional_statement
 import org.xtext.compiler.pascal.pascal.constant
+import org.xtext.compiler.pascal.pascal.factor
 import org.xtext.compiler.pascal.pascal.formal_parameter_section
 import org.xtext.compiler.pascal.pascal.function_declaration
 import org.xtext.compiler.pascal.pascal.identifier
@@ -25,25 +25,18 @@ import org.xtext.compiler.pascal.pascal.parameter_group
 import org.xtext.compiler.pascal.pascal.procedure_and_function_declaration_part
 import org.xtext.compiler.pascal.pascal.procedure_declaration
 import org.xtext.compiler.pascal.pascal.program
-import org.xtext.compiler.pascal.pascal.simple_expression
 import org.xtext.compiler.pascal.pascal.signed_factor
-import org.xtext.compiler.pascal.pascal.factor
+import org.xtext.compiler.pascal.pascal.simple_expression
 import org.xtext.compiler.pascal.pascal.simple_statement
 import org.xtext.compiler.pascal.pascal.statement
-import org.xtext.compiler.pascal.pascal.statements
 import org.xtext.compiler.pascal.pascal.structured_statement
-import org.xtext.compiler.pascal.pascal.case_statement
-import org.xtext.compiler.pascal.pascal.case_list_element
-import org.xtext.compiler.pascal.pascal.conditional_statement
-import org.xtext.compiler.pascal.pascal.constant
 import org.xtext.compiler.pascal.pascal.term
 import org.xtext.compiler.pascal.pascal.unlabelled_statement
 import org.xtext.compiler.pascal.pascal.unsigned_number
 import org.xtext.compiler.pascal.pascal.variable
 import org.xtext.compiler.pascal.pascal.variable_declaration
 import org.xtext.compiler.pascal.pascal.variable_declaration_part
-import org.xtext.compiler.pascal.validation.ExpressionTypeHelper
-import org.eclipse.emf.common.util.EList
+import java.util.Map.Entry
 
 /**
  * Generates code from your model files on save.
@@ -55,7 +48,7 @@ class PascalGenerator extends AbstractGenerator {
 	long currentRegister;
 	long currentLine;
 	String temporary;
-	Map<String, String> registerBank;
+	Map<AddressVariable, String> registerBank;
 	Map<String, Long> subroutineLocation;
 	public static final int LINE_LENGTH = 8;
 
@@ -69,17 +62,49 @@ class PascalGenerator extends AbstractGenerator {
 	}
 
 	def updateRegisterBank(String variable, String newRegister) {
-		registerBank.put(variable, newRegister);
-		return variable;
+		var addrVar = new AddressVariable(variable, AddressVariable.NO_SUBROUTINE);
+		registerBank.put(addrVar, newRegister);
+		return addrVar;
 	}
 
 	def boolean variableExists(String variable) {
-		return registerBank.containsKey(variable);
+		var Iterator<AddressVariable> itr = registerBank.keySet().iterator();
+		var exists = false;
+		while(itr.hasNext()){
+			var AddressVariable key = itr.next();
+			if(key.name.equals(variable)){
+				exists = true;
+			}
+		}
+		
+		return exists;
 	}
+	
+	def boolean variableExists(String variable, String subRoutine) {
+		var wanted = new AddressVariable(variable, subRoutine);
+		return registerBank.containsKey(wanted);
+	}
+	
 
 	def String getVariableRegister(String variable) {
-		return registerBank.get(variable);
+		var Iterator<Entry<AddressVariable, String>> itr = registerBank.entrySet().iterator();
+		var String register = null;
+		while(itr.hasNext()){
+	        var Entry<AddressVariable, String> pair =  itr.next();
+	        var name = pair.getKey().name;
+	        if(name.equals(variable)){
+	        	register = pair.getValue();
+	        }
+		}
+		
+		return register;
 	}
+	
+	def String getVariableRegister(String variable, String subRoutine) {
+		var wanted = new AddressVariable(variable, subRoutine);
+		return registerBank.get(wanted);
+	}	
+	
 
 	def getNextLine() {
 		currentLine += LINE_LENGTH;
@@ -117,7 +142,8 @@ class PascalGenerator extends AbstractGenerator {
 			«FOR variable_declaration variable : declaration.variable»
 				«FOR name : variable.list_names.names»
 					«IF !variableExists(name.id)»
-						«var bufferInhibitor = registerBank.put(name.id, getCurrentRegister())»
+					«var addrVar = new AddressVariable(name.id, AddressVariable.NO_SUBROUTINE)»
+						«var bufferInhibitor = registerBank.put(addrVar, getCurrentRegister())»
 					«ENDIF»
 				«ENDFOR»
 			«ENDFOR»
@@ -128,12 +154,16 @@ class PascalGenerator extends AbstractGenerator {
 		«var subroutines = block.procedure_function_part»
 		«FOR procedure_and_function_declaration_part declaration : subroutines»
 			«var subroutine = declaration.subroutine»
+			«IF subroutine !== null»
 			«IF subroutine.func !== null»
 				«subroutine.func.compileFuncDeclaration»
+				«getNextLine() + "BR *0(SP)"»
 			«ENDIF»				
 			«IF subroutine.proc !== null»
 				«subroutine.proc.compileProcDeclaration»
+				«getNextLine() + "BR *0(SP)"»
 			«ENDIF»				
+			«ENDIF»
 		«ENDFOR»
 	'''
 
@@ -143,7 +173,8 @@ class PascalGenerator extends AbstractGenerator {
 	«FOR formal_parameter_section section : declaration.parameters.parameters»
 			«FOR  parameter_group group  : section.parameters»
 				«FOR  identifier id  : group.names.names»
-					«registerBank.put(id.id,nextRegister)»
+					«var addrVar = new AddressVariable(id.id,declaration.names)»
+					«registerBank.put(addrVar,nextRegister)»
 				«ENDFOR»
 			«ENDFOR»
 		«ENDFOR»
@@ -156,7 +187,8 @@ class PascalGenerator extends AbstractGenerator {
 	«FOR formal_parameter_section section : declaration.parameters.parameters»
 			«FOR  parameter_group group  : section.parameters»
 				«FOR  identifier id  : group.names.names»
-					«registerBank.put(id.id,nextRegister)»
+					«var addrVar = new AddressVariable(id.id,declaration.names)»
+					«registerBank.put(addrVar,nextRegister)»
 				«ENDFOR»
 			«ENDFOR»
 		«ENDFOR»
@@ -200,7 +232,7 @@ class PascalGenerator extends AbstractGenerator {
 		«setTemporary('')»
 		«var resultReg = compileRecExpression(variable.expression.simple)»
 		«temporary»
-		«getNextLine() + "ST " + updateRegisterBank(declared.variableName,resultReg) + ", " + resultReg»
+		«getNextLine() + "ST " + updateRegisterBank(declared.variableName,resultReg).getName + ", " + resultReg»
 	'''
 	
 	def compileFactorAsConstant(factor factor)'''
@@ -226,7 +258,7 @@ class PascalGenerator extends AbstractGenerator {
 	''' 
 		
 	def compileFactorWithSignal(signed_factor factor)'''
-		«nextLine + "LD " + nextRegister + ", " + factor.signal.toString + factor.factor.constant.number.numbers.toString»		
+		«nextLine + "LD " + nextRegister + ", " + factor.signal.toString + factor.factor.constant.number.numbers.toString»
 	'''
 	
 	def String compileFactor(factor factorInst) {		
@@ -405,7 +437,7 @@ class PascalGenerator extends AbstractGenerator {
 			currentRegister = 0;
 			currentLine = 0;
 			temporary = '';
-			registerBank = new HashMap<String, String>();
+			registerBank = new HashMap<AddressVariable, String>();
 			subroutineLocation = new HashMap<String, Long>();
 			fsa.deleteFile("output.asm");
 			fsa.generateFile("output.asm", p.block.compile);
