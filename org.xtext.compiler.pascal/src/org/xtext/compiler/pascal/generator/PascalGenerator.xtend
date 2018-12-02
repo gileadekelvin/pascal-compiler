@@ -74,8 +74,8 @@ class PascalGenerator extends AbstractGenerator {
 		this.bufferShield = content;
 	}
 
-	def updateRegisterBank(String variable, String newRegister) {
-		var addrVar = new AddressVariable(variable, AddressVariable.NO_SUBROUTINE);
+	def updateRegisterBank(String variable, String subRoutine, String newRegister) {
+		var addrVar = new AddressVariable(variable, subRoutine);
 		registerBank.put(addrVar, newRegister);
 		return addrVar;
 	}
@@ -127,25 +127,24 @@ class PascalGenerator extends AbstractGenerator {
 	def compile(block block) '''
 		«getNextLine() + "LD SP, #stackStart"»
 		«String.format(getNextLine() + "BR %s\n"+block.compileSubRoutinesDeclaration, valueOfNextLine)»
-		«block.compileVarDeclaration»
+		«block.compileVarDeclaration(AddressVariable.NO_SUBROUTINE)»
 		«block.compileAttribution(AddressVariable.NO_SUBROUTINE)»
 		«getNextLine() + "BR *0(SP)"»
 	'''
 
 	def compileInnerBlock(block block, String subRoutine) '''
 		«block.compileSubRoutinesDeclaration»
-		«block.compileVarDeclaration»
+		«block.compileVarDeclaration(subRoutine)»
 		«block.compileAttribution(subRoutine)»
 	'''
 
-	def compileVarDeclaration(block block) '''
+	def compileVarDeclaration(block block, String subRoutine) '''
 		«var var_declarations = block.variablepart»
 		«FOR variable_declaration_part declaration : var_declarations»
 			«FOR variable_declaration variable : declaration.variable»
 				«FOR name : variable.list_names.names»
-					«IF !variableExists(name.id)»
-						«var addrVar = new AddressVariable(name.id, AddressVariable.NO_SUBROUTINE)»
-							«shieldBuffer(registerBank.put(addrVar, getCurrentRegister()))»
+					«IF !variableExists(name.id, subRoutine)»
+						«shieldBuffer(updateRegisterBank(name.id,subRoutine,nextRegister))»
 					«ENDIF»
 				«ENDFOR»
 			«ENDFOR»
@@ -177,8 +176,9 @@ class PascalGenerator extends AbstractGenerator {
 			«FOR  parameter_group group  : section.parameters»
 				«var param_type = ExpressionTypeHelper.getType(group.types as type_identifier)»
 				«FOR  identifier id  : group.names.names»
-					«var addrVar = new AddressVariable(id.id,declaration.names)»
-					«shieldBuffer(registerBank.put(addrVar,nextRegister))»
+					«IF !variableExists(id.id,declaration.names)»
+						«shieldBuffer(updateRegisterBank(id.id,declaration.names,nextRegister))»
+					«ENDIF»
 					«var newParmVar = new Variable(id.id, param_type)»
 					«shieldBuffer(parameters.add(newParmVar))»
 				«ENDFOR»
@@ -195,8 +195,9 @@ class PascalGenerator extends AbstractGenerator {
 			«FOR  parameter_group group  : section.parameters»
 				«var param_type = ExpressionTypeHelper.getType(group.types as type_identifier)»
 				«FOR  identifier id  : group.names.names»
-					«var addrVar = new AddressVariable(id.id,declaration.names)»
-					«shieldBuffer(registerBank.put(addrVar,nextRegister))»
+					«IF !variableExists(id.id,declaration.names)»
+						«shieldBuffer(updateRegisterBank(id.id,declaration.names,nextRegister))»
+					«ENDIF»
 					«var newParmVar = new Variable(id.id, param_type)»
 					«shieldBuffer(parameters.add(newParmVar))»
 				«ENDFOR»
@@ -219,10 +220,10 @@ class PascalGenerator extends AbstractGenerator {
 			«nextLine +"LD " + register + ", " + resultReg»
 			«shieldBuffer(idx = idx + 1)»
 	«ENDFOR»
-	«nextLine + "ADD SP, SP, #" + procName + "size"»
+	«nextLine + "ADD SP, SP, #" + subRoutine + "size"»
 	«nextLine + "ST, *SP, #" + getNthLine(currentLine + 2 * LINE_LENGTH)»
 	«nextLine + "BR " + subroutineLocation.get(procName)»
-	«nextLine + "SUB SP, SP, #" + procName + "size"»
+	«nextLine + "SUB SP, SP, #" + subRoutine + "size"»
 	'''
 
 	
@@ -239,10 +240,10 @@ class PascalGenerator extends AbstractGenerator {
 			«nextLine +"LD " + register + ", " + resultReg»
 			«shieldBuffer(idx = idx + 1)»
 	«ENDFOR»
-	«nextLine + "ADD SP, SP, #" + funcName + "size"»
+	«nextLine + "ADD SP, SP, #" + subRoutine + "size"»
 	«nextLine + "ST, *SP, #" + getNthLine(currentLine + 2 * LINE_LENGTH)»
 	«nextLine + "BR " + subroutineLocation.get(funcName)»
-	«nextLine + "SUB SP, SP, #" + funcName + "size"»
+	«nextLine + "SUB SP, SP, #" + subRoutine + "size"»
 	«nextLine + "LD " + nextRegister +", " + funcName»
 	'''
 
@@ -286,7 +287,13 @@ class PascalGenerator extends AbstractGenerator {
 		«setTemporary('')»
 		«var resultReg = compileRecExpression(variable.expression.simple, subRoutine)»
 		«temporary»
-		«getNextLine() + "ST " + updateRegisterBank(declared.variableName,resultReg).getName + ", " + resultReg»
+		«IF variableExists(declared.variableName,subRoutine)»
+		    «var varReg = getVariableRegister(declared.variableName,subRoutine)»
+			«getNextLine() + "LD " + varReg + ", " + resultReg»
+			«getNextLine() + "ST " + declared.variableName + ", " + varReg»
+		«ELSE»
+			«getNextLine() + "ST " + updateRegisterBank(declared.variableName,subRoutine,resultReg).getName + ", " + resultReg»
+		«ENDIF»
 	'''
 
 

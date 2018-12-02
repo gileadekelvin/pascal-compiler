@@ -2,7 +2,7 @@ package org.xtext.compiler.pascal.generator;
 
 public class AddressVariable {
 	
-	public static final String NO_SUBROUTINE = "none";
+	public static final String NO_SUBROUTINE = "main";
 	
 	private String name;
 	private String subRoutine;
