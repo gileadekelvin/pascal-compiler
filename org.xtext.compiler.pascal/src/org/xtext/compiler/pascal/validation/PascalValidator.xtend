@@ -23,10 +23,11 @@ import org.xtext.compiler.pascal.pascal.procedure_declaration
 import org.xtext.compiler.pascal.pascal.procedure_statement
 import org.xtext.compiler.pascal.pascal.signed_factor
 import org.xtext.compiler.pascal.pascal.simple_expression
+import org.xtext.compiler.pascal.pascal.subrange_type
 import org.xtext.compiler.pascal.pascal.term
+import org.xtext.compiler.pascal.pascal.type_definition
 import org.xtext.compiler.pascal.pascal.type_identifier
 import org.xtext.compiler.pascal.pascal.variable_declaration
-import org.xtext.compiler.pascal.pascal.subrange_type
 
 /**
  * This class contains custom validation rules. 
@@ -39,6 +40,15 @@ class PascalValidator extends AbstractPascalValidator {
 	@Check
 	def restart(pascal pascal) {
 		Structures.clear();
+	}
+	
+	@Check
+	def checkTypeDefinition(type_definition definition) {
+		Structures.getTypesInstance().add(definition.name);
+
+//		var error_message = 'definition';
+//		error(error_message, null);
+		
 	}
 
 	// Checa se a atribuição ocorre em uma variável não declarada
@@ -95,8 +105,10 @@ class PascalValidator extends AbstractPascalValidator {
 		if (variable_type.simple !== null) {
 			var type = ExpressionTypeHelper.getType(variable_type.simple.type);
 			
-			if (!type.equals("boolean") && !type.equals("integer") && !type.equals("string")) {
-				var error_message = "Tipo precisa ser boolean, integer ou string";
+			if (!type.equals("boolean") && !type.equals("integer") && !type.equals("string") && 
+				!Structures.getTypesInstance().contains(type)) {
+//				var error_message = Structures.getTypesInstance().toString()					
+				var error_message = "Tipo precisa ser boolean, integer, string ou um tipo declarado";
 				error(error_message, null);
 			}
 		} else if (variable_type.structured !== null) {
@@ -105,15 +117,17 @@ class PascalValidator extends AbstractPascalValidator {
 			if (unpacked.static_array !== null) {
 				var type = ExpressionTypeHelper.getType(unpacked.static_array.type);
 				
-				if (!type.equals("boolean") && !type.equals("integer") && !type.equals("string")) {
-					var error_message = "Tipo precisa ser boolean, integer ou string";
+				if (!type.equals("boolean") && !type.equals("integer") && !type.equals("string") && 
+				!Structures.getTypesInstance().contains(type)) {
+					var error_message = "Tipo precisa ser boolean, integer, string ou um tipo declarado";
 					error(error_message, null);	
 				}					
 			} else if (unpacked.dynamic !== null) {
 				var type = ExpressionTypeHelper.getType(unpacked.dynamic.type);			
 				
-				if (!type.equals("boolean") && !type.equals("integer") && !type.equals("string")) {
-					var error_message = "Tipo precisa ser boolean, integer ou string";
+				if (!type.equals("boolean") && !type.equals("integer") && !type.equals("string") && 
+				!Structures.getTypesInstance().contains(type)) {
+					var error_message = "Tipo precisa ser boolean, integer, string ou um tipo declarado";
 					error(error_message, null);	
 				}			
 			}
@@ -393,6 +407,6 @@ class PascalValidator extends AbstractPascalValidator {
 			var error_message = String.format("Índice inicial do intervalo é maior que o índice final.");
 			error(error_message, null);
 		}	
-	}
-
+	}	
+	
 }
