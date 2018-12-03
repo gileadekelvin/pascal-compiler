@@ -3,36 +3,48 @@
  */
 package org.xtext.compiler.pascal.generator
 
+import java.util.ArrayList
 import java.util.HashMap
+import java.util.Iterator
 import java.util.Map
+import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
+import org.xtext.compiler.pascal.pascal.actual_parameter
 import org.xtext.compiler.pascal.pascal.assignment_statement
 import org.xtext.compiler.pascal.pascal.block
-import org.xtext.compiler.pascal.pascal.expression
-import org.xtext.compiler.pascal.pascal.unsigned_constant
-import org.xtext.compiler.pascal.pascal.program
-import org.xtext.compiler.pascal.pascal.simple_expression
-import org.xtext.compiler.pascal.pascal.signed_factor
-import org.xtext.compiler.pascal.pascal.factor
-import org.xtext.compiler.pascal.pascal.simple_statement
-import org.xtext.compiler.pascal.pascal.statement
-import org.xtext.compiler.pascal.pascal.statements
-import org.xtext.compiler.pascal.pascal.structured_statement
-import org.xtext.compiler.pascal.pascal.case_statement
 import org.xtext.compiler.pascal.pascal.case_list_element
+import org.xtext.compiler.pascal.pascal.case_statement
 import org.xtext.compiler.pascal.pascal.conditional_statement
 import org.xtext.compiler.pascal.pascal.constant
+import org.xtext.compiler.pascal.pascal.factor
+import org.xtext.compiler.pascal.pascal.formal_parameter_section
+import org.xtext.compiler.pascal.pascal.function_declaration
+import org.xtext.compiler.pascal.pascal.function_designator
+import org.xtext.compiler.pascal.pascal.identifier
+import org.xtext.compiler.pascal.pascal.parameter_group
+import org.xtext.compiler.pascal.pascal.procedure_and_function_declaration_part
+import org.xtext.compiler.pascal.pascal.procedure_declaration
+import org.xtext.compiler.pascal.pascal.procedure_statement
+import org.xtext.compiler.pascal.pascal.program
+import org.xtext.compiler.pascal.pascal.result_type
+import org.xtext.compiler.pascal.pascal.signed_factor
+import org.xtext.compiler.pascal.pascal.simple_expression
+import org.xtext.compiler.pascal.pascal.simple_statement
+import org.xtext.compiler.pascal.pascal.statement
+import org.xtext.compiler.pascal.pascal.structured_statement
 import org.xtext.compiler.pascal.pascal.term
+import org.xtext.compiler.pascal.pascal.type_identifier
 import org.xtext.compiler.pascal.pascal.unlabelled_statement
 import org.xtext.compiler.pascal.pascal.unsigned_number
 import org.xtext.compiler.pascal.pascal.variable
 import org.xtext.compiler.pascal.pascal.variable_declaration
 import org.xtext.compiler.pascal.pascal.variable_declaration_part
 import org.xtext.compiler.pascal.validation.ExpressionTypeHelper
-import org.eclipse.emf.common.util.EList
+import org.xtext.compiler.pascal.validation.Structures
+import org.xtext.compiler.pascal.validation.Variable
 
 /**
  * Generates code from your model files on save.
@@ -44,7 +56,9 @@ class PascalGenerator extends AbstractGenerator {
 	long currentRegister;
 	long currentLine;
 	String temporary;
-	Map<String, String> registerBank;
+	Object bufferShield; // dump variable to inhibit collateral effect 
+	Map<AddressVariable, String> registerBank;
+	Map<String, Long> subroutineLocation;
 	public static final int LINE_LENGTH = 8;
 
 	def getCurrentRegister() {
@@ -55,14 +69,38 @@ class PascalGenerator extends AbstractGenerator {
 		currentRegister++;
 		return String.format("R%s", currentRegister);
 	}
-
-	def updateRegisterBank(String variable, String newRegister) {
-		registerBank.put(variable, newRegister);
-		return variable;
-	}
 	
-	def String getVariableRegister(String variable) {
-		return registerBank.get(variable);
+	def void shieldBuffer(Object content) {
+		this.bufferShield = content;
+	}
+
+	def updateRegisterBank(String variable, String subRoutine, String newRegister) {
+		var addrVar = new AddressVariable(variable, subRoutine);
+		registerBank.put(addrVar, newRegister);
+		return addrVar;
+	}
+
+	def boolean variableExists(String variable) {
+		var Iterator<AddressVariable> itr = registerBank.keySet().iterator();
+		var exists = false;
+		while (itr.hasNext()) {
+			var AddressVariable key = itr.next();
+			if (key.name.equals(variable)) {
+				exists = true;
+			}
+		}
+
+		return exists;
+	}
+
+	def boolean variableExists(String variable, String subRoutine) {
+		var wanted = new AddressVariable(variable, subRoutine);
+		return registerBank.containsKey(wanted);
+	}
+
+	def String getVariableRegister(String variable, String subRoutine) {
+		var wanted = new AddressVariable(variable, subRoutine);
+		return registerBank.get(wanted);
 	}
 
 	def getNextLine() {
@@ -70,6 +108,16 @@ class PascalGenerator extends AbstractGenerator {
 		return String.format("%s: ", currentLine);
 	}
 	
+	def getNthLine(long Nth) {
+		return String.format("%s: ", Nth);
+	}
+	
+
+	def long peekNextLine() {
+		currentLine += LINE_LENGTH;
+		return currentLine + LINE_LENGTH;
+	}
+
 	def getValueOfNextLine() {
 		var newLine = currentLine;
 		newLine += LINE_LENGTH;
@@ -77,65 +125,179 @@ class PascalGenerator extends AbstractGenerator {
 	}
 
 	def compile(block block) '''
-		«getNextLine() + "LD SP #stackStart"»
-		«block.compileVarDeclaration»
-		«block.compileAttribution»
+		«getNextLine() + "LD SP, #stackStart"»
+		«String.format(getNextLine() + "BR %s\n"+block.compileSubRoutinesDeclaration, valueOfNextLine)»
+		«block.compileVarDeclaration(AddressVariable.NO_SUBROUTINE)»
+		«block.compileAttribution(AddressVariable.NO_SUBROUTINE)»
 		«getNextLine() + "BR *0(SP)"»
 	'''
 
-	def compileVarDeclaration(block block) '''
+	def compileInnerBlock(block block, String subRoutine) '''
+		«block.compileSubRoutinesDeclaration»
+		«block.compileVarDeclaration(subRoutine)»
+		«block.compileAttribution(subRoutine)»
+	'''
+
+	def compileVarDeclaration(block block, String subRoutine) '''
 		«var var_declarations = block.variablepart»
 		«FOR variable_declaration_part declaration : var_declarations»
 			«FOR variable_declaration variable : declaration.variable»
 				«FOR name : variable.list_names.names»
-					«««  «getNextLine() + "LD " + getNextRegister() + ", " + name.id »
-					«registerBank.put(name.id, getCurrentRegister())»
-					«ENDFOR»
+					«IF !variableExists(name.id, subRoutine)»
+						«shieldBuffer(updateRegisterBank(name.id,subRoutine,nextRegister))»
+					«ENDIF»
 				«ENDFOR»
+			«ENDFOR»
 			«ENDFOR»
 	'''
 
-	def compileAttribution(block block) '''
+	def String compileSubRoutinesDeclaration(block block) '''
+		«var subroutines = block.procedure_function_part»
+		«FOR procedure_and_function_declaration_part declaration : subroutines»
+			«var subroutine = declaration.subroutine»
+			«IF subroutine !== null»
+				«IF subroutine.func !== null»
+					«subroutine.func.compileFuncDeclaration»
+					«getNextLine() + "BR *0(SP)"»
+				«ENDIF»				
+				«IF subroutine.proc !== null»
+					«subroutine.proc.compileProcDeclaration»
+					«getNextLine() + "BR *0(SP)"»
+				«ENDIF»				
+			«ENDIF»
+		«ENDFOR»
+	'''
+
+	def String compileFuncDeclaration(function_declaration declaration) '''
+		«shieldBuffer(subroutineLocation.put(declaration.names,peekNextLine))»
+		«var type = ExpressionTypeHelper.getType(declaration.types as type_identifier)»
+		«var parameters = new ArrayList<Variable>()»
+		«FOR formal_parameter_section section : declaration.parameters.parameters»
+			«FOR  parameter_group group  : section.parameters»
+				«var param_type = ExpressionTypeHelper.getType(group.types as type_identifier)»
+				«FOR  identifier id  : group.names.names»
+					«IF !variableExists(id.id,declaration.names)»
+						«shieldBuffer(updateRegisterBank(id.id,declaration.names,nextRegister))»
+					«ENDIF»
+					«var newParmVar = new Variable(id.id, param_type)»
+					«shieldBuffer(parameters.add(newParmVar))»
+				«ENDFOR»
+			«ENDFOR»
+		«ENDFOR»	
+		«shieldBuffer(Structures.putFunc(declaration.names, type, parameters))»
+		«declaration.block.compileInnerBlock(declaration.names)»
+	'''
+
+	def String compileProcDeclaration(procedure_declaration declaration) '''
+		«shieldBuffer(subroutineLocation.put(declaration.names,peekNextLine))»
+		«var parameters = new ArrayList<Variable>()»
+		«FOR formal_parameter_section section : declaration.parameters.parameters»
+			«FOR  parameter_group group  : section.parameters»
+				«var param_type = ExpressionTypeHelper.getType(group.types as type_identifier)»
+				«FOR  identifier id  : group.names.names»
+					«IF !variableExists(id.id,declaration.names)»
+						«shieldBuffer(updateRegisterBank(id.id,declaration.names,nextRegister))»
+					«ENDIF»
+					«var newParmVar = new Variable(id.id, param_type)»
+					«shieldBuffer(parameters.add(newParmVar))»
+				«ENDFOR»
+			«ENDFOR»
+		«ENDFOR»	
+		«shieldBuffer(Structures.putProc(declaration.names, parameters))»
+		«declaration.block.compileInnerBlock(declaration.names)»
+	'''
+
+	def String compileProcStatement(procedure_statement statement, String subRoutine) '''
+	«var idx = 0»
+	«var procName = statement.name_id»
+	«var parameters = Structures.getProc(procName).parameters»
+	«FOR actual_parameter parameter : statement.parameters.parameters»
+			«var parm_name = parameters.get(idx).name»
+			«var register = getVariableRegister(parm_name, procName)»
+			«setTemporary('')»
+			«var resultReg = compileRecExpression(parameter.content.simple, subRoutine)»
+			«temporary»
+			«nextLine +"LD " + register + ", " + resultReg»
+			«shieldBuffer(idx = idx + 1)»
+	«ENDFOR»
+	«nextLine + "ADD SP, SP, #" + subRoutine + "size"»
+	«nextLine + "ST, *SP, #" + getNthLine(currentLine + 2 * LINE_LENGTH)»
+	«nextLine + "BR " + subroutineLocation.get(procName)»
+	«nextLine + "SUB SP, SP, #" + subRoutine + "size"»
+	'''
+
+	
+	def compileFuncDesignator(function_designator designator, String subRoutine)'''
+	«var idx = 0»
+	«var funcName = designator.name_function»
+	«var parameters = Structures.getFunc(funcName).parameters»
+	«FOR actual_parameter parameter : designator.parameters.parameters»
+			«var parm_name = parameters.get(idx).name»
+			«var register = getVariableRegister(parm_name, funcName)»
+			«setTemporary('')»
+			«var resultReg = compileRecExpression(parameter.content.simple, subRoutine)»
+			«temporary»
+			«nextLine +"LD " + register + ", " + resultReg»
+			«shieldBuffer(idx = idx + 1)»
+	«ENDFOR»
+	«nextLine + "ADD SP, SP, #" + subRoutine + "size"»
+	«nextLine + "ST, *SP, #" + getNthLine(currentLine + 2 * LINE_LENGTH)»
+	«nextLine + "BR " + subroutineLocation.get(funcName)»
+	«nextLine + "SUB SP, SP, #" + subRoutine + "size"»
+	«nextLine + "LD " + nextRegister +", " + funcName»
+	'''
+
+	def compileAttribution(block block, String subRoutine) '''
 		«var comp_statement = block.statement.sequence.statements»
 		«FOR statement statements : comp_statement»
 			«FOR unlabelled_statement single_statement : statements.statement»
 				«IF single_statement.simple !== null»
-					«compileSimpleStatement(single_statement.simple)»
+					«compileSimpleStatement(single_statement.simple, subRoutine)»
 				«ENDIF»
 				«IF single_statement.structured !== null»
-					«compileStructuredStatement(single_statement.structured)»
+					«compileStructuredStatement(single_statement.structured, subRoutine)»
 				«ENDIF»
 			«ENDFOR»			
 		«ENDFOR»
 	'''
 
-	def compileStructuredStatement(structured_statement statement) '''
+	def compileStructuredStatement(structured_statement statement, String subRoutine) '''
 		«IF statement.conditional_stat !== null»
-			«compileCase(statement.conditional_stat)»
+			«compileCase(statement.conditional_stat, subRoutine)»
 		«ENDIF»
 	'''
 
-	def compileSimpleStatement(simple_statement statement) '''
+	def compileSimpleStatement(simple_statement statement, String subRoutine) '''
 		«IF statement !== null»
 			«IF statement.assignment !== null»
-				«compileAssignment(statement.assignment)»
-			«ENDIF»					
+				«compileAssignment(statement.assignment, subRoutine)»
+			«ENDIF»				
+			«IF statement.procedure !== null»
+				«compileProcStatement(statement.procedure, subRoutine)»
+			«ENDIF»	
 		«ENDIF»			
 	'''
-	
+
 	def setTemporary(String content) {
 		this.temporary = content;
 	}
-
-	def compileAssignment(assignment_statement variable) '''
+	
+	def compileAssignment(assignment_statement variable, String subRoutine) '''
 		«var declared = variable.declared_variable»
 		«setTemporary('')»
-		«var resultingReg = compileRecExpression(variable.expression.simple)»
+		«var resultReg = compileRecExpression(variable.expression.simple, subRoutine)»
 		«temporary»
-		«getNextLine() + "ST " + updateRegisterBank(declared.variableName,getCurrentRegister) + ", " + getCurrentRegister»
+		«IF variableExists(declared.variableName,subRoutine)»
+		    «var varReg = getVariableRegister(declared.variableName,subRoutine)»
+			«getNextLine() + "LD " + varReg + ", " + resultReg»
+			«getNextLine() + "ST " + declared.variableName + ", " + varReg»
+		«ELSE»
+			«getNextLine() + "ST " + updateRegisterBank(declared.variableName,subRoutine,resultReg).getName + ", " + resultReg»
+		«ENDIF»
 	'''
-	
-	def compileFactorAsConstant(factor factor)'''
+
+
+	def compileFactorAsConstant(factor factor) '''
 		«var constant = factor.constant»
 		«IF constant.number !== null»
 			«nextLine + "LD " + nextRegister + ", " + constant.number.numbers.toString»
@@ -144,87 +306,90 @@ class PascalGenerator extends AbstractGenerator {
 			«nextLine + "LD " + nextRegister + ", " + "#'"+ constant.string + "'"»
 		«ENDIF»		
 	'''
-	
-	def compileFactorAsBool(factor factor)'''
+
+	def compileFactorAsBool(factor factor) '''
 		«nextLine + "LD " + nextRegister + ", " + factor.bool_factor.toString»
 	'''
-	
-	def compileFactorAsVariable(factor factor)'''
-		«nextLine + "LD " + nextRegister + ", " + getVariableRegister(factor.variable.variableName)»
+
+	def compileFactorAsVariable(factor factor, String subRoutine) '''
+		«nextLine + "LD " + nextRegister + ", " + getVariableRegister(factor.variable.variableName, subRoutine)»
 	'''
-	
-	def compileFactorNotOp(String register)'''
+
+	def compileFactorNotOp(String register) '''
 		«nextLine + "NOT " + nextRegister + ", " + register»
-	''' 
-		
-	def compileFactorWithSignal(signed_factor factor)'''
-		«nextLine + "LD " + nextRegister + ", " + factor.signal.toString + factor.factor.constant.number.numbers.toString»		
 	'''
-	
-	def String compileFactor(factor factorInst) {		
-		if (factorInst.constant !== null) {			
-			temporary+=compileFactorAsConstant(factorInst);
+
+	def compileFactorWithSignal(signed_factor factor) '''
+		«nextLine + "LD " + nextRegister + ", " + factor.signal.toString + factor.factor.constant.number.numbers.toString»
+	'''
+
+	def String compileFactor(factor factorInst, String subRoutine) {
+		if (factorInst.constant !== null) {
+			temporary += compileFactorAsConstant(factorInst);
 			return getCurrentRegister();
-		} else if (factorInst.bool_factor !== null){
-			temporary+=compileFactorAsBool(factorInst);
+		} else if (factorInst.bool_factor !== null) {
+			temporary += compileFactorAsBool(factorInst);
 			return getCurrentRegister();
-		} else if (factorInst.variable !== null){
-			return getVariableRegister(factorInst.variable.variableName);
-		} else if (factorInst.not_factor !== null) {			
-			var register = compileFactor(factorInst.not_factor);
-			temporary+=compileFactorNotOp(register);
-			return getCurrentRegister();			
-		} else if (factorInst.expression !== null){
-			var register = compileRecExpression(factorInst.expression.simple);
+		} else if (factorInst.variable !== null) {
+			return getVariableRegister(factorInst.variable.variableName, subRoutine);
+		} else if(factorInst.function !== null) {
+			temporary += compileFuncDesignator(factorInst.function, subRoutine);
+			return getCurrentRegister();
+		} else if (factorInst.not_factor !== null) {
+			var register = compileFactor(factorInst.not_factor, subRoutine);
+			temporary += compileFactorNotOp(register);
+			return getCurrentRegister();
+		} else if (factorInst.expression !== null) {
+			var register = compileRecExpression(factorInst.expression.simple, subRoutine);
 			return register;
 		}
 	}
-			
-	def String compileSignedFactor(signed_factor factor) {		
+
+	def String compileSignedFactor(signed_factor factor, String subRoutine) {
 		if (factor.signal !== null) {
-			temporary+=compileFactorWithSignal(factor);
+			temporary += compileFactorWithSignal(factor);
 			return getCurrentRegister();
 		} else {
-			return compileFactor(factor.factor);
+			return compileFactor(factor.factor, subRoutine);
 		}
 	}
-	
-	def String compileRecTerm(term term) {
-		if(term.operator.nullOrEmpty || term.term2 === null) {
-			var register1 = compileSignedFactor(term.factor);			
-			return register1;			
+
+	def String compileRecTerm(term term, String subRoutine) {
+		if (term.operator.nullOrEmpty || term.term2 === null) {
+			var register1 = compileSignedFactor(term.factor, subRoutine);
+			return register1;
 		} else {
-			var register2 = compileRecTerm(term.term2);			
-			var register1 = compileSignedFactor(term.factor);
+			var register2 = compileRecTerm(term.term2, subRoutine);
+			var register1 = compileSignedFactor(term.factor, subRoutine);
 			var mul_op = term.operator.toString;
 			temporary += compileOperation(register1, register2, mul_op)
 			return getCurrentRegister();
 		}
 	}
 
-	def String compileRecExpression(simple_expression expression) {
+	def String compileRecExpression(simple_expression expression, String subRoutine) {
 		if (expression.operator.nullOrEmpty || expression.expression === null) {
-			return compileRecTerm(expression.term_exp);			
+			return compileRecTerm(expression.term_exp, subRoutine);
 		} else {
-			var register2 = compileRecExpression(expression.expression);			
-			var register1 = compileRecTerm(expression.term_exp);
+			var register2 = compileRecExpression(expression.expression, subRoutine);
+			var register1 = compileRecTerm(expression.term_exp, subRoutine);
 			var addtv_op = expression.operator.toString;
 			temporary += compileOperation(register1, register2, addtv_op);
 			return getCurrentRegister();
 		}
 
 	}
-	
-	def String compileCaseStatements(statement statement) '''
+
+	def String compileCaseStatements(statement statement, String subRoutine) '''
 		«FOR unlabelled_statement u_statement : statement.statement»
 			«IF u_statement.simple !== null»
-				«compileSimpleStatement(u_statement.simple)»
+				«compileSimpleStatement(u_statement.simple, subRoutine)»
 			«ENDIF»
 		«ENDFOR»
 	'''
-	
+
 	def String compileCaseForTypes(EList<constant> constants, String expRegister) '''
-		«FOR constant const_: constants»
+		«FOR constant const_ : constants»
 			«var hasMoreConsts = constants.indexOf(const_) < constants.size - 1»
 			«IF const_.uns_number !== null»
 				«nextLine + "SUB " + nextRegister + ", " + expRegister + ", " + const_.uns_number.numberContent»
@@ -257,56 +422,55 @@ class PascalGenerator extends AbstractGenerator {
 			«ENDIF»
 		«ENDFOR»
 	'''
-	
-	
-	def String compileCaseForBranch(case_list_element element, String expRegister) '''
+
+	def String compileCaseForBranch(case_list_element element, String expRegister, String subRoutine) '''
 		«var constants = element.consts.constants»
 		«compileCaseForTypes(constants, expRegister).replace("B_EQUALS", valueOfNextLine)»
-		«compileCaseStatements(element.case_statement)»
+		«compileCaseStatements(element.case_statement, subRoutine)»
 		«nextLine + "BR END_CASE"»
 	'''
-	
-	def String compileAllCases(case_statement case_statement, String expRegister) '''
+
+	def String compileAllCases(case_statement case_statement, String expRegister, String subRoutine) '''
 		«FOR case_list_element element : case_statement.case_list»
-			«String.format(compileCaseForBranch(element, expRegister), valueOfNextLine)»
+			«String.format(compileCaseForBranch(element, expRegister, subRoutine), valueOfNextLine)»
 		«ENDFOR»
 		
 		«IF case_statement.case_statements !== null»
 			«FOR statement statement: case_statement.case_statements.statements»
-				«compileCaseStatements(statement)»
+				«compileCaseStatements(statement, subRoutine)»
 			«ENDFOR»
 		«ENDIF»
 	'''
-	
-	def String compileCase(conditional_statement conditional_statement) '''
+
+	def String compileCase(conditional_statement conditional_statement, String subRoutine) '''
 		«var case_statement = conditional_statement.cond_statements»
 		«var expression = case_statement.exp»
 		«setTemporary('')»
-		«var resultingReg = compileRecExpression(expression.simple)»
+		«var resultingReg = compileRecExpression(expression.simple, subRoutine)»
 		«var expRegister = nextRegister»
 		«temporary»
 		«nextLine+ "LD " + expRegister + ", " + resultingReg»
-		«compileAllCases(case_statement, expRegister).replace("END_CASE", valueOfNextLine)»
+		«compileAllCases(case_statement, expRegister, subRoutine).replace("END_CASE", valueOfNextLine)»
 	'''
-	
-	def String compileOperation(String reg1, String reg2, String operator)'''
+
+	def String compileOperation(String reg1, String reg2, String operator) '''
 		«IF operator == "+"»
-		«nextLine+ "ADD " + nextRegister + ", " + reg1 + ", " + reg2»
+			«nextLine+ "ADD " + nextRegister + ", " + reg1 + ", " + reg2»
 		«ENDIF»
 		«IF operator == "-"»
-		«nextLine+ "MINUS " + nextRegister + ", " + reg1 + ", " + reg2»
+			«nextLine+ "MINUS " + nextRegister + ", " + reg1 + ", " + reg2»
 		«ENDIF»
 		«IF operator.equalsIgnoreCase("OR")»
-		«nextLine+ "OR " + nextRegister + ", " + reg1 + ", " + reg2»
+			«nextLine+ "OR " + nextRegister + ", " + reg1 + ", " + reg2»
 		«ENDIF»
 		«IF operator.equalsIgnoreCase("AND")»
-		«nextLine+ "AND " + nextRegister + ", " + reg1 + ", " + reg2»
+			«nextLine+ "AND " + nextRegister + ", " + reg1 + ", " + reg2»
 		«ENDIF»
 		«IF operator == "*"»
-		«nextLine+ "MUL " + nextRegister + ", " + reg1 + ", " + reg2»
+			«nextLine+ "MUL " + nextRegister + ", " + reg1 + ", " + reg2»
 		«ENDIF»
 		«IF operator == "/"»
-		«nextLine+ "DIV " + nextRegister + ", " + reg1 + ", " + reg2»
+			«nextLine+ "DIV " + nextRegister + ", " + reg1 + ", " + reg2»
 		«ENDIF»
 	'''
 
@@ -333,7 +497,8 @@ class PascalGenerator extends AbstractGenerator {
 			currentRegister = 0;
 			currentLine = 0;
 			temporary = '';
-			registerBank = new HashMap<String, String>();
+			registerBank = new HashMap<AddressVariable, String>();
+			subroutineLocation = new HashMap<String, Long>();
 			fsa.deleteFile("output.asm");
 			fsa.generateFile("output.asm", p.block.compile);
 //		fsa.generateFile('greetings.txt', 'People to greet: ' + 
