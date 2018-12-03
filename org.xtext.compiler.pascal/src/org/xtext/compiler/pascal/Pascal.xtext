@@ -90,7 +90,7 @@ assignment_statement:
 ;
 
 variable
-   : ('@' variable_id=ID | variable_id=ID) ('[' expression+=expression ("," expression+=expression)* ']' | "(." expression+=expression ("," expression+=expression)* ".)" | "." names_exp+=ID | "^")*
+   : ('@' variable_id=ID | variable_id=ID) ('[' indice+=expression ("," indice+=expression)* ']' | "(." expression+=expression ("," expression+=expression)* ".)" | "." names_exp+=ID | "^")*
 ;
 
 expression:

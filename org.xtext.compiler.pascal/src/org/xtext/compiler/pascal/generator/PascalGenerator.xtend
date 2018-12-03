@@ -31,6 +31,7 @@ import org.xtext.compiler.pascal.pascal.procedure_statement
 import org.xtext.compiler.pascal.pascal.program
 import org.xtext.compiler.pascal.pascal.result_type
 import org.xtext.compiler.pascal.pascal.signed_factor
+import org.xtext.compiler.pascal.pascal.expression
 import org.xtext.compiler.pascal.pascal.simple_expression
 import org.xtext.compiler.pascal.pascal.simple_statement
 import org.xtext.compiler.pascal.pascal.statement
@@ -322,6 +323,26 @@ class PascalGenerator extends AbstractGenerator {
 	def compileFactorWithSignal(signed_factor factor) '''
 		«nextLine + "LD " + nextRegister + ", " + factor.signal.toString + factor.factor.constant.number.numbers.toString»
 	'''
+	
+	def compileOffset(String register, int offset) '''
+		«nextLine + "MUL " + nextRegister + ", " + register + ", " + offset»
+	'''
+	
+	def compileArrayOffset(String variable, String registerOffset) '''
+		«nextLine + "LD " + nextRegister + ", " + variable + "(" + registerOffset + ")"»
+	'''
+	
+	def String compileArrayElement(variable variableInst, String subRoutine) {
+		var registerResul = "";
+		for (expression elem : variableInst.indice) {
+			var register_indice = compileRecExpression(elem.simple, subRoutine)
+			temporary+=compileOffset(register_indice, 8);
+			var registerOffset = getCurrentRegister();			
+			temporary+=compileArrayOffset(variableInst.variable_id.toString, registerOffset);
+			registerResul = getCurrentRegister();							
+		}
+		return registerResul;
+	}
 
 	def String compileFactor(factor factorInst, String subRoutine) {
 		if (factorInst.constant !== null) {
@@ -331,7 +352,11 @@ class PascalGenerator extends AbstractGenerator {
 			temporary += compileFactorAsBool(factorInst);
 			return getCurrentRegister();
 		} else if (factorInst.variable !== null) {
-			return getVariableRegister(factorInst.variable.variableName, subRoutine);
+			if (factorInst.variable.indice !== null) {
+				return compileArrayElement(factorInst.variable, subRoutine);				
+			} else {
+				return getVariableRegister(factorInst.variable.variableName, subRoutine);				
+			}				
 		} else if(factorInst.function !== null) {
 			temporary += compileFuncDesignator(factorInst.function, subRoutine);
 			return getCurrentRegister();
