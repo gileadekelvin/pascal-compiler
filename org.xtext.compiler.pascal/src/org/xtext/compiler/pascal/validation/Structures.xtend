@@ -2,15 +2,17 @@ package org.xtext.compiler.pascal.validation
 
 import java.util.HashMap
 import java.util.List
+import java.util.Set
+import java.util.HashSet
 
 class Structures {
 
 	static HashMap<String, Variable> variables = null;
 	static HashMap<String, Function> functions = null;
 	static HashMap<String, Procedure> procedures = null;
+	static Set<String> types = null;
 
 // Constructors
-
 	def static HashMap<String, Variable> getVarsInstance() {
 
 		if (variables === null) {
@@ -26,7 +28,7 @@ class Structures {
 		}
 		return functions;
 	}
-	
+
 	def static HashMap<String, Procedure> getProcInstance() {
 
 		if (procedures === null) {
@@ -34,16 +36,22 @@ class Structures {
 		}
 		return procedures;
 	}
-	
+
+	def static Set<String> getTypesInstance() {
+		if (types === null) {
+			types = new HashSet<String>();
+		}
+		return types;
+	}
+
 	def static clear() {
 		getVarsInstance().clear();
 		getFunsInstance().clear();
 		getProcInstance().clear();
-
+		getTypesInstance().clear();
 	}
-	
-// Variable related methods
 
+// Variable related methods
 	def static boolean containsVar(String id) {
 		return getVarsInstance().containsKey(id);
 	}
@@ -57,22 +65,20 @@ class Structures {
 	}
 
 // Functions related methods
-
 	def static boolean containsFunc(String id) {
 		return getFunsInstance().containsKey(id);
 	}
 
 	def static putFunc(String id, String type, List<Variable> parameters) {
-		var function = new Function(id, type,parameters);
+		var function = new Function(id, type, parameters);
 		getFunsInstance().put(id, function);
 	}
 
 	def static Function getFunc(String id) {
 		return getFunsInstance().get(id);
 	}
-	
-// Procedure related methods
 
+// Procedure related methods
 	def static boolean containsProc(String id) {
 		return getProcInstance().containsKey(id);
 	}
@@ -86,5 +92,13 @@ class Structures {
 		return getProcInstance().get(id);
 	}
 
+// Type related methods
+	def static boolean containsType(String type) {
+		return getTypesInstance().contains(type);
+	}
+
+	def static putType(String type) {
+		getTypesInstance().add(type);
+	}
 
 }
