@@ -23,7 +23,9 @@ import org.xtext.compiler.pascal.pascal.procedure_declaration
 import org.xtext.compiler.pascal.pascal.procedure_statement
 import org.xtext.compiler.pascal.pascal.signed_factor
 import org.xtext.compiler.pascal.pascal.simple_expression
+import org.xtext.compiler.pascal.pascal.subrange_type
 import org.xtext.compiler.pascal.pascal.term
+import org.xtext.compiler.pascal.pascal.type_definition
 import org.xtext.compiler.pascal.pascal.type_identifier
 import org.xtext.compiler.pascal.pascal.variable_declaration
 
@@ -40,6 +42,16 @@ class PascalValidator extends AbstractPascalValidator {
 		Structures.clear();
 	}
 
+	@Check
+	def checkTypeDefinition(type_definition definition) {
+		if (Structures.containsType(definition.name)) {
+			var error_message = String.format("Tipo '%s' já foi declarado", definition.name);
+			error(error_message, null)
+		} else {
+			Structures.putType(definition.name, definition.type);
+		}
+	}
+
 	// Checa se a atribuição ocorre em uma variável não declarada
 	@Check
 	def checkNotDeclaredVariable(assignment_statement variable) {
@@ -53,9 +65,7 @@ class PascalValidator extends AbstractPascalValidator {
 	// Checa se uma variável já foi declarada caso contrário adiciona na lista de variáveis
 	@Check
 	def checkVariableDeclaration(variable_declaration declared_variables) {
-
 		var List<String> new_variables = new ArrayList<String>();
-		var type = declared_variables.type_variable.simple.type;
 		var names = declared_variables.list_names;
 
 		if (names !== null && names.names !== null) {
@@ -66,8 +76,30 @@ class PascalValidator extends AbstractPascalValidator {
 
 		for (String name : new_variables) {
 			if (!Structures.containsVar(name)) {
-				var Variable newVar = new Variable(name, ExpressionTypeHelper.getType(type));
-				Structures.putVariable(name, newVar);
+				if (declared_variables.type_variable.simple !== null) {
+				var custom_type = declared_variables.type_variable.simple.type;
+				if (custom_type.id !== null) {
+					if (Structures.containsType(custom_type.id)) {
+						declared_variables.type_variable = Structures.getType(custom_type.id);
+						}
+					}
+				}
+				
+				if (declared_variables.type_variable.simple !== null) {
+					var type = declared_variables.type_variable.simple.type;
+					var Variable newVar = new Variable(name, ExpressionTypeHelper.getType(type));
+					Structures.putVariable(name, newVar);
+				} else {
+					if (declared_variables.type_variable.structured.unpacked.static_array !== null) {
+						var type = declared_variables.type_variable.structured.unpacked.static_array.type;
+						var Variable newVar = new Variable(name, ExpressionTypeHelper.getType(type));
+						Structures.putVariable(name, newVar);
+					} else {
+						var type = declared_variables.type_variable.structured.unpacked.dynamic.type;
+						var Variable newVar = new Variable(name, ExpressionTypeHelper.getType(type));
+						Structures.putVariable(name, newVar);
+					}
+				}
 			} else {
 				var error_message = String.format("Variável '%s' já foi declarada", name);
 				error(error_message, null)
@@ -78,14 +110,35 @@ class PascalValidator extends AbstractPascalValidator {
 	// Checa se tipos simples declarados a variáveis são boolean ou integer ou string
 	@Check
 	def checkTypesOfDeclaredVariables(variable_declaration declared_variables) {
-
 		var variable_type = declared_variables.type_variable;
 
 		if (variable_type.simple !== null) {
 			var type = ExpressionTypeHelper.getType(variable_type.simple.type);
-			if (!type.equals("boolean") && !type.equals("integer") && !type.equals("string")) {
-				var error_message = "Tipo precisa ser boolean, integer ou string";
-				error(error_message, null)
+
+			if (!type.equals("boolean") && !type.equals("integer") && !type.equals("string") &&
+				!Structures.containsType(type)) {
+				var error_message = "Tipo precisa ser boolean, integer, string ou um tipo declarado";
+				error(error_message, null);
+			}
+		} else if (variable_type.structured !== null) {
+			var unpacked = variable_type.structured.unpacked;
+
+			if (unpacked.static_array !== null) {
+				var type = ExpressionTypeHelper.getType(unpacked.static_array.type);
+
+				if (!type.equals("boolean") && !type.equals("integer") && !type.equals("string") &&
+					!Structures.containsType(type)) {
+					var error_message = "Tipo precisa ser boolean, integer, string ou um tipo declarado";
+					error(error_message, null);
+				}
+			} else if (unpacked.dynamic !== null) {
+				var type = ExpressionTypeHelper.getType(unpacked.dynamic.type);
+
+				if (!type.equals("boolean") && !type.equals("integer") && !type.equals("string") &&
+					!Structures.containsType(type)) {
+					var error_message = "Tipo precisa ser boolean, integer, string ou um tipo declarado";
+					error(error_message, null);
+				}
 			}
 		}
 	}
@@ -333,7 +386,8 @@ class PascalValidator extends AbstractPascalValidator {
 
 		var parameters = Structures.getProc(proc_name).parameters;
 		if (variable.parameters.parameters.size() != parameters.size()) {
-			var error_message = String.format("Número de  parâmetros do procedimento '%s' difere do esperado", proc_name);
+			var error_message = String.format("Número de  parâmetros do procedimento '%s' difere do esperado",
+				proc_name);
 			error(error_message, null);
 		}
 
@@ -349,6 +403,20 @@ class PascalValidator extends AbstractPascalValidator {
 			index++;
 		}
 
+	}
+
+	@Check
+	def checkArrayRange(subrange_type range) {
+		if (range.constantInit.uns_number === null) {
+			var error_message = String.format("Índice inicial do intervalo não é do tipo inteiro.");
+			error(error_message, null);
+		} else if (range.constantFinal.uns_number === null) {
+			var error_message = String.format("Índice final do intervalo não é do tipo inteiro.");
+			error(error_message, null);
+		} else if (range.constantFinal.uns_number.numbers < range.constantInit.uns_number.numbers) {
+			var error_message = String.format("Índice inicial do intervalo é maior que o índice final.");
+			error(error_message, null);
+		}
 	}
 
 }

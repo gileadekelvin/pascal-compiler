@@ -26,8 +26,8 @@ identifier:
 
 block:
 	(constantpart+=constant_definition_part | 
-	 variablepart+=variable_declaration_part | 
 	 type_part+=type_definition_part |
+	 variablepart+=variable_declaration_part | 
 	 procedure_function_part+=procedure_and_function_declaration_part
 	)* statement=compound_statement
 ;
@@ -49,16 +49,20 @@ constant:
    | booltype=bool
 ;
 
+type_definition_part:
+	"type" (types+=type_definition ";" ) +	
+;
+
+type_definition:
+	name=ID EQUAL type=type 
+;
+
 variable_declaration_part
    : "var" variable+=variable_declaration (";" variable+=variable_declaration)* ";"
 ;
 
 variable_declaration
    : list_names=identifier_list ":" type_variable=type
-;
-
-type_definition_part:
-	"type" ( types+=type_definition ";" ) +	
 ;
 
 compound_statement:
@@ -125,25 +129,25 @@ simple_type:
 ;
 
 subrange_type: 
-	constants+=constant DOTDOT constants+=constant
+	constantInit=constant DOTDOT constantFinal=constant
 ;
 
 structured_type:
-	"PACKED" unpacked_structured_type
-   | unpacked_structured_type
+	//packed = "PACKED" unpacked_structured_type |
+   unpacked=unpacked_structured_type
 ;
 
 unpacked_structured_type:
-   static=array_type
+   static_array=array_type
    | dynamic=dynamic_array_type
 ;
 
 dynamic_array_type:
-	"array" "of" type=type	
+	"array" "of" type=type_identifier	
 ;
 
 array_type:
-	"array" "[" type_list "]" "of" component+=component_type
+	"array" "[" type_l=type_list "]" "of" type=type_identifier
 ;
  type_list:
    indexes+=index_type ("," indexes+=index_type)*
@@ -232,10 +236,6 @@ procedure_or_function_declaration:
 
 procedure_declaration:
 	procedure names=ID  (parameters=formal_parameter_list)? ';' block=block
-;
-
-type_definition:
-	names= ID EQUAL (type | function_type | procedure_type)
 ;
 
 procedure_type: //Add action to ensure object creation?
