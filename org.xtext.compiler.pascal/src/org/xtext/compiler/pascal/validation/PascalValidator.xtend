@@ -44,7 +44,12 @@ class PascalValidator extends AbstractPascalValidator {
 
 	@Check
 	def checkTypeDefinition(type_definition definition) {
-		Structures.putType(definition.name, definition.type);
+		if (Structures.containsType(definition.name)) {
+			var error_message = String.format("Tipo '%s' já foi declarado", definition.name);
+			error(error_message, null)
+		} else {
+			Structures.putType(definition.name, definition.type);
+		}
 	}
 
 	// Checa se a atribuição ocorre em uma variável não declarada
