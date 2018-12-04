@@ -1,5 +1,6 @@
 package org.xtext.compiler.pascal.validation
 
+import org.xtext.compiler.pascal.pascal.type;
 import java.util.HashMap
 import java.util.List
 import java.util.Set
@@ -10,7 +11,7 @@ class Structures {
 	static HashMap<String, Variable> variables = null;
 	static HashMap<String, Function> functions = null;
 	static HashMap<String, Procedure> procedures = null;
-	static Set<String> types = null;
+	static HashMap<String,type> types = null;
 
 // Constructors
 	def static HashMap<String, Variable> getVarsInstance() {
@@ -37,9 +38,9 @@ class Structures {
 		return procedures;
 	}
 
-	def static Set<String> getTypesInstance() {
+	def static HashMap<String,type> getTypesInstance() {
 		if (types === null) {
-			types = new HashSet<String>();
+			types = new HashMap<String,type>();
 		}
 		return types;
 	}
@@ -94,11 +95,16 @@ class Structures {
 
 // Type related methods
 	def static boolean containsType(String type) {
-		return getTypesInstance().contains(type);
+		return getTypesInstance().containsKey(type);
 	}
 
-	def static putType(String type) {
-		getTypesInstance().add(type);
+	def static putType(String name, type t) {
+		getTypesInstance().put(name,t);
 	}
+	
+	def static getType(String name) {
+		return getTypesInstance().get(name);
+	}
+	
 
 }
