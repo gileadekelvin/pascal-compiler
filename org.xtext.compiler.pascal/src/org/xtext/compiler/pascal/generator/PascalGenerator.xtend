@@ -289,9 +289,16 @@ class PascalGenerator extends AbstractGenerator {
 		«var resultReg = compileRecExpression(variable.expression.simple, subRoutine)»
 		«temporary»
 		«IF variableExists(declared.variableName,subRoutine)»
-		    «var varReg = getVariableRegister(declared.variableName,subRoutine)»
-			«getNextLine() + "LD " + varReg + ", " + resultReg»
-			«getNextLine() + "ST " + declared.variableName + ", " + varReg»
+			«IF declared.indice.isNullOrEmpty || declared.indice === null»
+				«var varReg = getVariableRegister(declared.variableName,subRoutine)»
+				«getNextLine() + "LD " + varReg + ", " + resultReg»
+				«getNextLine() + "ST " + declared.variableName + ", " + varReg»
+			«ELSE»
+				«setTemporary('')»
+				«var offsetReg = compileOffset(declared, subRoutine)»				
+				«temporary»
+				«getNextLine() + "ST " + declared.variableName + "(" + offsetReg + ")" + ", " + resultReg»				
+			«ENDIF»	
 		«ELSE»
 			«getNextLine() + "ST " + updateRegisterBank(declared.variableName,subRoutine,resultReg).getName + ", " + resultReg»
 		«ENDIF»
@@ -324,7 +331,7 @@ class PascalGenerator extends AbstractGenerator {
 		«nextLine + "LD " + nextRegister + ", " + factor.signal.toString + factor.factor.constant.number.numbers.toString»
 	'''
 	
-	def compileOffset(String register, int offset) '''
+	def compileMULOperation(String register, int offset) '''
 		«nextLine + "MUL " + nextRegister + ", " + register + ", " + offset»
 	'''
 	
@@ -332,16 +339,20 @@ class PascalGenerator extends AbstractGenerator {
 		«nextLine + "LD " + nextRegister + ", " + variable + "(" + registerOffset + ")"»
 	'''
 	
-	def String compileArrayElement(variable variableInst, String subRoutine) {
+	def String compileOffset(variable variableInst, String subRoutine) {
 		var registerResul = "";
 		for (expression elem : variableInst.indice) {
 			var register_indice = compileRecExpression(elem.simple, subRoutine)
-			temporary+=compileOffset(register_indice, 8);
-			var registerOffset = getCurrentRegister();			
-			temporary+=compileArrayOffset(variableInst.variable_id.toString, registerOffset);
+			temporary+=compileMULOperation(register_indice, 8);					
 			registerResul = getCurrentRegister();							
 		}
 		return registerResul;
+	}
+	
+	def String compileArrayElement(variable variableInst, String subRoutine) {		
+		var registerOffset = compileOffset(variableInst, subRoutine);			
+		temporary+=compileArrayOffset(variableInst.variable_id.toString, registerOffset);
+		return getCurrentRegister();											
 	}
 
 	def String compileFactor(factor factorInst, String subRoutine) {
@@ -352,10 +363,10 @@ class PascalGenerator extends AbstractGenerator {
 			temporary += compileFactorAsBool(factorInst);
 			return getCurrentRegister();
 		} else if (factorInst.variable !== null) {
-			if (factorInst.variable.indice !== null) {
-				return compileArrayElement(factorInst.variable, subRoutine);				
-			} else {
+			if (factorInst.variable.indice.isNullOrEmpty) {
 				return getVariableRegister(factorInst.variable.variableName, subRoutine);				
+			} else {
+				return compileArrayElement(factorInst.variable, subRoutine);								
 			}				
 		} else if(factorInst.function !== null) {
 			temporary += compileFuncDesignator(factorInst.function, subRoutine);
