@@ -41,14 +41,15 @@ class PascalValidator extends AbstractPascalValidator {
 	def restart(pascal pascal) {
 		Structures.clear();
 	}
-	
+
 	@Check
 	def checkTypeDefinition(type_definition definition) {
-		Structures.getTypesInstance().add(definition.name);
-
-//		var error_message = 'definition';
-//		error(error_message, null);
-		
+		if (Structures.containsType(definition.name)) {
+			var error_message = String.format("Tipo '%s' já foi declarado", definition.name);
+			error(error_message, null)
+		} else {
+			Structures.putType(definition.name, definition.type);
+		}
 	}
 
 	// Checa se a atribuição ocorre em uma variável não declarada
@@ -66,15 +67,24 @@ class PascalValidator extends AbstractPascalValidator {
 	def checkVariableDeclaration(variable_declaration declared_variables) {
 		var List<String> new_variables = new ArrayList<String>();
 		var names = declared_variables.list_names;
-		
+
 		if (names !== null && names.names !== null) {
 			for (identifier id : names.names) {
 				new_variables.add(id.id);
 			}
 		}
-		
+
 		for (String name : new_variables) {
 			if (!Structures.containsVar(name)) {
+				if (declared_variables.type_variable.simple !== null) {
+				var custom_type = declared_variables.type_variable.simple.type;
+				if (custom_type.id !== null) {
+					if (Structures.containsType(custom_type.id)) {
+						declared_variables.type_variable = Structures.getType(custom_type.id);
+						}
+					}
+				}
+				
 				if (declared_variables.type_variable.simple !== null) {
 					var type = declared_variables.type_variable.simple.type;
 					var Variable newVar = new Variable(name, ExpressionTypeHelper.getType(type));
@@ -96,7 +106,7 @@ class PascalValidator extends AbstractPascalValidator {
 			}
 		}
 	}
-	
+
 	// Checa se tipos simples declarados a variáveis são boolean ou integer ou string
 	@Check
 	def checkTypesOfDeclaredVariables(variable_declaration declared_variables) {
@@ -104,32 +114,31 @@ class PascalValidator extends AbstractPascalValidator {
 
 		if (variable_type.simple !== null) {
 			var type = ExpressionTypeHelper.getType(variable_type.simple.type);
-			
-			if (!type.equals("boolean") && !type.equals("integer") && !type.equals("string") && 
-				!Structures.getTypesInstance().contains(type)) {
-//				var error_message = Structures.getTypesInstance().toString()					
+
+			if (!type.equals("boolean") && !type.equals("integer") && !type.equals("string") &&
+				!Structures.containsType(type)) {
 				var error_message = "Tipo precisa ser boolean, integer, string ou um tipo declarado";
 				error(error_message, null);
 			}
 		} else if (variable_type.structured !== null) {
 			var unpacked = variable_type.structured.unpacked;
-			
+
 			if (unpacked.static_array !== null) {
 				var type = ExpressionTypeHelper.getType(unpacked.static_array.type);
-				
-				if (!type.equals("boolean") && !type.equals("integer") && !type.equals("string") && 
-				!Structures.getTypesInstance().contains(type)) {
+
+				if (!type.equals("boolean") && !type.equals("integer") && !type.equals("string") &&
+					!Structures.containsType(type)) {
 					var error_message = "Tipo precisa ser boolean, integer, string ou um tipo declarado";
-					error(error_message, null);	
-				}					
+					error(error_message, null);
+				}
 			} else if (unpacked.dynamic !== null) {
-				var type = ExpressionTypeHelper.getType(unpacked.dynamic.type);			
-				
-				if (!type.equals("boolean") && !type.equals("integer") && !type.equals("string") && 
-				!Structures.getTypesInstance().contains(type)) {
+				var type = ExpressionTypeHelper.getType(unpacked.dynamic.type);
+
+				if (!type.equals("boolean") && !type.equals("integer") && !type.equals("string") &&
+					!Structures.containsType(type)) {
 					var error_message = "Tipo precisa ser boolean, integer, string ou um tipo declarado";
-					error(error_message, null);	
-				}			
+					error(error_message, null);
+				}
 			}
 		}
 	}
@@ -377,7 +386,8 @@ class PascalValidator extends AbstractPascalValidator {
 
 		var parameters = Structures.getProc(proc_name).parameters;
 		if (variable.parameters.parameters.size() != parameters.size()) {
-			var error_message = String.format("Número de  parâmetros do procedimento '%s' difere do esperado", proc_name);
+			var error_message = String.format("Número de  parâmetros do procedimento '%s' difere do esperado",
+				proc_name);
 			error(error_message, null);
 		}
 
@@ -394,7 +404,7 @@ class PascalValidator extends AbstractPascalValidator {
 		}
 
 	}
-	
+
 	@Check
 	def checkArrayRange(subrange_type range) {
 		if (range.constantInit.uns_number === null) {
@@ -406,7 +416,7 @@ class PascalValidator extends AbstractPascalValidator {
 		} else if (range.constantFinal.uns_number.numbers < range.constantInit.uns_number.numbers) {
 			var error_message = String.format("Índice inicial do intervalo é maior que o índice final.");
 			error(error_message, null);
-		}	
-	}	
-	
+		}
+	}
+
 }
