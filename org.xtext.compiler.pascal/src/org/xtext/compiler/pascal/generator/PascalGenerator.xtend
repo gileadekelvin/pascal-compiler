@@ -396,11 +396,9 @@ class PascalGenerator extends AbstractGenerator {
 	def String compileOffset(variable variableInst, String subRoutine) {
 
 		// Array com as dimensões do tipo array de variableInst		
-		var ArrayList<Integer> dimensoes = new ArrayList();
-		dimensoes.add(3);
-		dimensoes.add(2);
+		var List<Integer> dimensoes = Structures.getDimensions(variableInst.variable_id.toString());
 
-		var List<Integer> deslocamento = computeOffsetList(dimensoes);
+		var List<Integer> deslocamento = computeOffsetList(dimensoes as ArrayList<Integer>);
 
 		var registerResul = "";
 		var offsetRegister = "";
