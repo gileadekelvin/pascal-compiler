@@ -6,13 +6,16 @@ package org.xtext.compiler.pascal.generator
 import java.util.ArrayList
 import java.util.HashMap
 import java.util.Iterator
+import java.util.List
 import java.util.Map
+import java.util.List
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
 import org.xtext.compiler.pascal.pascal.actual_parameter
+import org.xtext.compiler.pascal.pascal.array_type
 import org.xtext.compiler.pascal.pascal.assignment_statement
 import org.xtext.compiler.pascal.pascal.block
 import org.xtext.compiler.pascal.pascal.case_list_element
@@ -25,6 +28,7 @@ import org.xtext.compiler.pascal.pascal.formal_parameter_section
 import org.xtext.compiler.pascal.pascal.function_declaration
 import org.xtext.compiler.pascal.pascal.function_designator
 import org.xtext.compiler.pascal.pascal.identifier
+import org.xtext.compiler.pascal.pascal.index_type
 import org.xtext.compiler.pascal.pascal.parameter_group
 import org.xtext.compiler.pascal.pascal.procedure_and_function_declaration_part
 import org.xtext.compiler.pascal.pascal.procedure_declaration
@@ -35,6 +39,7 @@ import org.xtext.compiler.pascal.pascal.simple_expression
 import org.xtext.compiler.pascal.pascal.simple_statement
 import org.xtext.compiler.pascal.pascal.statement
 import org.xtext.compiler.pascal.pascal.structured_statement
+import org.xtext.compiler.pascal.pascal.subrange_type
 import org.xtext.compiler.pascal.pascal.term
 import org.xtext.compiler.pascal.pascal.type_definition
 import org.xtext.compiler.pascal.pascal.type_identifier
@@ -46,6 +51,7 @@ import org.xtext.compiler.pascal.pascal.variable_declaration_part
 import org.xtext.compiler.pascal.validation.ExpressionTypeHelper
 import org.xtext.compiler.pascal.validation.Structures
 import org.xtext.compiler.pascal.validation.Variable
+import java.util.Collections
 
 /**
  * Generates code from your model files on save.
@@ -70,7 +76,7 @@ class PascalGenerator extends AbstractGenerator {
 		currentRegister++;
 		return String.format("R%s", currentRegister);
 	}
-	
+
 	def void shieldBuffer(Object content) {
 		this.bufferShield = content;
 	}
@@ -108,11 +114,10 @@ class PascalGenerator extends AbstractGenerator {
 		currentLine += LINE_LENGTH;
 		return String.format("%s: ", currentLine);
 	}
-	
+
 	def getNthLine(long Nth) {
 		return String.format("%s: ", Nth);
 	}
-	
 
 	def long peekNextLine() {
 		currentLine += LINE_LENGTH;
@@ -124,11 +129,10 @@ class PascalGenerator extends AbstractGenerator {
 		newLine += LINE_LENGTH;
 		return String.format("%s", newLine)
 	}
-	
+
 	def addTypeDefinition(type_definition definition) {
-			Structures.putType(definition.name, definition.type);
+		Structures.putType(definition.name, definition.type);
 	}
-	
 
 	def compile(block block) '''
 		«getNextLine() + "LD SP, #stackStart"»
@@ -136,6 +140,8 @@ class PascalGenerator extends AbstractGenerator {
 		«block.compileVarDeclaration(AddressVariable.NO_SUBROUTINE)»
 		«block.compileAttribution(AddressVariable.NO_SUBROUTINE)»
 		«getNextLine() + "BR *0(SP)"»
+		«Structures.typesInstance.toString()»
+		«Structures.getArraysInstance().toString()»
 	'''
 
 	def compileInnerBlock(block block, String subRoutine) '''
@@ -148,6 +154,7 @@ class PascalGenerator extends AbstractGenerator {
 		«var var_declarations = block.variablepart»
 		«FOR variable_declaration_part declaration : var_declarations»
 			«FOR variable_declaration variable : declaration.variable»
+				«createVariables(variable)»
 				«FOR name : variable.list_names.names»
 					«IF !variableExists(name.id, subRoutine)»
 						«shieldBuffer(updateRegisterBank(name.id,subRoutine,nextRegister))»
@@ -156,6 +163,30 @@ class PascalGenerator extends AbstractGenerator {
 			«ENDFOR»
 			«ENDFOR»
 	'''
+
+	def createVariables(variable_declaration declared_variables) {
+		var List<String> new_variables = new ArrayList<String>();
+		var names = declared_variables.list_names;
+
+		if (names !== null && names.names !== null) {
+			for (identifier id : names.names) {
+				new_variables.add(id.id);
+			}
+		}
+		for (String name : new_variables) {
+			if (declared_variables.type_variable !== null) {
+				if (declared_variables.type_variable.structured !== null) {
+					if (declared_variables.type_variable.structured.unpacked !== null) {
+						if (declared_variables.type_variable.structured.unpacked.static_array !== null) {
+							var staticArray = declared_variables.type_variable.structured.unpacked.static_array;
+							Structures.putArray(name, calculateDimensions(staticArray));
+						}
+					}
+
+				}
+			}
+		}
+	}
 
 	def String compileSubRoutinesDeclaration(block block) '''
 		«var subroutines = block.procedure_function_part»
@@ -214,10 +245,10 @@ class PascalGenerator extends AbstractGenerator {
 	'''
 
 	def String compileProcStatement(procedure_statement statement, String subRoutine) '''
-	«var idx = 0»
-	«var procName = statement.name_id»
-	«var parameters = Structures.getProc(procName).parameters»
-	«FOR actual_parameter parameter : statement.parameters.parameters»
+		«var idx = 0»
+		«var procName = statement.name_id»
+		«var parameters = Structures.getProc(procName).parameters»
+		«FOR actual_parameter parameter : statement.parameters.parameters»
 			«var parm_name = parameters.get(idx).name»
 			«var register = getVariableRegister(parm_name, procName)»
 			«setTemporary('')»
@@ -225,19 +256,18 @@ class PascalGenerator extends AbstractGenerator {
 			«temporary»
 			«nextLine +"LD " + register + ", " + resultReg»
 			«shieldBuffer(idx = idx + 1)»
-	«ENDFOR»
-	«nextLine + "ADD SP, SP, #" + subRoutine + "size"»
-	«nextLine + "ST, *SP, #" + getNthLine(currentLine + 2 * LINE_LENGTH)»
-	«nextLine + "BR " + subroutineLocation.get(procName)»
-	«nextLine + "SUB SP, SP, #" + subRoutine + "size"»
+		«ENDFOR»
+		«nextLine + "ADD SP, SP, #" + subRoutine + "size"»
+		«nextLine + "ST, *SP, #" + getNthLine(currentLine + 2 * LINE_LENGTH)»
+		«nextLine + "BR " + subroutineLocation.get(procName)»
+		«nextLine + "SUB SP, SP, #" + subRoutine + "size"»
 	'''
 
-	
-	def compileFuncDesignator(function_designator designator, String subRoutine)'''
-	«var idx = 0»
-	«var funcName = designator.name_function»
-	«var parameters = Structures.getFunc(funcName).parameters»
-	«FOR actual_parameter parameter : designator.parameters.parameters»
+	def compileFuncDesignator(function_designator designator, String subRoutine) '''
+		«var idx = 0»
+		«var funcName = designator.name_function»
+		«var parameters = Structures.getFunc(funcName).parameters»
+		«FOR actual_parameter parameter : designator.parameters.parameters»
 			«var parm_name = parameters.get(idx).name»
 			«var register = getVariableRegister(parm_name, funcName)»
 			«setTemporary('')»
@@ -245,12 +275,12 @@ class PascalGenerator extends AbstractGenerator {
 			«temporary»
 			«nextLine +"LD " + register + ", " + resultReg»
 			«shieldBuffer(idx = idx + 1)»
-	«ENDFOR»
-	«nextLine + "ADD SP, SP, #" + subRoutine + "size"»
-	«nextLine + "ST, *SP, #" + getNthLine(currentLine + 2 * LINE_LENGTH)»
-	«nextLine + "BR " + subroutineLocation.get(funcName)»
-	«nextLine + "SUB SP, SP, #" + subRoutine + "size"»
-	«nextLine + "LD " + nextRegister +", " + funcName»
+		«ENDFOR»
+		«nextLine + "ADD SP, SP, #" + subRoutine + "size"»
+		«nextLine + "ST, *SP, #" + getNthLine(currentLine + 2 * LINE_LENGTH)»
+		«nextLine + "BR " + subroutineLocation.get(funcName)»
+		«nextLine + "SUB SP, SP, #" + subRoutine + "size"»
+		«nextLine + "LD " + nextRegister +", " + funcName»
 	'''
 
 	def compileAttribution(block block, String subRoutine) '''
@@ -287,7 +317,7 @@ class PascalGenerator extends AbstractGenerator {
 	def setTemporary(String content) {
 		this.temporary = content;
 	}
-	
+
 	def compileAssignment(assignment_statement variable, String subRoutine) '''
 		«var declared = variable.declared_variable»
 		«setTemporary('')»
@@ -308,7 +338,6 @@ class PascalGenerator extends AbstractGenerator {
 			«getNextLine() + "ST " + updateRegisterBank(declared.variableName,subRoutine,resultReg).getName + ", " + resultReg»
 		«ENDIF»
 	'''
-
 
 	def compileFactorAsConstant(factor factor) '''
 		«var constant = factor.constant»
@@ -335,29 +364,51 @@ class PascalGenerator extends AbstractGenerator {
 	def compileFactorWithSignal(signed_factor factor) '''
 		«nextLine + "LD " + nextRegister + ", " + factor.signal.toString + factor.factor.constant.number.numbers.toString»
 	'''
-	
+
 	def compileMULOperation(String register, int offset) '''
 		«nextLine + "MUL " + nextRegister + ", " + register + ", " + offset»
 	'''
-	
+
 	def compileArrayOffset(String variable, String registerOffset) '''
 		«nextLine + "LD " + nextRegister + ", " + variable + "(" + registerOffset + ")"»
 	'''
-	
+
 	def String compileOffset(variable variableInst, String subRoutine) {
 		var registerResul = "";
 		for (expression elem : variableInst.indice) {
 			var register_indice = compileRecExpression(elem.simple, subRoutine)
-			temporary+=compileMULOperation(register_indice, 8);					
-			registerResul = getCurrentRegister();							
+			temporary += compileMULOperation(register_indice, 8);
+			registerResul = getCurrentRegister();
 		}
 		return registerResul;
 	}
-	
-	def String compileArrayElement(variable variableInst, String subRoutine) {		
-		var registerOffset = compileOffset(variableInst, subRoutine);			
-		temporary+=compileArrayOffset(variableInst.variable_id.toString, registerOffset);
-		return getCurrentRegister();											
+
+	def String compileArrayElement(variable variableInst, String subRoutine) {
+		var registerOffset = compileOffset(variableInst, subRoutine);
+		temporary += compileArrayOffset(variableInst.variable_id.toString, registerOffset);
+		return getCurrentRegister();
+	}
+
+	def List<Integer> calculateDimensions(array_type array) {
+		var listDim = new ArrayList<Integer>();
+		var listIndx = array.type_l.indexes;
+		for (index_type idx : listIndx) {
+			for (subrange_type subrange : idx.content.subrange_type) {
+				var first = Integer.parseInt(subrange.constantInit.uns_number.numbers.toString);
+				var last = Integer.parseInt(subrange.constantFinal.uns_number.numbers.toString);
+				listDim.add(calculateLength(first, last));
+			}
+
+		}
+		Collections.reverse(listDim);
+		return listDim;
+
+	}
+
+	def calculateLength(Integer first, Integer last) {
+		var diff = last - first;
+		diff = Math.abs(diff);
+		return diff;
 	}
 
 	def String compileFactor(factor factorInst, String subRoutine) {
@@ -369,11 +420,11 @@ class PascalGenerator extends AbstractGenerator {
 			return getCurrentRegister();
 		} else if (factorInst.variable !== null) {
 			if (factorInst.variable.indice.isNullOrEmpty) {
-				return getVariableRegister(factorInst.variable.variableName, subRoutine);				
+				return getVariableRegister(factorInst.variable.variableName, subRoutine);
 			} else {
-				return compileArrayElement(factorInst.variable, subRoutine);								
-			}				
-		} else if(factorInst.function !== null) {
+				return compileArrayElement(factorInst.variable, subRoutine);
+			}
+		} else if (factorInst.function !== null) {
 			temporary += compileFuncDesignator(factorInst.function, subRoutine);
 			return getCurrentRegister();
 		} else if (factorInst.not_factor !== null) {

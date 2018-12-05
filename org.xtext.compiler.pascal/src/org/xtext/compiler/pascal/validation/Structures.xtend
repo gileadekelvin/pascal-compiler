@@ -1,16 +1,15 @@
 package org.xtext.compiler.pascal.validation
 
-import org.xtext.compiler.pascal.pascal.type;
 import java.util.HashMap
 import java.util.List
-import java.util.Set
-import java.util.HashSet
+import org.xtext.compiler.pascal.pascal.type
 
 class Structures {
 
 	static HashMap<String, Variable> variables = null;
 	static HashMap<String, Function> functions = null;
 	static HashMap<String, Procedure> procedures = null;
+	static HashMap<String,List<Integer>> arrays = null;
 	static HashMap<String,type> types = null;
 
 // Constructors
@@ -44,12 +43,20 @@ class Structures {
 		}
 		return types;
 	}
+	
+	def static HashMap<String,List<Integer>> getArraysInstance() {
+		if (arrays === null) {
+			arrays = new HashMap<String,List<Integer>>();
+		}
+		return arrays;
+	}
 
 	def static clear() {
 		getVarsInstance().clear();
 		getFunsInstance().clear();
 		getProcInstance().clear();
 		getTypesInstance().clear();
+		getArraysInstance.clear();
 	}
 
 // Variable related methods
@@ -104,6 +111,20 @@ class Structures {
 	
 	def static getType(String name) {
 		return getTypesInstance().get(name);
+	}
+	
+	
+// Array related methods
+	def static boolean containsArray(String variable) {
+		return getArraysInstance().containsKey(variable);
+	}
+
+	def static putArray(String variable, List<Integer> dimensions) {
+		getArraysInstance().put(variable,dimensions);
+	}
+	
+	def static getDimensions(String variable) {
+		return getArraysInstance().get(variable);
 	}
 	
 

@@ -153,7 +153,7 @@ array_type:
    indexes+=index_type ("," indexes+=index_type)*
 ;
  index_type:
-   simple_type
+   content=simple_type
 ;
  component_type:
    type
