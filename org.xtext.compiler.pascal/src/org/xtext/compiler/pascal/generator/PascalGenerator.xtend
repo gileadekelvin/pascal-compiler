@@ -19,6 +19,7 @@ import org.xtext.compiler.pascal.pascal.case_list_element
 import org.xtext.compiler.pascal.pascal.case_statement
 import org.xtext.compiler.pascal.pascal.conditional_statement
 import org.xtext.compiler.pascal.pascal.constant
+import org.xtext.compiler.pascal.pascal.expression
 import org.xtext.compiler.pascal.pascal.factor
 import org.xtext.compiler.pascal.pascal.formal_parameter_section
 import org.xtext.compiler.pascal.pascal.function_declaration
@@ -29,14 +30,13 @@ import org.xtext.compiler.pascal.pascal.procedure_and_function_declaration_part
 import org.xtext.compiler.pascal.pascal.procedure_declaration
 import org.xtext.compiler.pascal.pascal.procedure_statement
 import org.xtext.compiler.pascal.pascal.program
-import org.xtext.compiler.pascal.pascal.result_type
 import org.xtext.compiler.pascal.pascal.signed_factor
-import org.xtext.compiler.pascal.pascal.expression
 import org.xtext.compiler.pascal.pascal.simple_expression
 import org.xtext.compiler.pascal.pascal.simple_statement
 import org.xtext.compiler.pascal.pascal.statement
 import org.xtext.compiler.pascal.pascal.structured_statement
 import org.xtext.compiler.pascal.pascal.term
+import org.xtext.compiler.pascal.pascal.type_definition
 import org.xtext.compiler.pascal.pascal.type_identifier
 import org.xtext.compiler.pascal.pascal.unlabelled_statement
 import org.xtext.compiler.pascal.pascal.unsigned_number
@@ -124,6 +124,11 @@ class PascalGenerator extends AbstractGenerator {
 		newLine += LINE_LENGTH;
 		return String.format("%s", newLine)
 	}
+	
+	def addTypeDefinition(type_definition definition) {
+			Structures.putType(definition.name, definition.type);
+	}
+	
 
 	def compile(block block) '''
 		«getNextLine() + "LD SP, #stackStart"»
