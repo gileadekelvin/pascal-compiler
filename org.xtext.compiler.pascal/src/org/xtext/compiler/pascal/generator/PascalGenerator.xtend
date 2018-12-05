@@ -4,6 +4,8 @@
 package org.xtext.compiler.pascal.generator
 
 import java.util.ArrayList
+import java.util.List
+import java.util.Collections
 import java.util.HashMap
 import java.util.Iterator
 import java.util.Map
@@ -340,18 +342,57 @@ class PascalGenerator extends AbstractGenerator {
 		«nextLine + "MUL " + nextRegister + ", " + register + ", " + offset»
 	'''
 	
+	def compileADDOperation(String register1, String register2) '''
+		«nextLine + "ADD " + nextRegister + ", " + register1 + ", " + register2»
+	'''
+	
+	def compileLDOperation(String register1) '''
+		«nextLine + "LD " + nextRegister + ", " + register1»
+	'''
+	
 	def compileArrayOffset(String variable, String registerOffset) '''
 		«nextLine + "LD " + nextRegister + ", " + variable + "(" + registerOffset + ")"»
 	'''
 	
-	def String compileOffset(variable variableInst, String subRoutine) {
-		var registerResul = "";
-		for (expression elem : variableInst.indice) {
-			var register_indice = compileRecExpression(elem.simple, subRoutine)
-			temporary+=compileMULOperation(register_indice, 8);					
-			registerResul = getCurrentRegister();							
+	def List<Integer> computeOffsetList(ArrayList<Integer> dimensoes) {
+		
+		var ArrayList<Integer> deslocamento = new ArrayList();
+		deslocamento.add(8);
+		
+		for(var i = 0; i < dimensoes.size()-1; i++) {
+			var offset = dimensoes.get(i) * deslocamento.get(i);
+			deslocamento.add(offset);		   
 		}
-		return registerResul;
+		
+		Collections.reverse(deslocamento);
+		
+		return(deslocamento);
+	}
+	
+	def String compileOffset(variable variableInst, String subRoutine) {
+		
+		// Array com as dimensões do tipo array de variableInst		
+		var ArrayList<Integer> dimensoes = new ArrayList();				
+		dimensoes.add(3);
+		dimensoes.add(2);		
+		
+		var List<Integer> deslocamento = computeOffsetList(dimensoes);			
+		
+		var registerResul = "";				
+		var offsetRegister = "";
+		for(var i = 0; i < variableInst.indice.length; i++) {
+			var register_indice = compileRecExpression(variableInst.indice.get(i).simple, subRoutine)
+			temporary+=compileMULOperation(register_indice, deslocamento.get(i));					
+			registerResul = getCurrentRegister();
+			if (offsetRegister.equals("")) {
+				temporary+=compileLDOperation(registerResul);	
+			} else {
+				temporary+=compileADDOperation(registerResul, offsetRegister);	
+			}			
+			offsetRegister = getCurrentRegister();
+		}
+
+		return offsetRegister;
 	}
 	
 	def String compileArrayElement(variable variableInst, String subRoutine) {		
