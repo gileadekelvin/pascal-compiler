@@ -442,7 +442,7 @@ class PascalGenerator extends AbstractGenerator {
 	def calculateLength(Integer first, Integer last) {
 		var diff = last - first;
 		diff = Math.abs(diff);
-		return diff;
+		return diff + 1;
 	}
 
 	def String compileFactor(factor factorInst, String subRoutine) {
