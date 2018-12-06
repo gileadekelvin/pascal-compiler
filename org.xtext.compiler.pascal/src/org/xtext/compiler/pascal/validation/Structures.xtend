@@ -1,5 +1,6 @@
 package org.xtext.compiler.pascal.validation
 
+import org.xtext.compiler.pascal.pascal.type;
 import java.util.HashMap
 import java.util.List
 import org.xtext.compiler.pascal.pascal.type
