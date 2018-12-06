@@ -13,15 +13,19 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.xtext.compiler.pascal.pascal.PascalFactory;
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.actual_parameter;
+import org.xtext.compiler.pascal.pascal.array_type;
 import org.xtext.compiler.pascal.pascal.assignment_statement;
 import org.xtext.compiler.pascal.pascal.block;
+import org.xtext.compiler.pascal.pascal.case_list_element;
+import org.xtext.compiler.pascal.pascal.case_statement;
+import org.xtext.compiler.pascal.pascal.component_type;
 import org.xtext.compiler.pascal.pascal.compound_statement;
+import org.xtext.compiler.pascal.pascal.conditional_statement;
+import org.xtext.compiler.pascal.pascal.const_list;
 import org.xtext.compiler.pascal.pascal.constant;
-import org.xtext.compiler.pascal.pascal.constant_chr;
 import org.xtext.compiler.pascal.pascal.constant_definition;
 import org.xtext.compiler.pascal.pascal.constant_definition_part;
-import org.xtext.compiler.pascal.pascal.element;
-import org.xtext.compiler.pascal.pascal.elementList;
+import org.xtext.compiler.pascal.pascal.dynamic_array_type;
 import org.xtext.compiler.pascal.pascal.expression;
 import org.xtext.compiler.pascal.pascal.factor;
 import org.xtext.compiler.pascal.pascal.formal_parameter_list;
@@ -29,8 +33,9 @@ import org.xtext.compiler.pascal.pascal.formal_parameter_section;
 import org.xtext.compiler.pascal.pascal.function_declaration;
 import org.xtext.compiler.pascal.pascal.function_designator;
 import org.xtext.compiler.pascal.pascal.function_type;
+import org.xtext.compiler.pascal.pascal.identifier;
 import org.xtext.compiler.pascal.pascal.identifier_list;
-import org.xtext.compiler.pascal.pascal.label;
+import org.xtext.compiler.pascal.pascal.index_type;
 import org.xtext.compiler.pascal.pascal.parameter_group;
 import org.xtext.compiler.pascal.pascal.parameter_list;
 import org.xtext.compiler.pascal.pascal.pascal;
@@ -42,21 +47,23 @@ import org.xtext.compiler.pascal.pascal.procedure_type;
 import org.xtext.compiler.pascal.pascal.program;
 import org.xtext.compiler.pascal.pascal.program_heading_block;
 import org.xtext.compiler.pascal.pascal.result_type;
-import org.xtext.compiler.pascal.pascal.scalar_type;
-import org.xtext.compiler.pascal.pascal.set;
 import org.xtext.compiler.pascal.pascal.signed_factor;
 import org.xtext.compiler.pascal.pascal.simple_expression;
 import org.xtext.compiler.pascal.pascal.simple_statement;
 import org.xtext.compiler.pascal.pascal.simple_type;
 import org.xtext.compiler.pascal.pascal.statement;
 import org.xtext.compiler.pascal.pascal.statements;
-import org.xtext.compiler.pascal.pascal.string_type;
+import org.xtext.compiler.pascal.pascal.structured_statement;
+import org.xtext.compiler.pascal.pascal.structured_type;
 import org.xtext.compiler.pascal.pascal.subrange_type;
 import org.xtext.compiler.pascal.pascal.term;
 import org.xtext.compiler.pascal.pascal.type;
 import org.xtext.compiler.pascal.pascal.type_definition;
+import org.xtext.compiler.pascal.pascal.type_definition_part;
 import org.xtext.compiler.pascal.pascal.type_identifier;
+import org.xtext.compiler.pascal.pascal.type_list;
 import org.xtext.compiler.pascal.pascal.unlabelled_statement;
+import org.xtext.compiler.pascal.pascal.unpacked_structured_type;
 import org.xtext.compiler.pascal.pascal.unsigned_constant;
 import org.xtext.compiler.pascal.pascal.unsigned_number;
 import org.xtext.compiler.pascal.pascal.variable;
@@ -104,6 +111,13 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass identifierEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass blockEClass = null;
 
   /**
@@ -126,6 +140,20 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * @generated
    */
   private EClass constantEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass type_definition_partEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass type_definitionEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -168,13 +196,6 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * @generated
    */
   private EClass unlabelled_statementEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass labelEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -237,27 +258,6 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass setEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass elementListEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass elementEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   private EClass typeEClass = null;
 
   /**
@@ -272,13 +272,6 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass scalar_typeEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   private EClass subrange_typeEClass = null;
 
   /**
@@ -286,14 +279,56 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass type_identifierEClass = null;
+  private EClass structured_typeEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass string_typeEClass = null;
+  private EClass unpacked_structured_typeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass dynamic_array_typeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass array_typeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass type_listEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass index_typeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass component_typeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass type_identifierEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -308,13 +343,6 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * @generated
    */
   private EClass unsigned_numberEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass constant_chrEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -342,6 +370,41 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass structured_statementEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass conditional_statementEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass case_statementEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass case_list_elementEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass const_listEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass procedure_and_function_declaration_partEClass = null;
 
   /**
@@ -357,13 +420,6 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * @generated
    */
   private EClass procedure_declarationEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass type_definitionEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -559,16 +615,6 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getprogram_heading_block_Identifiers()
-  {
-    return (EReference)program_heading_blockEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EClass getidentifier_list()
   {
     return identifier_listEClass;
@@ -579,9 +625,29 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getidentifier_list_Names()
+  public EReference getidentifier_list_Names()
   {
-    return (EAttribute)identifier_listEClass.getEStructuralFeatures().get(0);
+    return (EReference)identifier_listEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getidentifier()
+  {
+    return identifierEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getidentifier_Id()
+  {
+    return (EAttribute)identifierEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -609,7 +675,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getblock_Variablepart()
+  public EReference getblock_Type_part()
   {
     return (EReference)blockEClass.getEStructuralFeatures().get(1);
   }
@@ -619,7 +685,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getblock_Procedure_function_part()
+  public EReference getblock_Variablepart()
   {
     return (EReference)blockEClass.getEStructuralFeatures().get(2);
   }
@@ -629,9 +695,19 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getblock_Statement()
+  public EReference getblock_Procedure_function_part()
   {
     return (EReference)blockEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getblock_Statement()
+  {
+    return (EReference)blockEClass.getEStructuralFeatures().get(4);
   }
 
   /**
@@ -689,9 +765,39 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getconstant_Names()
+  public EReference getconstant_Uns_number()
   {
-    return (EAttribute)constantEClass.getEStructuralFeatures().get(0);
+    return (EReference)constantEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getconstant_Sig_number()
+  {
+    return (EReference)constantEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getconstant_Name_id()
+  {
+    return (EAttribute)constantEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getconstant_Sig_name_id()
+  {
+    return (EAttribute)constantEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -701,7 +807,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    */
   public EAttribute getconstant_String()
   {
-    return (EAttribute)constantEClass.getEStructuralFeatures().get(1);
+    return (EAttribute)constantEClass.getEStructuralFeatures().get(4);
   }
 
   /**
@@ -709,9 +815,59 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getconstant_Numbers()
+  public EAttribute getconstant_Booltype()
   {
-    return (EAttribute)constantEClass.getEStructuralFeatures().get(2);
+    return (EAttribute)constantEClass.getEStructuralFeatures().get(5);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass gettype_definition_part()
+  {
+    return type_definition_partEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference gettype_definition_part_Types()
+  {
+    return (EReference)type_definition_partEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass gettype_definition()
+  {
+    return type_definitionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute gettype_definition_Name()
+  {
+    return (EAttribute)type_definitionEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference gettype_definition_Type()
+  {
+    return (EReference)type_definitionEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -742,6 +898,26 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
   public EClass getvariable_declaration()
   {
     return variable_declarationEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getvariable_declaration_List_names()
+  {
+    return (EReference)variable_declarationEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getvariable_declaration_Type_variable()
+  {
+    return (EReference)variable_declarationEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -799,19 +975,9 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getstatement_Label()
-  {
-    return (EReference)statementEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EReference getstatement_Statement()
   {
-    return (EReference)statementEClass.getEStructuralFeatures().get(1);
+    return (EReference)statementEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -839,29 +1005,9 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getunlabelled_statement_Structured()
+  public EReference getunlabelled_statement_Structured()
   {
-    return (EAttribute)unlabelled_statementEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getlabel()
-  {
-    return labelEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getlabel_Number()
-  {
-    return (EAttribute)labelEClass.getEStructuralFeatures().get(0);
+    return (EReference)unlabelled_statementEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -899,16 +1045,6 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getsimple_statement_Goto()
-  {
-    return (EAttribute)simple_statementEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EClass getassignment_statement()
   {
     return assignment_statementEClass;
@@ -919,7 +1055,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getassignment_statement_Variable()
+  public EReference getassignment_statement_Declared_variable()
   {
     return (EReference)assignment_statementEClass.getEStructuralFeatures().get(0);
   }
@@ -949,7 +1085,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getvariable_Names()
+  public EAttribute getvariable_Variable_id()
   {
     return (EAttribute)variableEClass.getEStructuralFeatures().get(0);
   }
@@ -959,9 +1095,29 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getvariable_Expression()
+  public EReference getvariable_Indice()
   {
     return (EReference)variableEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getvariable_Expression()
+  {
+    return (EReference)variableEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getvariable_Names_exp()
+  {
+    return (EAttribute)variableEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -979,19 +1135,9 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getexpression_Expressions()
+  public EReference getexpression_Simple()
   {
     return (EReference)expressionEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getexpression_Operators()
-  {
-    return (EAttribute)expressionEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1009,7 +1155,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getsimple_expression_Terms()
+  public EReference getsimple_expression_Term_exp()
   {
     return (EReference)simple_expressionEClass.getEStructuralFeatures().get(0);
   }
@@ -1019,7 +1165,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getsimple_expression_Operators()
+  public EAttribute getsimple_expression_Operator()
   {
     return (EAttribute)simple_expressionEClass.getEStructuralFeatures().get(1);
   }
@@ -1049,7 +1195,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getterm_Factors()
+  public EReference getterm_Factor()
   {
     return (EReference)termEClass.getEStructuralFeatures().get(0);
   }
@@ -1059,7 +1205,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getterm_Operators()
+  public EAttribute getterm_Operator()
   {
     return (EAttribute)termEClass.getEStructuralFeatures().get(1);
   }
@@ -1069,7 +1215,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getterm_Terms()
+  public EReference getterm_Term2()
   {
     return (EReference)termEClass.getEStructuralFeatures().get(2);
   }
@@ -1089,7 +1235,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getsigned_factor_Operators()
+  public EAttribute getsigned_factor_Signal()
   {
     return (EAttribute)signed_factorEClass.getEStructuralFeatures().get(0);
   }
@@ -1099,7 +1245,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getsigned_factor_Factors()
+  public EReference getsigned_factor_Factor()
   {
     return (EReference)signed_factorEClass.getEStructuralFeatures().get(1);
   }
@@ -1139,7 +1285,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getfactor_Constant()
+  public EReference getfactor_Function()
   {
     return (EReference)factorEClass.getEStructuralFeatures().get(2);
   }
@@ -1149,7 +1295,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getfactor_Set()
+  public EReference getfactor_Constant()
   {
     return (EReference)factorEClass.getEStructuralFeatures().get(3);
   }
@@ -1159,7 +1305,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getfactor_Factor()
+  public EReference getfactor_Not_factor()
   {
     return (EReference)factorEClass.getEStructuralFeatures().get(4);
   }
@@ -1169,79 +1315,9 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getfactor_Boolean()
+  public EAttribute getfactor_Bool_factor()
   {
     return (EAttribute)factorEClass.getEStructuralFeatures().get(5);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getset()
-  {
-    return setEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getset_Elements()
-  {
-    return (EReference)setEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getelementList()
-  {
-    return elementListEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getelementList_Elements()
-  {
-    return (EReference)elementListEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getelement()
-  {
-    return elementEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getelement_Expressions()
-  {
-    return (EReference)elementEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getelement_Dotdot()
-  {
-    return (EAttribute)elementEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1259,9 +1335,19 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference gettype_Type()
+  public EReference gettype_Simple()
   {
     return (EReference)typeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference gettype_Structured()
+  {
+    return (EReference)typeEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1279,7 +1365,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getsimple_type_Types()
+  public EReference getsimple_type_Type()
   {
     return (EReference)simple_typeEClass.getEStructuralFeatures().get(0);
   }
@@ -1289,9 +1375,9 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getscalar_type()
+  public EReference getsimple_type_Subrange_type()
   {
-    return scalar_typeEClass;
+    return (EReference)simple_typeEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1309,9 +1395,169 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getsubrange_type_Constants()
+  public EReference getsubrange_type_ConstantInit()
   {
     return (EReference)subrange_typeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getsubrange_type_ConstantFinal()
+  {
+    return (EReference)subrange_typeEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getstructured_type()
+  {
+    return structured_typeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getstructured_type_Unpacked()
+  {
+    return (EReference)structured_typeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getunpacked_structured_type()
+  {
+    return unpacked_structured_typeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getunpacked_structured_type_Static_array()
+  {
+    return (EReference)unpacked_structured_typeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getunpacked_structured_type_Dynamic()
+  {
+    return (EReference)unpacked_structured_typeEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getdynamic_array_type()
+  {
+    return dynamic_array_typeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getdynamic_array_type_Type()
+  {
+    return (EReference)dynamic_array_typeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getarray_type()
+  {
+    return array_typeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getarray_type_Type_l()
+  {
+    return (EReference)array_typeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getarray_type_Type()
+  {
+    return (EReference)array_typeEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass gettype_list()
+  {
+    return type_listEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference gettype_list_Indexes()
+  {
+    return (EReference)type_listEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getindex_type()
+  {
+    return index_typeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getindex_type_Content()
+  {
+    return (EReference)index_typeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getcomponent_type()
+  {
+    return component_typeEClass;
   }
 
   /**
@@ -1329,7 +1575,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute gettype_identifier_Names()
+  public EAttribute gettype_identifier_Id()
   {
     return (EAttribute)type_identifierEClass.getEStructuralFeatures().get(0);
   }
@@ -1339,7 +1585,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute gettype_identifier_Type()
+  public EAttribute gettype_identifier_Boolean()
   {
     return (EAttribute)type_identifierEClass.getEStructuralFeatures().get(1);
   }
@@ -1349,9 +1595,9 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getstring_type()
+  public EAttribute gettype_identifier_Integer()
   {
-    return string_typeEClass;
+    return (EAttribute)type_identifierEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -1359,19 +1605,9 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getstring_type_Names()
+  public EAttribute gettype_identifier_String()
   {
-    return (EAttribute)string_typeEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getstring_type_Number()
-  {
-    return (EReference)string_typeEClass.getEStructuralFeatures().get(1);
+    return (EAttribute)type_identifierEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -1399,19 +1635,9 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getunsigned_constant_Char()
-  {
-    return (EReference)unsigned_constantEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EAttribute getunsigned_constant_String()
   {
-    return (EAttribute)unsigned_constantEClass.getEStructuralFeatures().get(2);
+    return (EAttribute)unsigned_constantEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1421,7 +1647,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    */
   public EAttribute getunsigned_constant_Nil()
   {
-    return (EAttribute)unsigned_constantEClass.getEStructuralFeatures().get(3);
+    return (EAttribute)unsigned_constantEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -1439,9 +1665,9 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getconstant_chr()
+  public EAttribute getunsigned_number_Numbers()
   {
-    return constant_chrEClass;
+    return (EAttribute)unsigned_numberEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1459,7 +1685,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getprocedure_statement_Names()
+  public EAttribute getprocedure_statement_Name_id()
   {
     return (EAttribute)procedure_statementEClass.getEStructuralFeatures().get(0);
   }
@@ -1469,7 +1695,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getprocedure_statement_Types()
+  public EReference getprocedure_statement_Parameters()
   {
     return (EReference)procedure_statementEClass.getEStructuralFeatures().get(1);
   }
@@ -1489,6 +1715,16 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EReference getparameter_list_Parameters()
+  {
+    return (EReference)parameter_listEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getactual_parameter()
   {
     return actual_parameterEClass;
@@ -1499,9 +1735,149 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getactual_parameter_Types()
+  public EReference getactual_parameter_Content()
   {
     return (EReference)actual_parameterEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getstructured_statement()
+  {
+    return structured_statementEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getstructured_statement_Compound_stat()
+  {
+    return (EReference)structured_statementEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getstructured_statement_Conditional_stat()
+  {
+    return (EReference)structured_statementEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getconditional_statement()
+  {
+    return conditional_statementEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getconditional_statement_Cond_statements()
+  {
+    return (EReference)conditional_statementEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getcase_statement()
+  {
+    return case_statementEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getcase_statement_Exp()
+  {
+    return (EReference)case_statementEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getcase_statement_Case_list()
+  {
+    return (EReference)case_statementEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getcase_statement_Case_statements()
+  {
+    return (EReference)case_statementEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getcase_list_element()
+  {
+    return case_list_elementEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getcase_list_element_Consts()
+  {
+    return (EReference)case_list_elementEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getcase_list_element_Case_statement()
+  {
+    return (EReference)case_list_elementEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getconst_list()
+  {
+    return const_listEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getconst_list_Constants()
+  {
+    return (EReference)const_listEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1519,6 +1895,16 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EReference getprocedure_and_function_declaration_part_Subroutine()
+  {
+    return (EReference)procedure_and_function_declaration_partEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getprocedure_or_function_declaration()
   {
     return procedure_or_function_declarationEClass;
@@ -1529,9 +1915,9 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getprocedure_or_function_declaration_Names()
+  public EReference getprocedure_or_function_declaration_Proc()
   {
-    return (EAttribute)procedure_or_function_declarationEClass.getEStructuralFeatures().get(0);
+    return (EReference)procedure_or_function_declarationEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1539,7 +1925,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getprocedure_or_function_declaration_Block()
+  public EReference getprocedure_or_function_declaration_Func()
   {
     return (EReference)procedure_or_function_declarationEClass.getEStructuralFeatures().get(1);
   }
@@ -1559,9 +1945,9 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getprocedure_declaration_Types()
+  public EAttribute getprocedure_declaration_Names()
   {
-    return (EReference)procedure_declarationEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)procedure_declarationEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1569,9 +1955,9 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass gettype_definition()
+  public EReference getprocedure_declaration_Parameters()
   {
-    return type_definitionEClass;
+    return (EReference)procedure_declarationEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1579,9 +1965,9 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute gettype_definition_Names()
+  public EReference getprocedure_declaration_Block()
   {
-    return (EAttribute)type_definitionEClass.getEStructuralFeatures().get(0);
+    return (EReference)procedure_declarationEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -1619,9 +2005,39 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getfunction_declaration_Names()
+  {
+    return (EAttribute)function_declarationEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getfunction_declaration_Parameters()
+  {
+    return (EReference)function_declarationEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EReference getfunction_declaration_Types()
   {
-    return (EReference)function_declarationEClass.getEStructuralFeatures().get(0);
+    return (EReference)function_declarationEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getfunction_declaration_Block()
+  {
+    return (EReference)function_declarationEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -1639,9 +2055,19 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getfunction_type_Types()
+  public EReference getfunction_type_Parameters()
   {
     return (EReference)function_typeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getfunction_type_Types()
+  {
+    return (EReference)function_typeEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1659,7 +2085,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getfunction_designator_Names()
+  public EAttribute getfunction_designator_Name_function()
   {
     return (EAttribute)function_designatorEClass.getEStructuralFeatures().get(0);
   }
@@ -1669,7 +2095,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getfunction_designator_Types()
+  public EReference getfunction_designator_Parameters()
   {
     return (EReference)function_designatorEClass.getEStructuralFeatures().get(1);
   }
@@ -1689,6 +2115,16 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EReference getformal_parameter_list_Parameters()
+  {
+    return (EReference)formal_parameter_listEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getformal_parameter_section()
   {
     return formal_parameter_sectionEClass;
@@ -1699,7 +2135,7 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getformal_parameter_section_Types()
+  public EReference getformal_parameter_section_Parameters()
   {
     return (EReference)formal_parameter_sectionEClass.getEStructuralFeatures().get(0);
   }
@@ -1712,6 +2148,26 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
   public EClass getparameter_group()
   {
     return parameter_groupEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getparameter_group_Names()
+  {
+    return (EReference)parameter_groupEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getparameter_group_Types()
+  {
+    return (EReference)parameter_groupEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1763,13 +2219,16 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
 
     program_heading_blockEClass = createEClass(PROGRAM_HEADING_BLOCK);
     createEAttribute(program_heading_blockEClass, PROGRAM_HEADING_BLOCK__NAME);
-    createEReference(program_heading_blockEClass, PROGRAM_HEADING_BLOCK__IDENTIFIERS);
 
     identifier_listEClass = createEClass(IDENTIFIER_LIST);
-    createEAttribute(identifier_listEClass, IDENTIFIER_LIST__NAMES);
+    createEReference(identifier_listEClass, IDENTIFIER_LIST__NAMES);
+
+    identifierEClass = createEClass(IDENTIFIER);
+    createEAttribute(identifierEClass, IDENTIFIER__ID);
 
     blockEClass = createEClass(BLOCK);
     createEReference(blockEClass, BLOCK__CONSTANTPART);
+    createEReference(blockEClass, BLOCK__TYPE_PART);
     createEReference(blockEClass, BLOCK__VARIABLEPART);
     createEReference(blockEClass, BLOCK__PROCEDURE_FUNCTION_PART);
     createEReference(blockEClass, BLOCK__STATEMENT);
@@ -1781,14 +2240,26 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
     createEAttribute(constant_definitionEClass, CONSTANT_DEFINITION__NAME);
 
     constantEClass = createEClass(CONSTANT);
-    createEAttribute(constantEClass, CONSTANT__NAMES);
+    createEReference(constantEClass, CONSTANT__UNS_NUMBER);
+    createEReference(constantEClass, CONSTANT__SIG_NUMBER);
+    createEAttribute(constantEClass, CONSTANT__NAME_ID);
+    createEAttribute(constantEClass, CONSTANT__SIG_NAME_ID);
     createEAttribute(constantEClass, CONSTANT__STRING);
-    createEAttribute(constantEClass, CONSTANT__NUMBERS);
+    createEAttribute(constantEClass, CONSTANT__BOOLTYPE);
+
+    type_definition_partEClass = createEClass(TYPE_DEFINITION_PART);
+    createEReference(type_definition_partEClass, TYPE_DEFINITION_PART__TYPES);
+
+    type_definitionEClass = createEClass(TYPE_DEFINITION);
+    createEAttribute(type_definitionEClass, TYPE_DEFINITION__NAME);
+    createEReference(type_definitionEClass, TYPE_DEFINITION__TYPE);
 
     variable_declaration_partEClass = createEClass(VARIABLE_DECLARATION_PART);
     createEReference(variable_declaration_partEClass, VARIABLE_DECLARATION_PART__VARIABLE);
 
     variable_declarationEClass = createEClass(VARIABLE_DECLARATION);
+    createEReference(variable_declarationEClass, VARIABLE_DECLARATION__LIST_NAMES);
+    createEReference(variable_declarationEClass, VARIABLE_DECLARATION__TYPE_VARIABLE);
 
     compound_statementEClass = createEClass(COMPOUND_STATEMENT);
     createEReference(compound_statementEClass, COMPOUND_STATEMENT__SEQUENCE);
@@ -1797,134 +2268,166 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
     createEReference(statementsEClass, STATEMENTS__STATEMENTS);
 
     statementEClass = createEClass(STATEMENT);
-    createEReference(statementEClass, STATEMENT__LABEL);
     createEReference(statementEClass, STATEMENT__STATEMENT);
 
     unlabelled_statementEClass = createEClass(UNLABELLED_STATEMENT);
     createEReference(unlabelled_statementEClass, UNLABELLED_STATEMENT__SIMPLE);
-    createEAttribute(unlabelled_statementEClass, UNLABELLED_STATEMENT__STRUCTURED);
-
-    labelEClass = createEClass(LABEL);
-    createEAttribute(labelEClass, LABEL__NUMBER);
+    createEReference(unlabelled_statementEClass, UNLABELLED_STATEMENT__STRUCTURED);
 
     simple_statementEClass = createEClass(SIMPLE_STATEMENT);
     createEReference(simple_statementEClass, SIMPLE_STATEMENT__ASSIGNMENT);
     createEReference(simple_statementEClass, SIMPLE_STATEMENT__PROCEDURE);
-    createEAttribute(simple_statementEClass, SIMPLE_STATEMENT__GOTO);
 
     assignment_statementEClass = createEClass(ASSIGNMENT_STATEMENT);
-    createEReference(assignment_statementEClass, ASSIGNMENT_STATEMENT__VARIABLE);
+    createEReference(assignment_statementEClass, ASSIGNMENT_STATEMENT__DECLARED_VARIABLE);
     createEReference(assignment_statementEClass, ASSIGNMENT_STATEMENT__EXPRESSION);
 
     variableEClass = createEClass(VARIABLE);
-    createEAttribute(variableEClass, VARIABLE__NAMES);
+    createEAttribute(variableEClass, VARIABLE__VARIABLE_ID);
+    createEReference(variableEClass, VARIABLE__INDICE);
     createEReference(variableEClass, VARIABLE__EXPRESSION);
+    createEAttribute(variableEClass, VARIABLE__NAMES_EXP);
 
     expressionEClass = createEClass(EXPRESSION);
-    createEReference(expressionEClass, EXPRESSION__EXPRESSIONS);
-    createEAttribute(expressionEClass, EXPRESSION__OPERATORS);
+    createEReference(expressionEClass, EXPRESSION__SIMPLE);
 
     simple_expressionEClass = createEClass(SIMPLE_EXPRESSION);
-    createEReference(simple_expressionEClass, SIMPLE_EXPRESSION__TERMS);
-    createEAttribute(simple_expressionEClass, SIMPLE_EXPRESSION__OPERATORS);
+    createEReference(simple_expressionEClass, SIMPLE_EXPRESSION__TERM_EXP);
+    createEAttribute(simple_expressionEClass, SIMPLE_EXPRESSION__OPERATOR);
     createEReference(simple_expressionEClass, SIMPLE_EXPRESSION__EXPRESSION);
 
     termEClass = createEClass(TERM);
-    createEReference(termEClass, TERM__FACTORS);
-    createEAttribute(termEClass, TERM__OPERATORS);
-    createEReference(termEClass, TERM__TERMS);
+    createEReference(termEClass, TERM__FACTOR);
+    createEAttribute(termEClass, TERM__OPERATOR);
+    createEReference(termEClass, TERM__TERM2);
 
     signed_factorEClass = createEClass(SIGNED_FACTOR);
-    createEAttribute(signed_factorEClass, SIGNED_FACTOR__OPERATORS);
-    createEReference(signed_factorEClass, SIGNED_FACTOR__FACTORS);
+    createEAttribute(signed_factorEClass, SIGNED_FACTOR__SIGNAL);
+    createEReference(signed_factorEClass, SIGNED_FACTOR__FACTOR);
 
     factorEClass = createEClass(FACTOR);
     createEReference(factorEClass, FACTOR__VARIABLE);
     createEReference(factorEClass, FACTOR__EXPRESSION);
+    createEReference(factorEClass, FACTOR__FUNCTION);
     createEReference(factorEClass, FACTOR__CONSTANT);
-    createEReference(factorEClass, FACTOR__SET);
-    createEReference(factorEClass, FACTOR__FACTOR);
-    createEAttribute(factorEClass, FACTOR__BOOLEAN);
-
-    setEClass = createEClass(SET);
-    createEReference(setEClass, SET__ELEMENTS);
-
-    elementListEClass = createEClass(ELEMENT_LIST);
-    createEReference(elementListEClass, ELEMENT_LIST__ELEMENTS);
-
-    elementEClass = createEClass(ELEMENT);
-    createEReference(elementEClass, ELEMENT__EXPRESSIONS);
-    createEAttribute(elementEClass, ELEMENT__DOTDOT);
+    createEReference(factorEClass, FACTOR__NOT_FACTOR);
+    createEAttribute(factorEClass, FACTOR__BOOL_FACTOR);
 
     typeEClass = createEClass(TYPE);
-    createEReference(typeEClass, TYPE__TYPE);
+    createEReference(typeEClass, TYPE__SIMPLE);
+    createEReference(typeEClass, TYPE__STRUCTURED);
 
     simple_typeEClass = createEClass(SIMPLE_TYPE);
-    createEReference(simple_typeEClass, SIMPLE_TYPE__TYPES);
-
-    scalar_typeEClass = createEClass(SCALAR_TYPE);
+    createEReference(simple_typeEClass, SIMPLE_TYPE__TYPE);
+    createEReference(simple_typeEClass, SIMPLE_TYPE__SUBRANGE_TYPE);
 
     subrange_typeEClass = createEClass(SUBRANGE_TYPE);
-    createEReference(subrange_typeEClass, SUBRANGE_TYPE__CONSTANTS);
+    createEReference(subrange_typeEClass, SUBRANGE_TYPE__CONSTANT_INIT);
+    createEReference(subrange_typeEClass, SUBRANGE_TYPE__CONSTANT_FINAL);
+
+    structured_typeEClass = createEClass(STRUCTURED_TYPE);
+    createEReference(structured_typeEClass, STRUCTURED_TYPE__UNPACKED);
+
+    unpacked_structured_typeEClass = createEClass(UNPACKED_STRUCTURED_TYPE);
+    createEReference(unpacked_structured_typeEClass, UNPACKED_STRUCTURED_TYPE__STATIC_ARRAY);
+    createEReference(unpacked_structured_typeEClass, UNPACKED_STRUCTURED_TYPE__DYNAMIC);
+
+    dynamic_array_typeEClass = createEClass(DYNAMIC_ARRAY_TYPE);
+    createEReference(dynamic_array_typeEClass, DYNAMIC_ARRAY_TYPE__TYPE);
+
+    array_typeEClass = createEClass(ARRAY_TYPE);
+    createEReference(array_typeEClass, ARRAY_TYPE__TYPE_L);
+    createEReference(array_typeEClass, ARRAY_TYPE__TYPE);
+
+    type_listEClass = createEClass(TYPE_LIST);
+    createEReference(type_listEClass, TYPE_LIST__INDEXES);
+
+    index_typeEClass = createEClass(INDEX_TYPE);
+    createEReference(index_typeEClass, INDEX_TYPE__CONTENT);
+
+    component_typeEClass = createEClass(COMPONENT_TYPE);
 
     type_identifierEClass = createEClass(TYPE_IDENTIFIER);
-    createEAttribute(type_identifierEClass, TYPE_IDENTIFIER__NAMES);
-    createEAttribute(type_identifierEClass, TYPE_IDENTIFIER__TYPE);
-
-    string_typeEClass = createEClass(STRING_TYPE);
-    createEAttribute(string_typeEClass, STRING_TYPE__NAMES);
-    createEReference(string_typeEClass, STRING_TYPE__NUMBER);
+    createEAttribute(type_identifierEClass, TYPE_IDENTIFIER__ID);
+    createEAttribute(type_identifierEClass, TYPE_IDENTIFIER__BOOLEAN);
+    createEAttribute(type_identifierEClass, TYPE_IDENTIFIER__INTEGER);
+    createEAttribute(type_identifierEClass, TYPE_IDENTIFIER__STRING);
 
     unsigned_constantEClass = createEClass(UNSIGNED_CONSTANT);
     createEReference(unsigned_constantEClass, UNSIGNED_CONSTANT__NUMBER);
-    createEReference(unsigned_constantEClass, UNSIGNED_CONSTANT__CHAR);
     createEAttribute(unsigned_constantEClass, UNSIGNED_CONSTANT__STRING);
     createEAttribute(unsigned_constantEClass, UNSIGNED_CONSTANT__NIL);
 
     unsigned_numberEClass = createEClass(UNSIGNED_NUMBER);
-
-    constant_chrEClass = createEClass(CONSTANT_CHR);
+    createEAttribute(unsigned_numberEClass, UNSIGNED_NUMBER__NUMBERS);
 
     procedure_statementEClass = createEClass(PROCEDURE_STATEMENT);
-    createEAttribute(procedure_statementEClass, PROCEDURE_STATEMENT__NAMES);
-    createEReference(procedure_statementEClass, PROCEDURE_STATEMENT__TYPES);
+    createEAttribute(procedure_statementEClass, PROCEDURE_STATEMENT__NAME_ID);
+    createEReference(procedure_statementEClass, PROCEDURE_STATEMENT__PARAMETERS);
 
     parameter_listEClass = createEClass(PARAMETER_LIST);
+    createEReference(parameter_listEClass, PARAMETER_LIST__PARAMETERS);
 
     actual_parameterEClass = createEClass(ACTUAL_PARAMETER);
-    createEReference(actual_parameterEClass, ACTUAL_PARAMETER__TYPES);
+    createEReference(actual_parameterEClass, ACTUAL_PARAMETER__CONTENT);
+
+    structured_statementEClass = createEClass(STRUCTURED_STATEMENT);
+    createEReference(structured_statementEClass, STRUCTURED_STATEMENT__COMPOUND_STAT);
+    createEReference(structured_statementEClass, STRUCTURED_STATEMENT__CONDITIONAL_STAT);
+
+    conditional_statementEClass = createEClass(CONDITIONAL_STATEMENT);
+    createEReference(conditional_statementEClass, CONDITIONAL_STATEMENT__COND_STATEMENTS);
+
+    case_statementEClass = createEClass(CASE_STATEMENT);
+    createEReference(case_statementEClass, CASE_STATEMENT__EXP);
+    createEReference(case_statementEClass, CASE_STATEMENT__CASE_LIST);
+    createEReference(case_statementEClass, CASE_STATEMENT__CASE_STATEMENTS);
+
+    case_list_elementEClass = createEClass(CASE_LIST_ELEMENT);
+    createEReference(case_list_elementEClass, CASE_LIST_ELEMENT__CONSTS);
+    createEReference(case_list_elementEClass, CASE_LIST_ELEMENT__CASE_STATEMENT);
+
+    const_listEClass = createEClass(CONST_LIST);
+    createEReference(const_listEClass, CONST_LIST__CONSTANTS);
 
     procedure_and_function_declaration_partEClass = createEClass(PROCEDURE_AND_FUNCTION_DECLARATION_PART);
+    createEReference(procedure_and_function_declaration_partEClass, PROCEDURE_AND_FUNCTION_DECLARATION_PART__SUBROUTINE);
 
     procedure_or_function_declarationEClass = createEClass(PROCEDURE_OR_FUNCTION_DECLARATION);
-    createEAttribute(procedure_or_function_declarationEClass, PROCEDURE_OR_FUNCTION_DECLARATION__NAMES);
-    createEReference(procedure_or_function_declarationEClass, PROCEDURE_OR_FUNCTION_DECLARATION__BLOCK);
+    createEReference(procedure_or_function_declarationEClass, PROCEDURE_OR_FUNCTION_DECLARATION__PROC);
+    createEReference(procedure_or_function_declarationEClass, PROCEDURE_OR_FUNCTION_DECLARATION__FUNC);
 
     procedure_declarationEClass = createEClass(PROCEDURE_DECLARATION);
-    createEReference(procedure_declarationEClass, PROCEDURE_DECLARATION__TYPES);
-
-    type_definitionEClass = createEClass(TYPE_DEFINITION);
-    createEAttribute(type_definitionEClass, TYPE_DEFINITION__NAMES);
+    createEAttribute(procedure_declarationEClass, PROCEDURE_DECLARATION__NAMES);
+    createEReference(procedure_declarationEClass, PROCEDURE_DECLARATION__PARAMETERS);
+    createEReference(procedure_declarationEClass, PROCEDURE_DECLARATION__BLOCK);
 
     procedure_typeEClass = createEClass(PROCEDURE_TYPE);
     createEReference(procedure_typeEClass, PROCEDURE_TYPE__TYPES);
 
     function_declarationEClass = createEClass(FUNCTION_DECLARATION);
+    createEAttribute(function_declarationEClass, FUNCTION_DECLARATION__NAMES);
+    createEReference(function_declarationEClass, FUNCTION_DECLARATION__PARAMETERS);
     createEReference(function_declarationEClass, FUNCTION_DECLARATION__TYPES);
+    createEReference(function_declarationEClass, FUNCTION_DECLARATION__BLOCK);
 
     function_typeEClass = createEClass(FUNCTION_TYPE);
+    createEReference(function_typeEClass, FUNCTION_TYPE__PARAMETERS);
     createEReference(function_typeEClass, FUNCTION_TYPE__TYPES);
 
     function_designatorEClass = createEClass(FUNCTION_DESIGNATOR);
-    createEAttribute(function_designatorEClass, FUNCTION_DESIGNATOR__NAMES);
-    createEReference(function_designatorEClass, FUNCTION_DESIGNATOR__TYPES);
+    createEAttribute(function_designatorEClass, FUNCTION_DESIGNATOR__NAME_FUNCTION);
+    createEReference(function_designatorEClass, FUNCTION_DESIGNATOR__PARAMETERS);
 
     formal_parameter_listEClass = createEClass(FORMAL_PARAMETER_LIST);
+    createEReference(formal_parameter_listEClass, FORMAL_PARAMETER_LIST__PARAMETERS);
 
     formal_parameter_sectionEClass = createEClass(FORMAL_PARAMETER_SECTION);
-    createEReference(formal_parameter_sectionEClass, FORMAL_PARAMETER_SECTION__TYPES);
+    createEReference(formal_parameter_sectionEClass, FORMAL_PARAMETER_SECTION__PARAMETERS);
 
     parameter_groupEClass = createEClass(PARAMETER_GROUP);
+    createEReference(parameter_groupEClass, PARAMETER_GROUP__NAMES);
+    createEReference(parameter_groupEClass, PARAMETER_GROUP__TYPES);
 
     result_typeEClass = createEClass(RESULT_TYPE);
   }
@@ -1958,28 +2461,13 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
     // Set bounds for type parameters
 
     // Add supertypes to classes
-    identifier_listEClass.getESuperTypes().add(this.getvariable_declaration());
-    identifier_listEClass.getESuperTypes().add(this.getscalar_type());
-    identifier_listEClass.getESuperTypes().add(this.getparameter_group());
     constantEClass.getESuperTypes().add(this.getconstant_definition());
-    expressionEClass.getESuperTypes().add(this.getactual_parameter());
-    typeEClass.getESuperTypes().add(this.gettype_definition());
+    typeEClass.getESuperTypes().add(this.getcomponent_type());
     type_identifierEClass.getESuperTypes().add(this.getresult_type());
-    unsigned_numberEClass.getESuperTypes().add(this.getconstant());
-    constant_chrEClass.getESuperTypes().add(this.getconstant());
-    actual_parameterEClass.getESuperTypes().add(this.getparameter_list());
-    procedure_or_function_declarationEClass.getESuperTypes().add(this.getprocedure_and_function_declaration_part());
-    procedure_declarationEClass.getESuperTypes().add(this.getprocedure_or_function_declaration());
-    procedure_typeEClass.getESuperTypes().add(this.gettype_definition());
-    function_declarationEClass.getESuperTypes().add(this.getprocedure_or_function_declaration());
-    function_typeEClass.getESuperTypes().add(this.gettype_definition());
-    function_designatorEClass.getESuperTypes().add(this.getfactor());
-    formal_parameter_sectionEClass.getESuperTypes().add(this.getformal_parameter_list());
-    parameter_groupEClass.getESuperTypes().add(this.getformal_parameter_section());
 
     // Initialize classes and features; add operations and parameters
     initEClass(pascalEClass, pascal.class, "pascal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getpascal_Program(), this.getprogram(), null, "program", null, 0, -1, pascal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getpascal_Program(), this.getprogram(), null, "program", null, 0, 1, pascal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(programEClass, program.class, "program", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getprogram_Heading(), this.getprogram_heading_block(), null, "heading", null, 0, 1, program.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1987,13 +2475,16 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
 
     initEClass(program_heading_blockEClass, program_heading_block.class, "program_heading_block", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getprogram_heading_block_Name(), ecorePackage.getEString(), "name", null, 0, 1, program_heading_block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getprogram_heading_block_Identifiers(), this.getidentifier_list(), null, "identifiers", null, 0, 1, program_heading_block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(identifier_listEClass, identifier_list.class, "identifier_list", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getidentifier_list_Names(), ecorePackage.getEString(), "names", null, 0, -1, identifier_list.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getidentifier_list_Names(), this.getidentifier(), null, "names", null, 0, -1, identifier_list.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(identifierEClass, identifier.class, "identifier", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getidentifier_Id(), ecorePackage.getEString(), "id", null, 0, 1, identifier.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(blockEClass, block.class, "block", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getblock_Constantpart(), this.getconstant_definition_part(), null, "constantpart", null, 0, -1, block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getblock_Type_part(), this.gettype_definition_part(), null, "type_part", null, 0, -1, block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getblock_Variablepart(), this.getvariable_declaration_part(), null, "variablepart", null, 0, -1, block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getblock_Procedure_function_part(), this.getprocedure_and_function_declaration_part(), null, "procedure_function_part", null, 0, -1, block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getblock_Statement(), this.getcompound_statement(), null, "statement", null, 0, 1, block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2005,14 +2496,26 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
     initEAttribute(getconstant_definition_Name(), ecorePackage.getEString(), "name", null, 0, 1, constant_definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(constantEClass, constant.class, "constant", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getconstant_Names(), ecorePackage.getEString(), "names", null, 0, -1, constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getconstant_String(), ecorePackage.getEString(), "string", null, 0, -1, constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getconstant_Numbers(), ecorePackage.getEString(), "numbers", null, 0, -1, constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getconstant_Uns_number(), this.getunsigned_number(), null, "uns_number", null, 0, 1, constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getconstant_Sig_number(), this.getunsigned_number(), null, "sig_number", null, 0, 1, constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getconstant_Name_id(), ecorePackage.getEString(), "name_id", null, 0, 1, constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getconstant_Sig_name_id(), ecorePackage.getEString(), "sig_name_id", null, 0, 1, constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getconstant_String(), ecorePackage.getEString(), "string", null, 0, 1, constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getconstant_Booltype(), ecorePackage.getEString(), "booltype", null, 0, 1, constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(type_definition_partEClass, type_definition_part.class, "type_definition_part", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(gettype_definition_part_Types(), this.gettype_definition(), null, "types", null, 0, -1, type_definition_part.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(type_definitionEClass, type_definition.class, "type_definition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(gettype_definition_Name(), ecorePackage.getEString(), "name", null, 0, 1, type_definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(gettype_definition_Type(), this.gettype(), null, "type", null, 0, 1, type_definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(variable_declaration_partEClass, variable_declaration_part.class, "variable_declaration_part", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getvariable_declaration_part_Variable(), this.getvariable_declaration(), null, "variable", null, 0, -1, variable_declaration_part.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(variable_declarationEClass, variable_declaration.class, "variable_declaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getvariable_declaration_List_names(), this.getidentifier_list(), null, "list_names", null, 0, 1, variable_declaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getvariable_declaration_Type_variable(), this.gettype(), null, "type_variable", null, 0, 1, variable_declaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(compound_statementEClass, compound_statement.class, "compound_statement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getcompound_statement_Sequence(), this.getstatements(), null, "sequence", null, 0, 1, compound_statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2021,134 +2524,166 @@ public class PascalPackageImpl extends EPackageImpl implements PascalPackage
     initEReference(getstatements_Statements(), this.getstatement(), null, "statements", null, 0, -1, statements.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(statementEClass, statement.class, "statement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getstatement_Label(), this.getlabel(), null, "label", null, 0, 1, statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getstatement_Statement(), this.getunlabelled_statement(), null, "statement", null, 0, -1, statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(unlabelled_statementEClass, unlabelled_statement.class, "unlabelled_statement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getunlabelled_statement_Simple(), this.getsimple_statement(), null, "simple", null, 0, 1, unlabelled_statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getunlabelled_statement_Structured(), ecorePackage.getEString(), "structured", null, 0, 1, unlabelled_statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(labelEClass, label.class, "label", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getlabel_Number(), ecorePackage.getEString(), "number", null, 0, 1, label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getunlabelled_statement_Structured(), this.getstructured_statement(), null, "structured", null, 0, 1, unlabelled_statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(simple_statementEClass, simple_statement.class, "simple_statement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getsimple_statement_Assignment(), this.getassignment_statement(), null, "assignment", null, 0, 1, simple_statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getsimple_statement_Procedure(), this.getprocedure_statement(), null, "procedure", null, 0, 1, simple_statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getsimple_statement_Goto(), ecorePackage.getEString(), "goto", null, 0, 1, simple_statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(assignment_statementEClass, assignment_statement.class, "assignment_statement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getassignment_statement_Variable(), this.getvariable(), null, "variable", null, 0, 1, assignment_statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getassignment_statement_Declared_variable(), this.getvariable(), null, "declared_variable", null, 0, 1, assignment_statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getassignment_statement_Expression(), this.getexpression(), null, "expression", null, 0, 1, assignment_statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(variableEClass, variable.class, "variable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getvariable_Names(), ecorePackage.getEString(), "names", null, 0, -1, variable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getvariable_Variable_id(), ecorePackage.getEString(), "variable_id", null, 0, 1, variable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getvariable_Indice(), this.getexpression(), null, "indice", null, 0, -1, variable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getvariable_Expression(), this.getexpression(), null, "expression", null, 0, -1, variable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getvariable_Names_exp(), ecorePackage.getEString(), "names_exp", null, 0, -1, variable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(expressionEClass, expression.class, "expression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getexpression_Expressions(), ecorePackage.getEObject(), null, "expressions", null, 0, -1, expression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getexpression_Operators(), ecorePackage.getEString(), "operators", null, 0, -1, expression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getexpression_Simple(), this.getsimple_expression(), null, "simple", null, 0, 1, expression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(simple_expressionEClass, simple_expression.class, "simple_expression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getsimple_expression_Terms(), this.getterm(), null, "terms", null, 0, -1, simple_expression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getsimple_expression_Operators(), ecorePackage.getEString(), "operators", null, 0, -1, simple_expression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getsimple_expression_Expression(), this.getsimple_expression(), null, "expression", null, 0, -1, simple_expression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getsimple_expression_Term_exp(), this.getterm(), null, "term_exp", null, 0, 1, simple_expression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getsimple_expression_Operator(), ecorePackage.getEString(), "operator", null, 0, 1, simple_expression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getsimple_expression_Expression(), this.getsimple_expression(), null, "expression", null, 0, 1, simple_expression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(termEClass, term.class, "term", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getterm_Factors(), this.getsigned_factor(), null, "factors", null, 0, -1, term.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getterm_Operators(), ecorePackage.getEString(), "operators", null, 0, -1, term.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getterm_Terms(), this.getterm(), null, "terms", null, 0, -1, term.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getterm_Factor(), this.getsigned_factor(), null, "factor", null, 0, 1, term.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getterm_Operator(), ecorePackage.getEString(), "operator", null, 0, 1, term.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getterm_Term2(), this.getterm(), null, "term2", null, 0, 1, term.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(signed_factorEClass, signed_factor.class, "signed_factor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getsigned_factor_Operators(), ecorePackage.getEString(), "operators", null, 0, -1, signed_factor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getsigned_factor_Factors(), this.getfactor(), null, "factors", null, 0, -1, signed_factor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getsigned_factor_Signal(), ecorePackage.getEString(), "signal", null, 0, 1, signed_factor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getsigned_factor_Factor(), this.getfactor(), null, "factor", null, 0, 1, signed_factor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(factorEClass, factor.class, "factor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getfactor_Variable(), this.getvariable(), null, "variable", null, 0, 1, factor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getfactor_Expression(), this.getexpression(), null, "expression", null, 0, 1, factor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getfactor_Function(), this.getfunction_designator(), null, "function", null, 0, 1, factor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getfactor_Constant(), this.getunsigned_constant(), null, "constant", null, 0, 1, factor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getfactor_Set(), this.getset(), null, "set", null, 0, 1, factor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getfactor_Factor(), this.getfactor(), null, "factor", null, 0, 1, factor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getfactor_Boolean(), ecorePackage.getEString(), "boolean", null, 0, -1, factor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(setEClass, set.class, "set", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getset_Elements(), this.getelementList(), null, "elements", null, 0, -1, set.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(elementListEClass, elementList.class, "elementList", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getelementList_Elements(), this.getelement(), null, "elements", null, 0, -1, elementList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(elementEClass, element.class, "element", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getelement_Expressions(), this.getexpression(), null, "expressions", null, 0, -1, element.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getelement_Dotdot(), ecorePackage.getEString(), "dotdot", null, 0, -1, element.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getfactor_Not_factor(), this.getfactor(), null, "not_factor", null, 0, 1, factor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getfactor_Bool_factor(), ecorePackage.getEString(), "bool_factor", null, 0, 1, factor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(typeEClass, type.class, "type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(gettype_Type(), this.getsimple_type(), null, "type", null, 0, -1, type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(gettype_Simple(), this.getsimple_type(), null, "simple", null, 0, 1, type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(gettype_Structured(), this.getstructured_type(), null, "structured", null, 0, 1, type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(simple_typeEClass, simple_type.class, "simple_type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getsimple_type_Types(), ecorePackage.getEObject(), null, "types", null, 0, -1, simple_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(scalar_typeEClass, scalar_type.class, "scalar_type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getsimple_type_Type(), this.gettype_identifier(), null, "type", null, 0, 1, simple_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getsimple_type_Subrange_type(), this.getsubrange_type(), null, "subrange_type", null, 0, -1, simple_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(subrange_typeEClass, subrange_type.class, "subrange_type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getsubrange_type_Constants(), this.getconstant(), null, "constants", null, 0, -1, subrange_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getsubrange_type_ConstantInit(), this.getconstant(), null, "constantInit", null, 0, 1, subrange_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getsubrange_type_ConstantFinal(), this.getconstant(), null, "constantFinal", null, 0, 1, subrange_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(structured_typeEClass, structured_type.class, "structured_type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getstructured_type_Unpacked(), this.getunpacked_structured_type(), null, "unpacked", null, 0, 1, structured_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(unpacked_structured_typeEClass, unpacked_structured_type.class, "unpacked_structured_type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getunpacked_structured_type_Static_array(), this.getarray_type(), null, "static_array", null, 0, 1, unpacked_structured_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getunpacked_structured_type_Dynamic(), this.getdynamic_array_type(), null, "dynamic", null, 0, 1, unpacked_structured_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(dynamic_array_typeEClass, dynamic_array_type.class, "dynamic_array_type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getdynamic_array_type_Type(), this.gettype_identifier(), null, "type", null, 0, 1, dynamic_array_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(array_typeEClass, array_type.class, "array_type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getarray_type_Type_l(), this.gettype_list(), null, "type_l", null, 0, 1, array_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getarray_type_Type(), this.gettype_identifier(), null, "type", null, 0, 1, array_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(type_listEClass, type_list.class, "type_list", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(gettype_list_Indexes(), this.getindex_type(), null, "indexes", null, 0, -1, type_list.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(index_typeEClass, index_type.class, "index_type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getindex_type_Content(), this.getsimple_type(), null, "content", null, 0, 1, index_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(component_typeEClass, component_type.class, "component_type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(type_identifierEClass, type_identifier.class, "type_identifier", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(gettype_identifier_Names(), ecorePackage.getEString(), "names", null, 0, -1, type_identifier.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(gettype_identifier_Type(), ecorePackage.getEString(), "type", null, 0, -1, type_identifier.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(string_typeEClass, string_type.class, "string_type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getstring_type_Names(), ecorePackage.getEString(), "names", null, 0, -1, string_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getstring_type_Number(), this.getunsigned_number(), null, "number", null, 0, -1, string_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(gettype_identifier_Id(), ecorePackage.getEString(), "id", null, 0, 1, type_identifier.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(gettype_identifier_Boolean(), ecorePackage.getEString(), "boolean", null, 0, 1, type_identifier.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(gettype_identifier_Integer(), ecorePackage.getEString(), "integer", null, 0, 1, type_identifier.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(gettype_identifier_String(), ecorePackage.getEString(), "string", null, 0, 1, type_identifier.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(unsigned_constantEClass, unsigned_constant.class, "unsigned_constant", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getunsigned_constant_Number(), this.getunsigned_number(), null, "number", null, 0, -1, unsigned_constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getunsigned_constant_Char(), this.getconstant_chr(), null, "char", null, 0, -1, unsigned_constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getunsigned_constant_String(), ecorePackage.getEString(), "string", null, 0, -1, unsigned_constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getunsigned_constant_Nil(), ecorePackage.getEString(), "nil", null, 0, -1, unsigned_constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getunsigned_constant_Number(), this.getunsigned_number(), null, "number", null, 0, 1, unsigned_constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getunsigned_constant_String(), ecorePackage.getEString(), "string", null, 0, 1, unsigned_constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getunsigned_constant_Nil(), ecorePackage.getEString(), "nil", null, 0, 1, unsigned_constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(unsigned_numberEClass, unsigned_number.class, "unsigned_number", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(constant_chrEClass, constant_chr.class, "constant_chr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getunsigned_number_Numbers(), ecorePackage.getEString(), "numbers", null, 0, 1, unsigned_number.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(procedure_statementEClass, procedure_statement.class, "procedure_statement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getprocedure_statement_Names(), ecorePackage.getEString(), "names", null, 0, -1, procedure_statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getprocedure_statement_Types(), this.getparameter_list(), null, "types", null, 0, -1, procedure_statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getprocedure_statement_Name_id(), ecorePackage.getEString(), "name_id", null, 0, 1, procedure_statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getprocedure_statement_Parameters(), this.getparameter_list(), null, "parameters", null, 0, 1, procedure_statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(parameter_listEClass, parameter_list.class, "parameter_list", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getparameter_list_Parameters(), this.getactual_parameter(), null, "parameters", null, 0, -1, parameter_list.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(actual_parameterEClass, actual_parameter.class, "actual_parameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getactual_parameter_Types(), this.getactual_parameter(), null, "types", null, 0, -1, actual_parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getactual_parameter_Content(), this.getexpression(), null, "content", null, 0, 1, actual_parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(structured_statementEClass, structured_statement.class, "structured_statement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getstructured_statement_Compound_stat(), this.getcompound_statement(), null, "compound_stat", null, 0, 1, structured_statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getstructured_statement_Conditional_stat(), this.getconditional_statement(), null, "conditional_stat", null, 0, 1, structured_statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(conditional_statementEClass, conditional_statement.class, "conditional_statement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getconditional_statement_Cond_statements(), this.getcase_statement(), null, "cond_statements", null, 0, 1, conditional_statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(case_statementEClass, case_statement.class, "case_statement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getcase_statement_Exp(), this.getexpression(), null, "exp", null, 0, 1, case_statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getcase_statement_Case_list(), this.getcase_list_element(), null, "case_list", null, 0, -1, case_statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getcase_statement_Case_statements(), this.getstatements(), null, "case_statements", null, 0, 1, case_statement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(case_list_elementEClass, case_list_element.class, "case_list_element", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getcase_list_element_Consts(), this.getconst_list(), null, "consts", null, 0, 1, case_list_element.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getcase_list_element_Case_statement(), this.getstatement(), null, "case_statement", null, 0, 1, case_list_element.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(const_listEClass, const_list.class, "const_list", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getconst_list_Constants(), this.getconstant(), null, "constants", null, 0, -1, const_list.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(procedure_and_function_declaration_partEClass, procedure_and_function_declaration_part.class, "procedure_and_function_declaration_part", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getprocedure_and_function_declaration_part_Subroutine(), this.getprocedure_or_function_declaration(), null, "subroutine", null, 0, 1, procedure_and_function_declaration_part.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(procedure_or_function_declarationEClass, procedure_or_function_declaration.class, "procedure_or_function_declaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getprocedure_or_function_declaration_Names(), ecorePackage.getEString(), "names", null, 0, -1, procedure_or_function_declaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getprocedure_or_function_declaration_Block(), this.getblock(), null, "block", null, 0, 1, procedure_or_function_declaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getprocedure_or_function_declaration_Proc(), this.getprocedure_declaration(), null, "proc", null, 0, 1, procedure_or_function_declaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getprocedure_or_function_declaration_Func(), this.getfunction_declaration(), null, "func", null, 0, 1, procedure_or_function_declaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(procedure_declarationEClass, procedure_declaration.class, "procedure_declaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getprocedure_declaration_Types(), this.getformal_parameter_list(), null, "types", null, 0, -1, procedure_declaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(type_definitionEClass, type_definition.class, "type_definition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(gettype_definition_Names(), ecorePackage.getEString(), "names", null, 0, -1, type_definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getprocedure_declaration_Names(), ecorePackage.getEString(), "names", null, 0, 1, procedure_declaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getprocedure_declaration_Parameters(), this.getformal_parameter_list(), null, "parameters", null, 0, 1, procedure_declaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getprocedure_declaration_Block(), this.getblock(), null, "block", null, 0, 1, procedure_declaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(procedure_typeEClass, procedure_type.class, "procedure_type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getprocedure_type_Types(), this.getformal_parameter_list(), null, "types", null, 0, -1, procedure_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getprocedure_type_Types(), this.getformal_parameter_list(), null, "types", null, 0, 1, procedure_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(function_declarationEClass, function_declaration.class, "function_declaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getfunction_declaration_Types(), ecorePackage.getEObject(), null, "types", null, 0, -1, function_declaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getfunction_declaration_Names(), ecorePackage.getEString(), "names", null, 0, 1, function_declaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getfunction_declaration_Parameters(), this.getformal_parameter_list(), null, "parameters", null, 0, 1, function_declaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getfunction_declaration_Types(), this.getresult_type(), null, "types", null, 0, 1, function_declaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getfunction_declaration_Block(), this.getblock(), null, "block", null, 0, 1, function_declaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(function_typeEClass, function_type.class, "function_type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getfunction_type_Types(), ecorePackage.getEObject(), null, "types", null, 0, -1, function_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getfunction_type_Parameters(), this.getformal_parameter_list(), null, "parameters", null, 0, 1, function_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getfunction_type_Types(), this.getresult_type(), null, "types", null, 0, 1, function_type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(function_designatorEClass, function_designator.class, "function_designator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getfunction_designator_Names(), ecorePackage.getEString(), "names", null, 0, -1, function_designator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getfunction_designator_Types(), this.getparameter_list(), null, "types", null, 0, -1, function_designator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getfunction_designator_Name_function(), ecorePackage.getEString(), "name_function", null, 0, 1, function_designator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getfunction_designator_Parameters(), this.getparameter_list(), null, "parameters", null, 0, 1, function_designator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(formal_parameter_listEClass, formal_parameter_list.class, "formal_parameter_list", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getformal_parameter_list_Parameters(), this.getformal_parameter_section(), null, "parameters", null, 0, -1, formal_parameter_list.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(formal_parameter_sectionEClass, formal_parameter_section.class, "formal_parameter_section", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getformal_parameter_section_Types(), ecorePackage.getEObject(), null, "types", null, 0, -1, formal_parameter_section.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getformal_parameter_section_Parameters(), this.getparameter_group(), null, "parameters", null, 0, -1, formal_parameter_section.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(parameter_groupEClass, parameter_group.class, "parameter_group", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getparameter_group_Names(), this.getidentifier_list(), null, "names", null, 0, 1, parameter_group.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getparameter_group_Types(), this.gettype_identifier(), null, "types", null, 0, 1, parameter_group.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(result_typeEClass, result_type.class, "result_type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

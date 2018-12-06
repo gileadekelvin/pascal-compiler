@@ -3,8 +3,6 @@
  */
 package org.xtext.compiler.pascal.pascal;
 
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -26,19 +24,29 @@ import org.eclipse.emf.ecore.EObject;
 public interface pascal extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Program</b></em>' containment reference list.
-   * The list contents are of type {@link org.xtext.compiler.pascal.pascal.program}.
+   * Returns the value of the '<em><b>Program</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Program</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Program</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Program</em>' containment reference list.
+   * @return the value of the '<em>Program</em>' containment reference.
+   * @see #setProgram(program)
    * @see org.xtext.compiler.pascal.pascal.PascalPackage#getpascal_Program()
    * @model containment="true"
    * @generated
    */
-  EList<program> getProgram();
+  program getProgram();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.pascal#getProgram <em>Program</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Program</em>' containment reference.
+   * @see #getProgram()
+   * @generated
+   */
+  void setProgram(program value);
 
 } // pascal

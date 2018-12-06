@@ -12,5 +12,6 @@ Require-Bundle: org.xtext.compiler.pascal,
  org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.xtext.compiler.pascal.ide.contentassist.antlr.internal,
- org.xtext.compiler.pascal.ide.contentassist.antlr
+ org.xtext.compiler.pascal.ide.contentassist.antlr,
+ org.xtext.compiler.pascal.ide.contentassist.antlr.lexer
 

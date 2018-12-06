@@ -3,21 +3,19 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
-import java.util.Collection;
-
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
+import org.xtext.compiler.pascal.pascal.formal_parameter_list;
 import org.xtext.compiler.pascal.pascal.function_type;
+import org.xtext.compiler.pascal.pascal.result_type;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,22 +25,33 @@ import org.xtext.compiler.pascal.pascal.function_type;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.function_typeImpl#getParameters <em>Parameters</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.impl.function_typeImpl#getTypes <em>Types</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class function_typeImpl extends type_definitionImpl implements function_type
+public class function_typeImpl extends MinimalEObjectImpl.Container implements function_type
 {
   /**
-   * The cached value of the '{@link #getTypes() <em>Types</em>}' containment reference list.
+   * The cached value of the '{@link #getParameters() <em>Parameters</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getParameters()
+   * @generated
+   * @ordered
+   */
+  protected formal_parameter_list parameters;
+
+  /**
+   * The cached value of the '{@link #getTypes() <em>Types</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getTypes()
    * @generated
    * @ordered
    */
-  protected EList<EObject> types;
+  protected result_type types;
 
   /**
    * <!-- begin-user-doc -->
@@ -70,13 +79,95 @@ public class function_typeImpl extends type_definitionImpl implements function_t
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<EObject> getTypes()
+  public formal_parameter_list getParameters()
   {
-    if (types == null)
+    return parameters;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetParameters(formal_parameter_list newParameters, NotificationChain msgs)
+  {
+    formal_parameter_list oldParameters = parameters;
+    parameters = newParameters;
+    if (eNotificationRequired())
     {
-      types = new EObjectContainmentEList<EObject>(EObject.class, this, PascalPackage.FUNCTION_TYPE__TYPES);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.FUNCTION_TYPE__PARAMETERS, oldParameters, newParameters);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setParameters(formal_parameter_list newParameters)
+  {
+    if (newParameters != parameters)
+    {
+      NotificationChain msgs = null;
+      if (parameters != null)
+        msgs = ((InternalEObject)parameters).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.FUNCTION_TYPE__PARAMETERS, null, msgs);
+      if (newParameters != null)
+        msgs = ((InternalEObject)newParameters).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.FUNCTION_TYPE__PARAMETERS, null, msgs);
+      msgs = basicSetParameters(newParameters, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.FUNCTION_TYPE__PARAMETERS, newParameters, newParameters));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public result_type getTypes()
+  {
     return types;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetTypes(result_type newTypes, NotificationChain msgs)
+  {
+    result_type oldTypes = types;
+    types = newTypes;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.FUNCTION_TYPE__TYPES, oldTypes, newTypes);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setTypes(result_type newTypes)
+  {
+    if (newTypes != types)
+    {
+      NotificationChain msgs = null;
+      if (types != null)
+        msgs = ((InternalEObject)types).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.FUNCTION_TYPE__TYPES, null, msgs);
+      if (newTypes != null)
+        msgs = ((InternalEObject)newTypes).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.FUNCTION_TYPE__TYPES, null, msgs);
+      msgs = basicSetTypes(newTypes, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.FUNCTION_TYPE__TYPES, newTypes, newTypes));
   }
 
   /**
@@ -89,8 +180,10 @@ public class function_typeImpl extends type_definitionImpl implements function_t
   {
     switch (featureID)
     {
+      case PascalPackage.FUNCTION_TYPE__PARAMETERS:
+        return basicSetParameters(null, msgs);
       case PascalPackage.FUNCTION_TYPE__TYPES:
-        return ((InternalEList<?>)getTypes()).basicRemove(otherEnd, msgs);
+        return basicSetTypes(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -105,6 +198,8 @@ public class function_typeImpl extends type_definitionImpl implements function_t
   {
     switch (featureID)
     {
+      case PascalPackage.FUNCTION_TYPE__PARAMETERS:
+        return getParameters();
       case PascalPackage.FUNCTION_TYPE__TYPES:
         return getTypes();
     }
@@ -116,15 +211,16 @@ public class function_typeImpl extends type_definitionImpl implements function_t
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
+      case PascalPackage.FUNCTION_TYPE__PARAMETERS:
+        setParameters((formal_parameter_list)newValue);
+        return;
       case PascalPackage.FUNCTION_TYPE__TYPES:
-        getTypes().clear();
-        getTypes().addAll((Collection<? extends EObject>)newValue);
+        setTypes((result_type)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -140,8 +236,11 @@ public class function_typeImpl extends type_definitionImpl implements function_t
   {
     switch (featureID)
     {
+      case PascalPackage.FUNCTION_TYPE__PARAMETERS:
+        setParameters((formal_parameter_list)null);
+        return;
       case PascalPackage.FUNCTION_TYPE__TYPES:
-        getTypes().clear();
+        setTypes((result_type)null);
         return;
     }
     super.eUnset(featureID);
@@ -157,8 +256,10 @@ public class function_typeImpl extends type_definitionImpl implements function_t
   {
     switch (featureID)
     {
+      case PascalPackage.FUNCTION_TYPE__PARAMETERS:
+        return parameters != null;
       case PascalPackage.FUNCTION_TYPE__TYPES:
-        return types != null && !types.isEmpty();
+        return types != null;
     }
     return super.eIsSet(featureID);
   }

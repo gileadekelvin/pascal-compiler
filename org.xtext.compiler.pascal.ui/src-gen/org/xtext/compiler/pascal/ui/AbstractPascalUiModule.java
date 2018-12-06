@@ -71,7 +71,7 @@ import org.eclipse.xtext.ui.shared.Access;
 import org.eclipse.xtext.ui.validation.AbstractValidatorConfigurationBlock;
 import org.xtext.compiler.pascal.ide.contentassist.antlr.PartialPascalContentAssistParser;
 import org.xtext.compiler.pascal.ide.contentassist.antlr.PascalParser;
-import org.xtext.compiler.pascal.ide.contentassist.antlr.internal.InternalPascalLexer;
+import org.xtext.compiler.pascal.ide.contentassist.antlr.lexer.InternalPascalLexer;
 import org.xtext.compiler.pascal.ui.contentassist.PascalProposalProvider;
 import org.xtext.compiler.pascal.ui.labeling.PascalDescriptionLabelProvider;
 import org.xtext.compiler.pascal.ui.labeling.PascalLabelProvider;
@@ -110,7 +110,7 @@ public abstract class AbstractPascalUiModule extends DefaultUiModule {
 	public void configureHighlightingLexer(Binder binder) {
 		binder.bind(org.eclipse.xtext.parser.antlr.Lexer.class)
 			.annotatedWith(Names.named(LexerIdeBindings.HIGHLIGHTING))
-			.to(org.xtext.compiler.pascal.parser.antlr.internal.InternalPascalLexer.class);
+			.to(org.xtext.compiler.pascal.parser.antlr.lexer.InternalPascalLexer.class);
 	}
 	
 	// contributed by org.eclipse.xtext.xtext.generator.parser.antlr.XtextAntlrGeneratorFragment2

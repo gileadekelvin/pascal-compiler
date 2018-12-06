@@ -3,17 +3,14 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
-import java.util.Collection;
-
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.formal_parameter_list;
@@ -32,17 +29,17 @@ import org.xtext.compiler.pascal.pascal.procedure_type;
  *
  * @generated
  */
-public class procedure_typeImpl extends type_definitionImpl implements procedure_type
+public class procedure_typeImpl extends MinimalEObjectImpl.Container implements procedure_type
 {
   /**
-   * The cached value of the '{@link #getTypes() <em>Types</em>}' containment reference list.
+   * The cached value of the '{@link #getTypes() <em>Types</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getTypes()
    * @generated
    * @ordered
    */
-  protected EList<formal_parameter_list> types;
+  protected formal_parameter_list types;
 
   /**
    * <!-- begin-user-doc -->
@@ -70,13 +67,47 @@ public class procedure_typeImpl extends type_definitionImpl implements procedure
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<formal_parameter_list> getTypes()
+  public formal_parameter_list getTypes()
   {
-    if (types == null)
-    {
-      types = new EObjectContainmentEList<formal_parameter_list>(formal_parameter_list.class, this, PascalPackage.PROCEDURE_TYPE__TYPES);
-    }
     return types;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetTypes(formal_parameter_list newTypes, NotificationChain msgs)
+  {
+    formal_parameter_list oldTypes = types;
+    types = newTypes;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.PROCEDURE_TYPE__TYPES, oldTypes, newTypes);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setTypes(formal_parameter_list newTypes)
+  {
+    if (newTypes != types)
+    {
+      NotificationChain msgs = null;
+      if (types != null)
+        msgs = ((InternalEObject)types).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.PROCEDURE_TYPE__TYPES, null, msgs);
+      if (newTypes != null)
+        msgs = ((InternalEObject)newTypes).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.PROCEDURE_TYPE__TYPES, null, msgs);
+      msgs = basicSetTypes(newTypes, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.PROCEDURE_TYPE__TYPES, newTypes, newTypes));
   }
 
   /**
@@ -90,7 +121,7 @@ public class procedure_typeImpl extends type_definitionImpl implements procedure
     switch (featureID)
     {
       case PascalPackage.PROCEDURE_TYPE__TYPES:
-        return ((InternalEList<?>)getTypes()).basicRemove(otherEnd, msgs);
+        return basicSetTypes(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -116,15 +147,13 @@ public class procedure_typeImpl extends type_definitionImpl implements procedure
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
       case PascalPackage.PROCEDURE_TYPE__TYPES:
-        getTypes().clear();
-        getTypes().addAll((Collection<? extends formal_parameter_list>)newValue);
+        setTypes((formal_parameter_list)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -141,7 +170,7 @@ public class procedure_typeImpl extends type_definitionImpl implements procedure
     switch (featureID)
     {
       case PascalPackage.PROCEDURE_TYPE__TYPES:
-        getTypes().clear();
+        setTypes((formal_parameter_list)null);
         return;
     }
     super.eUnset(featureID);
@@ -158,7 +187,7 @@ public class procedure_typeImpl extends type_definitionImpl implements procedure
     switch (featureID)
     {
       case PascalPackage.PROCEDURE_TYPE__TYPES:
-        return types != null && !types.isEmpty();
+        return types != null;
     }
     return super.eIsSet(featureID);
   }

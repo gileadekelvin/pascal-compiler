@@ -69,17 +69,19 @@ public class PascalFactoryImpl extends EFactoryImpl implements PascalFactory
       case PascalPackage.PROGRAM: return createprogram();
       case PascalPackage.PROGRAM_HEADING_BLOCK: return createprogram_heading_block();
       case PascalPackage.IDENTIFIER_LIST: return createidentifier_list();
+      case PascalPackage.IDENTIFIER: return createidentifier();
       case PascalPackage.BLOCK: return createblock();
       case PascalPackage.CONSTANT_DEFINITION_PART: return createconstant_definition_part();
       case PascalPackage.CONSTANT_DEFINITION: return createconstant_definition();
       case PascalPackage.CONSTANT: return createconstant();
+      case PascalPackage.TYPE_DEFINITION_PART: return createtype_definition_part();
+      case PascalPackage.TYPE_DEFINITION: return createtype_definition();
       case PascalPackage.VARIABLE_DECLARATION_PART: return createvariable_declaration_part();
       case PascalPackage.VARIABLE_DECLARATION: return createvariable_declaration();
       case PascalPackage.COMPOUND_STATEMENT: return createcompound_statement();
       case PascalPackage.STATEMENTS: return createstatements();
       case PascalPackage.STATEMENT: return createstatement();
       case PascalPackage.UNLABELLED_STATEMENT: return createunlabelled_statement();
-      case PascalPackage.LABEL: return createlabel();
       case PascalPackage.SIMPLE_STATEMENT: return createsimple_statement();
       case PascalPackage.ASSIGNMENT_STATEMENT: return createassignment_statement();
       case PascalPackage.VARIABLE: return createvariable();
@@ -88,25 +90,30 @@ public class PascalFactoryImpl extends EFactoryImpl implements PascalFactory
       case PascalPackage.TERM: return createterm();
       case PascalPackage.SIGNED_FACTOR: return createsigned_factor();
       case PascalPackage.FACTOR: return createfactor();
-      case PascalPackage.SET: return createset();
-      case PascalPackage.ELEMENT_LIST: return createelementList();
-      case PascalPackage.ELEMENT: return createelement();
       case PascalPackage.TYPE: return createtype();
       case PascalPackage.SIMPLE_TYPE: return createsimple_type();
-      case PascalPackage.SCALAR_TYPE: return createscalar_type();
       case PascalPackage.SUBRANGE_TYPE: return createsubrange_type();
+      case PascalPackage.STRUCTURED_TYPE: return createstructured_type();
+      case PascalPackage.UNPACKED_STRUCTURED_TYPE: return createunpacked_structured_type();
+      case PascalPackage.DYNAMIC_ARRAY_TYPE: return createdynamic_array_type();
+      case PascalPackage.ARRAY_TYPE: return createarray_type();
+      case PascalPackage.TYPE_LIST: return createtype_list();
+      case PascalPackage.INDEX_TYPE: return createindex_type();
+      case PascalPackage.COMPONENT_TYPE: return createcomponent_type();
       case PascalPackage.TYPE_IDENTIFIER: return createtype_identifier();
-      case PascalPackage.STRING_TYPE: return createstring_type();
       case PascalPackage.UNSIGNED_CONSTANT: return createunsigned_constant();
       case PascalPackage.UNSIGNED_NUMBER: return createunsigned_number();
-      case PascalPackage.CONSTANT_CHR: return createconstant_chr();
       case PascalPackage.PROCEDURE_STATEMENT: return createprocedure_statement();
       case PascalPackage.PARAMETER_LIST: return createparameter_list();
       case PascalPackage.ACTUAL_PARAMETER: return createactual_parameter();
+      case PascalPackage.STRUCTURED_STATEMENT: return createstructured_statement();
+      case PascalPackage.CONDITIONAL_STATEMENT: return createconditional_statement();
+      case PascalPackage.CASE_STATEMENT: return createcase_statement();
+      case PascalPackage.CASE_LIST_ELEMENT: return createcase_list_element();
+      case PascalPackage.CONST_LIST: return createconst_list();
       case PascalPackage.PROCEDURE_AND_FUNCTION_DECLARATION_PART: return createprocedure_and_function_declaration_part();
       case PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION: return createprocedure_or_function_declaration();
       case PascalPackage.PROCEDURE_DECLARATION: return createprocedure_declaration();
-      case PascalPackage.TYPE_DEFINITION: return createtype_definition();
       case PascalPackage.PROCEDURE_TYPE: return createprocedure_type();
       case PascalPackage.FUNCTION_DECLARATION: return createfunction_declaration();
       case PascalPackage.FUNCTION_TYPE: return createfunction_type();
@@ -169,6 +176,17 @@ public class PascalFactoryImpl extends EFactoryImpl implements PascalFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  public identifier createidentifier()
+  {
+    identifierImpl identifier = new identifierImpl();
+    return identifier;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public block createblock()
   {
     blockImpl block = new blockImpl();
@@ -206,6 +224,28 @@ public class PascalFactoryImpl extends EFactoryImpl implements PascalFactory
   {
     constantImpl constant = new constantImpl();
     return constant;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public type_definition_part createtype_definition_part()
+  {
+    type_definition_partImpl type_definition_part = new type_definition_partImpl();
+    return type_definition_part;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public type_definition createtype_definition()
+  {
+    type_definitionImpl type_definition = new type_definitionImpl();
+    return type_definition;
   }
 
   /**
@@ -272,17 +312,6 @@ public class PascalFactoryImpl extends EFactoryImpl implements PascalFactory
   {
     unlabelled_statementImpl unlabelled_statement = new unlabelled_statementImpl();
     return unlabelled_statement;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public label createlabel()
-  {
-    labelImpl label = new labelImpl();
-    return label;
   }
 
   /**
@@ -378,39 +407,6 @@ public class PascalFactoryImpl extends EFactoryImpl implements PascalFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public set createset()
-  {
-    setImpl set = new setImpl();
-    return set;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public elementList createelementList()
-  {
-    elementListImpl elementList = new elementListImpl();
-    return elementList;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public element createelement()
-  {
-    elementImpl element = new elementImpl();
-    return element;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public type createtype()
   {
     typeImpl type = new typeImpl();
@@ -433,17 +429,6 @@ public class PascalFactoryImpl extends EFactoryImpl implements PascalFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public scalar_type createscalar_type()
-  {
-    scalar_typeImpl scalar_type = new scalar_typeImpl();
-    return scalar_type;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public subrange_type createsubrange_type()
   {
     subrange_typeImpl subrange_type = new subrange_typeImpl();
@@ -455,10 +440,10 @@ public class PascalFactoryImpl extends EFactoryImpl implements PascalFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public type_identifier createtype_identifier()
+  public structured_type createstructured_type()
   {
-    type_identifierImpl type_identifier = new type_identifierImpl();
-    return type_identifier;
+    structured_typeImpl structured_type = new structured_typeImpl();
+    return structured_type;
   }
 
   /**
@@ -466,10 +451,76 @@ public class PascalFactoryImpl extends EFactoryImpl implements PascalFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public string_type createstring_type()
+  public unpacked_structured_type createunpacked_structured_type()
   {
-    string_typeImpl string_type = new string_typeImpl();
-    return string_type;
+    unpacked_structured_typeImpl unpacked_structured_type = new unpacked_structured_typeImpl();
+    return unpacked_structured_type;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public dynamic_array_type createdynamic_array_type()
+  {
+    dynamic_array_typeImpl dynamic_array_type = new dynamic_array_typeImpl();
+    return dynamic_array_type;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public array_type createarray_type()
+  {
+    array_typeImpl array_type = new array_typeImpl();
+    return array_type;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public type_list createtype_list()
+  {
+    type_listImpl type_list = new type_listImpl();
+    return type_list;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public index_type createindex_type()
+  {
+    index_typeImpl index_type = new index_typeImpl();
+    return index_type;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public component_type createcomponent_type()
+  {
+    component_typeImpl component_type = new component_typeImpl();
+    return component_type;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public type_identifier createtype_identifier()
+  {
+    type_identifierImpl type_identifier = new type_identifierImpl();
+    return type_identifier;
   }
 
   /**
@@ -492,17 +543,6 @@ public class PascalFactoryImpl extends EFactoryImpl implements PascalFactory
   {
     unsigned_numberImpl unsigned_number = new unsigned_numberImpl();
     return unsigned_number;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public constant_chr createconstant_chr()
-  {
-    constant_chrImpl constant_chr = new constant_chrImpl();
-    return constant_chr;
   }
 
   /**
@@ -543,6 +583,61 @@ public class PascalFactoryImpl extends EFactoryImpl implements PascalFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  public structured_statement createstructured_statement()
+  {
+    structured_statementImpl structured_statement = new structured_statementImpl();
+    return structured_statement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public conditional_statement createconditional_statement()
+  {
+    conditional_statementImpl conditional_statement = new conditional_statementImpl();
+    return conditional_statement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public case_statement createcase_statement()
+  {
+    case_statementImpl case_statement = new case_statementImpl();
+    return case_statement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public case_list_element createcase_list_element()
+  {
+    case_list_elementImpl case_list_element = new case_list_elementImpl();
+    return case_list_element;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public const_list createconst_list()
+  {
+    const_listImpl const_list = new const_listImpl();
+    return const_list;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public procedure_and_function_declaration_part createprocedure_and_function_declaration_part()
   {
     procedure_and_function_declaration_partImpl procedure_and_function_declaration_part = new procedure_and_function_declaration_partImpl();
@@ -569,17 +664,6 @@ public class PascalFactoryImpl extends EFactoryImpl implements PascalFactory
   {
     procedure_declarationImpl procedure_declaration = new procedure_declarationImpl();
     return procedure_declaration;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public type_definition createtype_definition()
-  {
-    type_definitionImpl type_definition = new type_definitionImpl();
-    return type_definition;
   }
 
   /**

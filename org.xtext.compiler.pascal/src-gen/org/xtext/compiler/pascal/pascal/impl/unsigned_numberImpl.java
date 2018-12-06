@@ -3,7 +3,12 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
+import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.unsigned_number;
@@ -12,11 +17,37 @@ import org.xtext.compiler.pascal.pascal.unsigned_number;
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>unsigned number</b></em>'.
  * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.unsigned_numberImpl#getNumbers <em>Numbers</em>}</li>
+ * </ul>
  *
  * @generated
  */
-public class unsigned_numberImpl extends constantImpl implements unsigned_number
+public class unsigned_numberImpl extends MinimalEObjectImpl.Container implements unsigned_number
 {
+  /**
+   * The default value of the '{@link #getNumbers() <em>Numbers</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getNumbers()
+   * @generated
+   * @ordered
+   */
+  protected static final String NUMBERS_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getNumbers() <em>Numbers</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getNumbers()
+   * @generated
+   * @ordered
+   */
+  protected String numbers = NUMBERS_EDEFAULT;
+
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -36,6 +67,112 @@ public class unsigned_numberImpl extends constantImpl implements unsigned_number
   protected EClass eStaticClass()
   {
     return PascalPackage.Literals.UNSIGNED_NUMBER;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String getNumbers()
+  {
+    return numbers;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setNumbers(String newNumbers)
+  {
+    String oldNumbers = numbers;
+    numbers = newNumbers;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.UNSIGNED_NUMBER__NUMBERS, oldNumbers, numbers));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
+  {
+    switch (featureID)
+    {
+      case PascalPackage.UNSIGNED_NUMBER__NUMBERS:
+        return getNumbers();
+    }
+    return super.eGet(featureID, resolve, coreType);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void eSet(int featureID, Object newValue)
+  {
+    switch (featureID)
+    {
+      case PascalPackage.UNSIGNED_NUMBER__NUMBERS:
+        setNumbers((String)newValue);
+        return;
+    }
+    super.eSet(featureID, newValue);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void eUnset(int featureID)
+  {
+    switch (featureID)
+    {
+      case PascalPackage.UNSIGNED_NUMBER__NUMBERS:
+        setNumbers(NUMBERS_EDEFAULT);
+        return;
+    }
+    super.eUnset(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public boolean eIsSet(int featureID)
+  {
+    switch (featureID)
+    {
+      case PascalPackage.UNSIGNED_NUMBER__NUMBERS:
+        return NUMBERS_EDEFAULT == null ? numbers != null : !NUMBERS_EDEFAULT.equals(numbers);
+    }
+    return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String toString()
+  {
+    if (eIsProxy()) return super.toString();
+
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (numbers: ");
+    result.append(numbers);
+    result.append(')');
+    return result.toString();
   }
 
 } //unsigned_numberImpl

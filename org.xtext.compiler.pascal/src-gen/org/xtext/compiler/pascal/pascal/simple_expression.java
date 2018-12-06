@@ -3,8 +3,6 @@
  */
 package org.xtext.compiler.pascal.pascal;
 
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -16,8 +14,8 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.simple_expression#getTerms <em>Terms</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.simple_expression#getOperators <em>Operators</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.simple_expression#getTerm_exp <em>Term exp</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.simple_expression#getOperator <em>Operator</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.simple_expression#getExpression <em>Expression</em>}</li>
  * </ul>
  *
@@ -28,51 +26,81 @@ import org.eclipse.emf.ecore.EObject;
 public interface simple_expression extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Terms</b></em>' containment reference list.
-   * The list contents are of type {@link org.xtext.compiler.pascal.pascal.term}.
+   * Returns the value of the '<em><b>Term exp</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Terms</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Term exp</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Terms</em>' containment reference list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getsimple_expression_Terms()
+   * @return the value of the '<em>Term exp</em>' containment reference.
+   * @see #setTerm_exp(term)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getsimple_expression_Term_exp()
    * @model containment="true"
    * @generated
    */
-  EList<term> getTerms();
+  term getTerm_exp();
 
   /**
-   * Returns the value of the '<em><b>Operators</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.simple_expression#getTerm_exp <em>Term exp</em>}' containment reference.
    * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Operators</em>' attribute list isn't clear,
-   * there really should be more of a description here...
-   * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Operators</em>' attribute list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getsimple_expression_Operators()
-   * @model unique="false"
+   * @param value the new value of the '<em>Term exp</em>' containment reference.
+   * @see #getTerm_exp()
    * @generated
    */
-  EList<String> getOperators();
+  void setTerm_exp(term value);
 
   /**
-   * Returns the value of the '<em><b>Expression</b></em>' containment reference list.
-   * The list contents are of type {@link org.xtext.compiler.pascal.pascal.simple_expression}.
+   * Returns the value of the '<em><b>Operator</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Expression</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Operator</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Expression</em>' containment reference list.
+   * @return the value of the '<em>Operator</em>' attribute.
+   * @see #setOperator(String)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getsimple_expression_Operator()
+   * @model
+   * @generated
+   */
+  String getOperator();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.simple_expression#getOperator <em>Operator</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Operator</em>' attribute.
+   * @see #getOperator()
+   * @generated
+   */
+  void setOperator(String value);
+
+  /**
+   * Returns the value of the '<em><b>Expression</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Expression</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Expression</em>' containment reference.
+   * @see #setExpression(simple_expression)
    * @see org.xtext.compiler.pascal.pascal.PascalPackage#getsimple_expression_Expression()
    * @model containment="true"
    * @generated
    */
-  EList<simple_expression> getExpression();
+  simple_expression getExpression();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.simple_expression#getExpression <em>Expression</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Expression</em>' containment reference.
+   * @see #getExpression()
+   * @generated
+   */
+  void setExpression(simple_expression value);
 
 } // simple_expression

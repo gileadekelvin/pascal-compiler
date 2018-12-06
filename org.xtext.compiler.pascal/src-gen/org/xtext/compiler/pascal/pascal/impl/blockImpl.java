@@ -24,6 +24,7 @@ import org.xtext.compiler.pascal.pascal.block;
 import org.xtext.compiler.pascal.pascal.compound_statement;
 import org.xtext.compiler.pascal.pascal.constant_definition_part;
 import org.xtext.compiler.pascal.pascal.procedure_and_function_declaration_part;
+import org.xtext.compiler.pascal.pascal.type_definition_part;
 import org.xtext.compiler.pascal.pascal.variable_declaration_part;
 
 /**
@@ -35,6 +36,7 @@ import org.xtext.compiler.pascal.pascal.variable_declaration_part;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.compiler.pascal.pascal.impl.blockImpl#getConstantpart <em>Constantpart</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.blockImpl#getType_part <em>Type part</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.impl.blockImpl#getVariablepart <em>Variablepart</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.impl.blockImpl#getProcedure_function_part <em>Procedure function part</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.impl.blockImpl#getStatement <em>Statement</em>}</li>
@@ -53,6 +55,16 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
    * @ordered
    */
   protected EList<constant_definition_part> constantpart;
+
+  /**
+   * The cached value of the '{@link #getType_part() <em>Type part</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getType_part()
+   * @generated
+   * @ordered
+   */
+  protected EList<type_definition_part> type_part;
 
   /**
    * The cached value of the '{@link #getVariablepart() <em>Variablepart</em>}' containment reference list.
@@ -117,6 +129,20 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
       constantpart = new EObjectContainmentEList<constant_definition_part>(constant_definition_part.class, this, PascalPackage.BLOCK__CONSTANTPART);
     }
     return constantpart;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EList<type_definition_part> getType_part()
+  {
+    if (type_part == null)
+    {
+      type_part = new EObjectContainmentEList<type_definition_part>(type_definition_part.class, this, PascalPackage.BLOCK__TYPE_PART);
+    }
+    return type_part;
   }
 
   /**
@@ -207,6 +233,8 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
     {
       case PascalPackage.BLOCK__CONSTANTPART:
         return ((InternalEList<?>)getConstantpart()).basicRemove(otherEnd, msgs);
+      case PascalPackage.BLOCK__TYPE_PART:
+        return ((InternalEList<?>)getType_part()).basicRemove(otherEnd, msgs);
       case PascalPackage.BLOCK__VARIABLEPART:
         return ((InternalEList<?>)getVariablepart()).basicRemove(otherEnd, msgs);
       case PascalPackage.BLOCK__PROCEDURE_FUNCTION_PART:
@@ -229,6 +257,8 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
     {
       case PascalPackage.BLOCK__CONSTANTPART:
         return getConstantpart();
+      case PascalPackage.BLOCK__TYPE_PART:
+        return getType_part();
       case PascalPackage.BLOCK__VARIABLEPART:
         return getVariablepart();
       case PascalPackage.BLOCK__PROCEDURE_FUNCTION_PART:
@@ -253,6 +283,10 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
       case PascalPackage.BLOCK__CONSTANTPART:
         getConstantpart().clear();
         getConstantpart().addAll((Collection<? extends constant_definition_part>)newValue);
+        return;
+      case PascalPackage.BLOCK__TYPE_PART:
+        getType_part().clear();
+        getType_part().addAll((Collection<? extends type_definition_part>)newValue);
         return;
       case PascalPackage.BLOCK__VARIABLEPART:
         getVariablepart().clear();
@@ -282,6 +316,9 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
       case PascalPackage.BLOCK__CONSTANTPART:
         getConstantpart().clear();
         return;
+      case PascalPackage.BLOCK__TYPE_PART:
+        getType_part().clear();
+        return;
       case PascalPackage.BLOCK__VARIABLEPART:
         getVariablepart().clear();
         return;
@@ -307,6 +344,8 @@ public class blockImpl extends MinimalEObjectImpl.Container implements block
     {
       case PascalPackage.BLOCK__CONSTANTPART:
         return constantpart != null && !constantpart.isEmpty();
+      case PascalPackage.BLOCK__TYPE_PART:
+        return type_part != null && !type_part.isEmpty();
       case PascalPackage.BLOCK__VARIABLEPART:
         return variablepart != null && !variablepart.isEmpty();
       case PascalPackage.BLOCK__PROCEDURE_FUNCTION_PART:

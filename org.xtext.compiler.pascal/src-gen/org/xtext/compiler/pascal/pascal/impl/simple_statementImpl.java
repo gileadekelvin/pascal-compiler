@@ -27,7 +27,6 @@ import org.xtext.compiler.pascal.pascal.simple_statement;
  * <ul>
  *   <li>{@link org.xtext.compiler.pascal.pascal.impl.simple_statementImpl#getAssignment <em>Assignment</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.impl.simple_statementImpl#getProcedure <em>Procedure</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.simple_statementImpl#getGoto <em>Goto</em>}</li>
  * </ul>
  *
  * @generated
@@ -53,26 +52,6 @@ public class simple_statementImpl extends MinimalEObjectImpl.Container implement
    * @ordered
    */
   protected procedure_statement procedure;
-
-  /**
-   * The default value of the '{@link #getGoto() <em>Goto</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getGoto()
-   * @generated
-   * @ordered
-   */
-  protected static final String GOTO_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getGoto() <em>Goto</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getGoto()
-   * @generated
-   * @ordered
-   */
-  protected String goto_ = GOTO_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -196,29 +175,6 @@ public class simple_statementImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getGoto()
-  {
-    return goto_;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setGoto(String newGoto)
-  {
-    String oldGoto = goto_;
-    goto_ = newGoto;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.SIMPLE_STATEMENT__GOTO, oldGoto, goto_));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
@@ -246,8 +202,6 @@ public class simple_statementImpl extends MinimalEObjectImpl.Container implement
         return getAssignment();
       case PascalPackage.SIMPLE_STATEMENT__PROCEDURE:
         return getProcedure();
-      case PascalPackage.SIMPLE_STATEMENT__GOTO:
-        return getGoto();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -267,9 +221,6 @@ public class simple_statementImpl extends MinimalEObjectImpl.Container implement
         return;
       case PascalPackage.SIMPLE_STATEMENT__PROCEDURE:
         setProcedure((procedure_statement)newValue);
-        return;
-      case PascalPackage.SIMPLE_STATEMENT__GOTO:
-        setGoto((String)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -291,9 +242,6 @@ public class simple_statementImpl extends MinimalEObjectImpl.Container implement
       case PascalPackage.SIMPLE_STATEMENT__PROCEDURE:
         setProcedure((procedure_statement)null);
         return;
-      case PascalPackage.SIMPLE_STATEMENT__GOTO:
-        setGoto(GOTO_EDEFAULT);
-        return;
     }
     super.eUnset(featureID);
   }
@@ -312,27 +260,8 @@ public class simple_statementImpl extends MinimalEObjectImpl.Container implement
         return assignment != null;
       case PascalPackage.SIMPLE_STATEMENT__PROCEDURE:
         return procedure != null;
-      case PascalPackage.SIMPLE_STATEMENT__GOTO:
-        return GOTO_EDEFAULT == null ? goto_ != null : !GOTO_EDEFAULT.equals(goto_);
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (goto: ");
-    result.append(goto_);
-    result.append(')');
-    return result.toString();
   }
 
 } //simple_statementImpl

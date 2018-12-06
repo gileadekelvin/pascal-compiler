@@ -16,7 +16,8 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.simple_type#getTypes <em>Types</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.simple_type#getType <em>Type</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.simple_type#getSubrange_type <em>Subrange type</em>}</li>
  * </ul>
  *
  * @see org.xtext.compiler.pascal.pascal.PascalPackage#getsimple_type()
@@ -26,19 +27,45 @@ import org.eclipse.emf.ecore.EObject;
 public interface simple_type extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Types</b></em>' containment reference list.
-   * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.
+   * Returns the value of the '<em><b>Type</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Types</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Type</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Types</em>' containment reference list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getsimple_type_Types()
+   * @return the value of the '<em>Type</em>' containment reference.
+   * @see #setType(type_identifier)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getsimple_type_Type()
    * @model containment="true"
    * @generated
    */
-  EList<EObject> getTypes();
+  type_identifier getType();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.simple_type#getType <em>Type</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Type</em>' containment reference.
+   * @see #getType()
+   * @generated
+   */
+  void setType(type_identifier value);
+
+  /**
+   * Returns the value of the '<em><b>Subrange type</b></em>' containment reference list.
+   * The list contents are of type {@link org.xtext.compiler.pascal.pascal.subrange_type}.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Subrange type</em>' containment reference list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Subrange type</em>' containment reference list.
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getsimple_type_Subrange_type()
+   * @model containment="true"
+   * @generated
+   */
+  EList<subrange_type> getSubrange_type();
 
 } // simple_type

@@ -3,22 +3,44 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
-import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.procedure_and_function_declaration_part;
+import org.xtext.compiler.pascal.pascal.procedure_or_function_declaration;
 
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>procedure and function declaration part</b></em>'.
  * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.procedure_and_function_declaration_partImpl#getSubroutine <em>Subroutine</em>}</li>
+ * </ul>
  *
  * @generated
  */
 public class procedure_and_function_declaration_partImpl extends MinimalEObjectImpl.Container implements procedure_and_function_declaration_part
 {
+  /**
+   * The cached value of the '{@link #getSubroutine() <em>Subroutine</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getSubroutine()
+   * @generated
+   * @ordered
+   */
+  protected procedure_or_function_declaration subroutine;
+
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -38,6 +60,136 @@ public class procedure_and_function_declaration_partImpl extends MinimalEObjectI
   protected EClass eStaticClass()
   {
     return PascalPackage.Literals.PROCEDURE_AND_FUNCTION_DECLARATION_PART;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public procedure_or_function_declaration getSubroutine()
+  {
+    return subroutine;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetSubroutine(procedure_or_function_declaration newSubroutine, NotificationChain msgs)
+  {
+    procedure_or_function_declaration oldSubroutine = subroutine;
+    subroutine = newSubroutine;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.PROCEDURE_AND_FUNCTION_DECLARATION_PART__SUBROUTINE, oldSubroutine, newSubroutine);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setSubroutine(procedure_or_function_declaration newSubroutine)
+  {
+    if (newSubroutine != subroutine)
+    {
+      NotificationChain msgs = null;
+      if (subroutine != null)
+        msgs = ((InternalEObject)subroutine).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.PROCEDURE_AND_FUNCTION_DECLARATION_PART__SUBROUTINE, null, msgs);
+      if (newSubroutine != null)
+        msgs = ((InternalEObject)newSubroutine).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.PROCEDURE_AND_FUNCTION_DECLARATION_PART__SUBROUTINE, null, msgs);
+      msgs = basicSetSubroutine(newSubroutine, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.PROCEDURE_AND_FUNCTION_DECLARATION_PART__SUBROUTINE, newSubroutine, newSubroutine));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
+    {
+      case PascalPackage.PROCEDURE_AND_FUNCTION_DECLARATION_PART__SUBROUTINE:
+        return basicSetSubroutine(null, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
+  {
+    switch (featureID)
+    {
+      case PascalPackage.PROCEDURE_AND_FUNCTION_DECLARATION_PART__SUBROUTINE:
+        return getSubroutine();
+    }
+    return super.eGet(featureID, resolve, coreType);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void eSet(int featureID, Object newValue)
+  {
+    switch (featureID)
+    {
+      case PascalPackage.PROCEDURE_AND_FUNCTION_DECLARATION_PART__SUBROUTINE:
+        setSubroutine((procedure_or_function_declaration)newValue);
+        return;
+    }
+    super.eSet(featureID, newValue);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void eUnset(int featureID)
+  {
+    switch (featureID)
+    {
+      case PascalPackage.PROCEDURE_AND_FUNCTION_DECLARATION_PART__SUBROUTINE:
+        setSubroutine((procedure_or_function_declaration)null);
+        return;
+    }
+    super.eUnset(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public boolean eIsSet(int featureID)
+  {
+    switch (featureID)
+    {
+      case PascalPackage.PROCEDURE_AND_FUNCTION_DECLARATION_PART__SUBROUTINE:
+        return subroutine != null;
+    }
+    return super.eIsSet(featureID);
   }
 
 } //procedure_and_function_declaration_partImpl

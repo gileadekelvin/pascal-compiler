@@ -3,19 +3,14 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
-import java.util.Collection;
-
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.pascal;
@@ -37,14 +32,14 @@ import org.xtext.compiler.pascal.pascal.program;
 public class pascalImpl extends MinimalEObjectImpl.Container implements pascal
 {
   /**
-   * The cached value of the '{@link #getProgram() <em>Program</em>}' containment reference list.
+   * The cached value of the '{@link #getProgram() <em>Program</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getProgram()
    * @generated
    * @ordered
    */
-  protected EList<program> program;
+  protected program program;
 
   /**
    * <!-- begin-user-doc -->
@@ -72,13 +67,47 @@ public class pascalImpl extends MinimalEObjectImpl.Container implements pascal
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<program> getProgram()
+  public program getProgram()
   {
-    if (program == null)
-    {
-      program = new EObjectContainmentEList<program>(program.class, this, PascalPackage.PASCAL__PROGRAM);
-    }
     return program;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetProgram(program newProgram, NotificationChain msgs)
+  {
+    program oldProgram = program;
+    program = newProgram;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.PASCAL__PROGRAM, oldProgram, newProgram);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setProgram(program newProgram)
+  {
+    if (newProgram != program)
+    {
+      NotificationChain msgs = null;
+      if (program != null)
+        msgs = ((InternalEObject)program).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.PASCAL__PROGRAM, null, msgs);
+      if (newProgram != null)
+        msgs = ((InternalEObject)newProgram).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.PASCAL__PROGRAM, null, msgs);
+      msgs = basicSetProgram(newProgram, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.PASCAL__PROGRAM, newProgram, newProgram));
   }
 
   /**
@@ -92,7 +121,7 @@ public class pascalImpl extends MinimalEObjectImpl.Container implements pascal
     switch (featureID)
     {
       case PascalPackage.PASCAL__PROGRAM:
-        return ((InternalEList<?>)getProgram()).basicRemove(otherEnd, msgs);
+        return basicSetProgram(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -118,15 +147,13 @@ public class pascalImpl extends MinimalEObjectImpl.Container implements pascal
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
       case PascalPackage.PASCAL__PROGRAM:
-        getProgram().clear();
-        getProgram().addAll((Collection<? extends program>)newValue);
+        setProgram((program)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -143,7 +170,7 @@ public class pascalImpl extends MinimalEObjectImpl.Container implements pascal
     switch (featureID)
     {
       case PascalPackage.PASCAL__PROGRAM:
-        getProgram().clear();
+        setProgram((program)null);
         return;
     }
     super.eUnset(featureID);
@@ -160,7 +187,7 @@ public class pascalImpl extends MinimalEObjectImpl.Container implements pascal
     switch (featureID)
     {
       case PascalPackage.PASCAL__PROGRAM:
-        return program != null && !program.isEmpty();
+        return program != null;
     }
     return super.eIsSet(featureID);
   }

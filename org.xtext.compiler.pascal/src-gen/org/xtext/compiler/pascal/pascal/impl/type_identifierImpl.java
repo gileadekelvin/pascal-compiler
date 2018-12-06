@@ -3,13 +3,11 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
-import java.util.Collection;
-
-import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
 
-import org.eclipse.emf.ecore.util.EDataTypeEList;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.type_identifier;
@@ -22,8 +20,10 @@ import org.xtext.compiler.pascal.pascal.type_identifier;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.type_identifierImpl#getNames <em>Names</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.type_identifierImpl#getType <em>Type</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.type_identifierImpl#getId <em>Id</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.type_identifierImpl#getBoolean <em>Boolean</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.type_identifierImpl#getInteger <em>Integer</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.type_identifierImpl#getString <em>String</em>}</li>
  * </ul>
  *
  * @generated
@@ -31,24 +31,84 @@ import org.xtext.compiler.pascal.pascal.type_identifier;
 public class type_identifierImpl extends result_typeImpl implements type_identifier
 {
   /**
-   * The cached value of the '{@link #getNames() <em>Names</em>}' attribute list.
+   * The default value of the '{@link #getId() <em>Id</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getNames()
+   * @see #getId()
    * @generated
    * @ordered
    */
-  protected EList<String> names;
+  protected static final String ID_EDEFAULT = null;
 
   /**
-   * The cached value of the '{@link #getType() <em>Type</em>}' attribute list.
+   * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getType()
+   * @see #getId()
    * @generated
    * @ordered
    */
-  protected EList<String> type;
+  protected String id = ID_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #getBoolean() <em>Boolean</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getBoolean()
+   * @generated
+   * @ordered
+   */
+  protected static final String BOOLEAN_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getBoolean() <em>Boolean</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getBoolean()
+   * @generated
+   * @ordered
+   */
+  protected String boolean_ = BOOLEAN_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #getInteger() <em>Integer</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getInteger()
+   * @generated
+   * @ordered
+   */
+  protected static final String INTEGER_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getInteger() <em>Integer</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getInteger()
+   * @generated
+   * @ordered
+   */
+  protected String integer = INTEGER_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #getString() <em>String</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getString()
+   * @generated
+   * @ordered
+   */
+  protected static final String STRING_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getString() <em>String</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getString()
+   * @generated
+   * @ordered
+   */
+  protected String string = STRING_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -76,13 +136,9 @@ public class type_identifierImpl extends result_typeImpl implements type_identif
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<String> getNames()
+  public String getId()
   {
-    if (names == null)
-    {
-      names = new EDataTypeEList<String>(String.class, this, PascalPackage.TYPE_IDENTIFIER__NAMES);
-    }
-    return names;
+    return id;
   }
 
   /**
@@ -90,13 +146,81 @@ public class type_identifierImpl extends result_typeImpl implements type_identif
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<String> getType()
+  public void setId(String newId)
   {
-    if (type == null)
-    {
-      type = new EDataTypeEList<String>(String.class, this, PascalPackage.TYPE_IDENTIFIER__TYPE);
-    }
-    return type;
+    String oldId = id;
+    id = newId;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.TYPE_IDENTIFIER__ID, oldId, id));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String getBoolean()
+  {
+    return boolean_;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setBoolean(String newBoolean)
+  {
+    String oldBoolean = boolean_;
+    boolean_ = newBoolean;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.TYPE_IDENTIFIER__BOOLEAN, oldBoolean, boolean_));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String getInteger()
+  {
+    return integer;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setInteger(String newInteger)
+  {
+    String oldInteger = integer;
+    integer = newInteger;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.TYPE_IDENTIFIER__INTEGER, oldInteger, integer));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String getString()
+  {
+    return string;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setString(String newString)
+  {
+    String oldString = string;
+    string = newString;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.TYPE_IDENTIFIER__STRING, oldString, string));
   }
 
   /**
@@ -109,10 +233,14 @@ public class type_identifierImpl extends result_typeImpl implements type_identif
   {
     switch (featureID)
     {
-      case PascalPackage.TYPE_IDENTIFIER__NAMES:
-        return getNames();
-      case PascalPackage.TYPE_IDENTIFIER__TYPE:
-        return getType();
+      case PascalPackage.TYPE_IDENTIFIER__ID:
+        return getId();
+      case PascalPackage.TYPE_IDENTIFIER__BOOLEAN:
+        return getBoolean();
+      case PascalPackage.TYPE_IDENTIFIER__INTEGER:
+        return getInteger();
+      case PascalPackage.TYPE_IDENTIFIER__STRING:
+        return getString();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -122,19 +250,22 @@ public class type_identifierImpl extends result_typeImpl implements type_identif
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case PascalPackage.TYPE_IDENTIFIER__NAMES:
-        getNames().clear();
-        getNames().addAll((Collection<? extends String>)newValue);
+      case PascalPackage.TYPE_IDENTIFIER__ID:
+        setId((String)newValue);
         return;
-      case PascalPackage.TYPE_IDENTIFIER__TYPE:
-        getType().clear();
-        getType().addAll((Collection<? extends String>)newValue);
+      case PascalPackage.TYPE_IDENTIFIER__BOOLEAN:
+        setBoolean((String)newValue);
+        return;
+      case PascalPackage.TYPE_IDENTIFIER__INTEGER:
+        setInteger((String)newValue);
+        return;
+      case PascalPackage.TYPE_IDENTIFIER__STRING:
+        setString((String)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -150,11 +281,17 @@ public class type_identifierImpl extends result_typeImpl implements type_identif
   {
     switch (featureID)
     {
-      case PascalPackage.TYPE_IDENTIFIER__NAMES:
-        getNames().clear();
+      case PascalPackage.TYPE_IDENTIFIER__ID:
+        setId(ID_EDEFAULT);
         return;
-      case PascalPackage.TYPE_IDENTIFIER__TYPE:
-        getType().clear();
+      case PascalPackage.TYPE_IDENTIFIER__BOOLEAN:
+        setBoolean(BOOLEAN_EDEFAULT);
+        return;
+      case PascalPackage.TYPE_IDENTIFIER__INTEGER:
+        setInteger(INTEGER_EDEFAULT);
+        return;
+      case PascalPackage.TYPE_IDENTIFIER__STRING:
+        setString(STRING_EDEFAULT);
         return;
     }
     super.eUnset(featureID);
@@ -170,10 +307,14 @@ public class type_identifierImpl extends result_typeImpl implements type_identif
   {
     switch (featureID)
     {
-      case PascalPackage.TYPE_IDENTIFIER__NAMES:
-        return names != null && !names.isEmpty();
-      case PascalPackage.TYPE_IDENTIFIER__TYPE:
-        return type != null && !type.isEmpty();
+      case PascalPackage.TYPE_IDENTIFIER__ID:
+        return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
+      case PascalPackage.TYPE_IDENTIFIER__BOOLEAN:
+        return BOOLEAN_EDEFAULT == null ? boolean_ != null : !BOOLEAN_EDEFAULT.equals(boolean_);
+      case PascalPackage.TYPE_IDENTIFIER__INTEGER:
+        return INTEGER_EDEFAULT == null ? integer != null : !INTEGER_EDEFAULT.equals(integer);
+      case PascalPackage.TYPE_IDENTIFIER__STRING:
+        return STRING_EDEFAULT == null ? string != null : !STRING_EDEFAULT.equals(string);
     }
     return super.eIsSet(featureID);
   }
@@ -189,10 +330,14 @@ public class type_identifierImpl extends result_typeImpl implements type_identif
     if (eIsProxy()) return super.toString();
 
     StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (names: ");
-    result.append(names);
-    result.append(", type: ");
-    result.append(type);
+    result.append(" (id: ");
+    result.append(id);
+    result.append(", boolean: ");
+    result.append(boolean_);
+    result.append(", integer: ");
+    result.append(integer);
+    result.append(", string: ");
+    result.append(string);
     result.append(')');
     return result.toString();
   }

@@ -3,8 +3,6 @@
  */
 package org.xtext.compiler.pascal.pascal;
 
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -16,7 +14,8 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.type_definition#getNames <em>Names</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.type_definition#getName <em>Name</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.type_definition#getType <em>Type</em>}</li>
  * </ul>
  *
  * @see org.xtext.compiler.pascal.pascal.PascalPackage#gettype_definition()
@@ -26,19 +25,55 @@ import org.eclipse.emf.ecore.EObject;
 public interface type_definition extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Names</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * Returns the value of the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Names</em>' attribute list isn't clear,
+   * If the meaning of the '<em>Name</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Names</em>' attribute list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#gettype_definition_Names()
-   * @model unique="false"
+   * @return the value of the '<em>Name</em>' attribute.
+   * @see #setName(String)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#gettype_definition_Name()
+   * @model
    * @generated
    */
-  EList<String> getNames();
+  String getName();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.type_definition#getName <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Name</em>' attribute.
+   * @see #getName()
+   * @generated
+   */
+  void setName(String value);
+
+  /**
+   * Returns the value of the '<em><b>Type</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Type</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Type</em>' containment reference.
+   * @see #setType(type)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#gettype_definition_Type()
+   * @model containment="true"
+   * @generated
+   */
+  type getType();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.type_definition#getType <em>Type</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Type</em>' containment reference.
+   * @see #getType()
+   * @generated
+   */
+  void setType(type value);
 
 } // type_definition

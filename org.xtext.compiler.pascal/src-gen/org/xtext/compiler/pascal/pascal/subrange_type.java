@@ -3,8 +3,6 @@
  */
 package org.xtext.compiler.pascal.pascal;
 
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -16,7 +14,8 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.subrange_type#getConstants <em>Constants</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.subrange_type#getConstantInit <em>Constant Init</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.subrange_type#getConstantFinal <em>Constant Final</em>}</li>
  * </ul>
  *
  * @see org.xtext.compiler.pascal.pascal.PascalPackage#getsubrange_type()
@@ -26,19 +25,55 @@ import org.eclipse.emf.ecore.EObject;
 public interface subrange_type extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Constants</b></em>' containment reference list.
-   * The list contents are of type {@link org.xtext.compiler.pascal.pascal.constant}.
+   * Returns the value of the '<em><b>Constant Init</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Constants</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Constant Init</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Constants</em>' containment reference list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getsubrange_type_Constants()
+   * @return the value of the '<em>Constant Init</em>' containment reference.
+   * @see #setConstantInit(constant)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getsubrange_type_ConstantInit()
    * @model containment="true"
    * @generated
    */
-  EList<constant> getConstants();
+  constant getConstantInit();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.subrange_type#getConstantInit <em>Constant Init</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Constant Init</em>' containment reference.
+   * @see #getConstantInit()
+   * @generated
+   */
+  void setConstantInit(constant value);
+
+  /**
+   * Returns the value of the '<em><b>Constant Final</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Constant Final</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Constant Final</em>' containment reference.
+   * @see #setConstantFinal(constant)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getsubrange_type_ConstantFinal()
+   * @model containment="true"
+   * @generated
+   */
+  constant getConstantFinal();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.subrange_type#getConstantFinal <em>Constant Final</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Constant Final</em>' containment reference.
+   * @see #getConstantFinal()
+   * @generated
+   */
+  void setConstantFinal(constant value);
 
 } // subrange_type

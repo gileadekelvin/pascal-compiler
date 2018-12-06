@@ -51,29 +51,29 @@ public interface unlabelled_statement extends EObject
   void setSimple(simple_statement value);
 
   /**
-   * Returns the value of the '<em><b>Structured</b></em>' attribute.
+   * Returns the value of the '<em><b>Structured</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Structured</em>' attribute isn't clear,
+   * If the meaning of the '<em>Structured</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Structured</em>' attribute.
-   * @see #setStructured(String)
+   * @return the value of the '<em>Structured</em>' containment reference.
+   * @see #setStructured(structured_statement)
    * @see org.xtext.compiler.pascal.pascal.PascalPackage#getunlabelled_statement_Structured()
-   * @model
+   * @model containment="true"
    * @generated
    */
-  String getStructured();
+  structured_statement getStructured();
 
   /**
-   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.unlabelled_statement#getStructured <em>Structured</em>}' attribute.
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.unlabelled_statement#getStructured <em>Structured</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Structured</em>' attribute.
+   * @param value the new value of the '<em>Structured</em>' containment reference.
    * @see #getStructured()
    * @generated
    */
-  void setStructured(String value);
+  void setStructured(structured_statement value);
 
 } // unlabelled_statement

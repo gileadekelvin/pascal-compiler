@@ -1,9 +1,11 @@
-grammar org.xtext.compiler.pascal.Pascal with org.eclipse.xtext.common.Terminals
+grammar org.xtext.compiler.pascal.Pascal hidden(WS, ML_COMMENT, SL_COMMENT)
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 
 generate pascal "http://www.xtext.org/compiler/pascal/Pascal"
 
 pascal:
-	program += program
+	program = program
 ; 
 
 program:
@@ -11,15 +13,20 @@ program:
 ;
 
 program_heading_block:
-	"program" name=ID ( "(" identifiers=identifier_list ")" ) ? ";"	
+	"program" name=ID ";"	
 ;
 
 identifier_list:
-	names+=ID ( "," names+=ID ) *	
+	names+=identifier ( "," names+=identifier ) *	
+;
+
+identifier:
+	id=ID
 ;
 
 block:
 	(constantpart+=constant_definition_part | 
+	 type_part+=type_definition_part |
 	 variablepart+=variable_declaration_part | 
 	 procedure_function_part+=procedure_and_function_declaration_part
 	)* statement=compound_statement
@@ -34,20 +41,28 @@ constant_definition:
 ;
 
 constant: 
-	 unsigned_number
-   | sign unsigned_number
-   | names+=ID
-   | sign names+=ID
-   | string+=STRING
-   | constant_chr
+	 uns_number=unsigned_number
+   | sign sig_number=unsigned_number
+   | name_id=ID
+   | sign sig_name_id=ID
+   | string=STRING
+   | booltype=bool
+;
+
+type_definition_part:
+	"type" (types+=type_definition ";" ) +	
+;
+
+type_definition:
+	name=ID EQUAL type=type 
 ;
 
 variable_declaration_part
-   : VAR variable+=variable_declaration (";" variable+=variable_declaration)* ";"
+   : "var" variable+=variable_declaration (";" variable+=variable_declaration)* ";"
 ;
 
 variable_declaration
-   : identifier_list ":" types+=type
+   : list_names=identifier_list ":" type_variable=type
 ;
 
 compound_statement:
@@ -59,140 +74,142 @@ statements:
 ;
 
 statement:  
-	label=label ":" statement+=unlabelled_statement | {statement} (statement+=unlabelled_statement) ? 
+	{statement} (statement+=unlabelled_statement) ? 
 ;
 
 unlabelled_statement:
 	simple=simple_statement | structured=structured_statement
 ;
 
-label:
-	number=unsigned_integer
-;
-
 simple_statement:
-	assignment=assignment_statement | procedure=procedure_statement | goto=goto_statement	
+	assignment=assignment_statement | procedure=procedure_statement
 ;
 
 assignment_statement: 
-	variable=variable ASSIGN expression=expression	
+	declared_variable=variable ASSIGN expression=expression	
 ;
 
 variable
-   : ('@' names+=ID | names+=ID) ('[' expression+=expression ("," expression+=expression)* ']' | "(." expression+=expression ("," expression+=expression)* ".)" | "." names+=ID | "^")*
+   : ('@' variable_id=ID | variable_id=ID) ('[' indice+=expression ("," indice+=expression)* ']' | "(." expression+=expression ("," expression+=expression)* ".)" | "." names_exp+=ID | "^")*
 ;
 
 expression:
-	expressions+=simple_expression (operators+=relational_operator expressions+=expression)?
+	simple=simple_expression
 ;
 
 simple_expression:
-	terms+=term (operators+=additive_operator expression+=simple_expression)?
+	term_exp=term (operator=additive_operator expression=simple_expression)?
 ;
 
 term: 
-	factors+=signed_factor (operators+=multiplicative_operator terms+=term)?
+	factor=signed_factor (operator=multiplicative_operator term2=term)?
 ;
 
 signed_factor: 
-	(operators+=PLUS | operators+=MINUS)? factors+=factor
+	(signal=PLUS | signal=MINUS)? factor=factor
 ;
 
 factor: 
 	 variable=variable
    | "(" expression=expression ")"
-   | function_designator
-   | constant=unsigned_constant
-   | set=set
-   | NOT factor=factor
-   | boolean+=bool
-;
-
-set: 
-	 "[" elements+=elementList "]"
-   | "(." elements+=elementList ".)"
-;
-
-elementList: 
-	elements+=element ("," elements+=element)*   
-;
-
-element: 
-	expressions+=expression (dotdot+=DOTDOT expressions+=expression)?
+   | function=function_designator
+   | constant=unsigned_constant   
+   | NOT not_factor=factor
+   | bool_factor=bool
 ;
 
 type: 
-	 type+=simple_type
-   //| type+=structured_type
-   //| type+=pointer_type
+	 simple=simple_type
+    | structured=structured_type
 ;
 
-simple_type:
- 	 types+=scalar_type
-   | types+=subrange_type
-   | types+=type_identifier
-   | types+=string_type
-;
-
-scalar_type
-   : "(" identifier_list ")"
+simple_type: 
+   type=type_identifier
+   | subrange_type+=subrange_type
 ;
 
 subrange_type: 
-	constants+=constant DOTDOT constants+=constant
+	constantInit=constant DOTDOT constantFinal=constant
+;
+
+structured_type:
+	//packed = "PACKED" unpacked_structured_type |
+   unpacked=unpacked_structured_type
+;
+
+unpacked_structured_type:
+   static_array=array_type
+   | dynamic=dynamic_array_type
+;
+
+dynamic_array_type:
+	"array" "of" type=type_identifier	
+;
+
+array_type:
+	"array" "[" type_l=type_list "]" "of" type=type_identifier
+;
+ type_list:
+   indexes+=index_type ("," indexes+=index_type)*
+;
+ index_type:
+   content=simple_type
+;
+ component_type:
+   type
 ;
 
 type_identifier: 
-	names+=ID
-   	| (type+='CHAR' | type+='boolean' | type+='integer' | type+='real' | type+='string')
-;
-
-string_type:
-	'string' '[' ( names+=ID | number+=unsigned_number ) ']'
+	id=ID
+   	| (boolean='boolean' | integer='integer' | string='string')
 ;
 
 unsigned_constant:
-	 number+=unsigned_number
-   | char+=constant_chr
-   | string+=STRING
-   | nil+=NIL
+	 number=unsigned_number
+   | string=STRING
+   | nil=NIL
 ;
 
 unsigned_number: 
-	 numbers+=unsigned_integer
-   | numbers+=unsigned_real
+	 numbers=unsigned_integer
 ;
 
-constant_chr:
-	"chr" "(" numbers+=unsigned_integer ")"
-;
 
 procedure_statement:
-	names+=ID ('(' types+=parameter_list ')')?
+	name_id=ID ('(' parameters=parameter_list ')')?
 ;
 
 parameter_list:
-	actual_parameter (',' types+=actual_parameter)*
+	parameters+=actual_parameter (',' parameters+=actual_parameter)*
 ; 
 
 actual_parameter :
-	expression
-;
-
-goto_statement:
-	"goto"
+	content=expression
 ;
 
 structured_statement:
-	"structured"
+	compound_stat=compound_statement
+	| conditional_stat=conditional_statement
+;
+
+conditional_statement:
+	cond_statements=case_statement
+;
+
+case_statement:
+	"case" exp=expression "of" case_list+=case_list_element ( ";" case_list+=case_list_element )* ( ";" )? ("else" case_statements=statements)? "end"
+;
+
+case_list_element:
+	consts=const_list ":" case_statement=statement
+;
+
+const_list:
+ 	constants+=constant ( "," constants+= constant )* 
 ;
 
 unsigned_integer: 
 	NUM_INT
-;
-
-unsigned_real: 
-	NUM_REAL
 ;
 
 additive_operator: 
@@ -209,63 +226,49 @@ multiplicative_operator
    | AND
 ;
 
-relational_operator: 
-	 EQUAL
-   | NOT_EQUAL
-   | LT
-   | LE
-   | GE
-   | GT
-   | IN
-;
-
 procedure_and_function_declaration_part:
-	procedure_or_function_declaration ";"
+	subroutine=procedure_or_function_declaration ";"
 ;
 
 procedure_or_function_declaration:
-	procedure_declaration | function_declaration
+	proc=procedure_declaration | func=function_declaration
 ;
 
 procedure_declaration:
-	PROCEDURE names+=ID  (types+=formal_parameter_list)? ';' block=block
-;
-
-type_definition:
-	names+= ID EQUAL (type | function_type | procedure_type)
+	procedure names=ID  (parameters=formal_parameter_list)? ';' block=block
 ;
 
 procedure_type: //Add action to ensure object creation?
-	 {procedure_type} PROCEDURE (types+=formal_parameter_list)?
+	 {procedure_type} procedure (types=formal_parameter_list)?
 ;
 
 function_declaration:
-	FUNCTION names+=ID (types+=formal_parameter_list)? ':' 
-	types+=result_type ';' block=block
+	function names=ID (parameters=formal_parameter_list)? ':' 
+	types=result_type ';' block=block
 ;
 
 function_type:
-	FUNCTION (types+=formal_parameter_list)? ':' types+=result_type
+	function (parameters=formal_parameter_list)? ':' types=result_type
 ;
 
 function_designator:
-	names+=ID '(' types+=parameter_list ')'
+	name_function=ID '(' parameters=parameter_list ')'
 ;
 
 
 formal_parameter_list:
-	'(' formal_parameter_section (';' types+=formal_parameter_section )* ')'
+	'(' parameters+=formal_parameter_section (';' parameters+=formal_parameter_section )* ')'
 ;
 
 formal_parameter_section:
-	  parameter_group
-	| VAR parameter_group
-	| FUNCTION parameter_group
-	| PROCEDURE parameter_group
+	  parameters+=parameter_group
+	| 'var' parameters+=parameter_group
+	| function parameters+=parameter_group
+	| procedure parameters+=parameter_group
 ;
 
 parameter_group:
-	identifier_list ":" types+=type_identifier
+	names=identifier_list ":" types=type_identifier
 ;
 
 result_type:
@@ -273,7 +276,15 @@ result_type:
 ;
 
 bool:
-	TRUE | FALSE
+	"true" | "false"
+;
+
+procedure:
+	'procedure'
+;
+
+function:
+	'function'
 ;
 
 sign: 
@@ -281,12 +292,8 @@ sign:
    | MINUS
 ;
 
-terminal VAR:
-	('V'|'v')('A'|'a')('R'|'r')
-;
-
 terminal NIL:
-	('N'|'n')('I'|'i')('L'|'l')
+	'nil'
 ;
 
 terminal DOTDOT:
@@ -294,15 +301,7 @@ terminal DOTDOT:
 ;
 
 terminal NOT:
-	('N'|'n')('O'|'o')('T'|'t')
-;
-
-terminal TRUE:
-	('T'|'t')('R'|'r')('U'|'u')('e'|'E')
-;
-
-terminal FALSE:
-	('F'|'f')('A'|'a')('L'|'l')('S'|'s')('E'|'e')
+	('N'|'n') ('O'|'o') ('T'|'t')	
 ;
 
 terminal STAR:
@@ -314,11 +313,11 @@ terminal SLASH:
 ;
 
 terminal DIV:
-	('D'|'d')('I'|'i')('V'|'v')
+	('D'|'d') ('I'|'i') ('V'|'v')
 ;
 
 terminal MOD:
-	('M'|'m')('O'|'o')('D'|'d')
+	('M'|'m') ('O'|'o') ('D'|'d')
 ;
 
 terminal PLUS:
@@ -330,11 +329,11 @@ terminal MINUS:
 ;
 
 terminal AND:
-	('A'|'a')('N'|'n')('D'|'d')
+	('A'|'a') ('N'|'n') ('D'|'d')
 ;
 
 terminal OR:
-	('O'|'o')('R'|'r')
+	('O'|'o') ('R'|'r')
 ;
 
 terminal ASSIGN: 
@@ -345,46 +344,22 @@ terminal NUM_INT:
 	('0' .. '9') +
 ;
 
-terminal NUM_REAL: 
-	('0' .. '9') + (('.' ('0' .. '9') + (EXPONENT)?)? | EXPONENT)
-;
-
-terminal fragment EXPONENT: 
-	('e') (PLUS | MINUS)? ('0' .. '9') +
-;
-
 terminal EQUAL: 
 	'='
 ;
 
-terminal NOT_EQUAL: 
-	'<>'
+terminal ID: ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
+
+terminal STRING:			
+			"'" ( '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\' */ | !('\\'|"'") )* "'"
+		;
+		
+terminal ML_COMMENT :
+	'(*' -> '*)' | '{' -> '}'
 ;
 
-terminal LT: 
-	'<'
-;
+terminal SL_COMMENT : '//' !('\n'|'\r')* ('\r'? '\n')?;
 
-terminal LE: 
-	'<='
-;
+terminal WS         : (' '|'\t'|'\r'|'\n')+;
 
-terminal GE: 
-	'>='
-;
-
-terminal GT: 
-	'>'
-;
-
-terminal IN:
-	('I'|'i')('N'|'n')	
-;
-
-terminal PROCEDURE:
-	('P'|'p')('R'|'r')('O'|'o')('C'|'c')('E'|'e')('D'|'d')('U'|'u')('R'|'r')('E'|'e')
-;
-
-terminal FUNCTION:
-	('F'|'f')('U'|'u')('N'|'n')('C'|'c')('T'|'t')('I'|'i')('O'|'o')('N'|'n')
-;
+terminal ANY_OTHER: .;

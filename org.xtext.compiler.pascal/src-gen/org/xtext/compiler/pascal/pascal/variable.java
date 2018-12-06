@@ -16,8 +16,10 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.variable#getNames <em>Names</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.variable#getVariable_id <em>Variable id</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.variable#getIndice <em>Indice</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.variable#getExpression <em>Expression</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.variable#getNames_exp <em>Names exp</em>}</li>
  * </ul>
  *
  * @see org.xtext.compiler.pascal.pascal.PascalPackage#getvariable()
@@ -27,20 +29,46 @@ import org.eclipse.emf.ecore.EObject;
 public interface variable extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Names</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * Returns the value of the '<em><b>Variable id</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Names</em>' attribute list isn't clear,
+   * If the meaning of the '<em>Variable id</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Names</em>' attribute list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getvariable_Names()
-   * @model unique="false"
+   * @return the value of the '<em>Variable id</em>' attribute.
+   * @see #setVariable_id(String)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getvariable_Variable_id()
+   * @model
    * @generated
    */
-  EList<String> getNames();
+  String getVariable_id();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.variable#getVariable_id <em>Variable id</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Variable id</em>' attribute.
+   * @see #getVariable_id()
+   * @generated
+   */
+  void setVariable_id(String value);
+
+  /**
+   * Returns the value of the '<em><b>Indice</b></em>' containment reference list.
+   * The list contents are of type {@link org.xtext.compiler.pascal.pascal.expression}.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Indice</em>' containment reference list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Indice</em>' containment reference list.
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getvariable_Indice()
+   * @model containment="true"
+   * @generated
+   */
+  EList<expression> getIndice();
 
   /**
    * Returns the value of the '<em><b>Expression</b></em>' containment reference list.
@@ -57,5 +85,21 @@ public interface variable extends EObject
    * @generated
    */
   EList<expression> getExpression();
+
+  /**
+   * Returns the value of the '<em><b>Names exp</b></em>' attribute list.
+   * The list contents are of type {@link java.lang.String}.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Names exp</em>' attribute list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Names exp</em>' attribute list.
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getvariable_Names_exp()
+   * @model unique="false"
+   * @generated
+   */
+  EList<String> getNames_exp();
 
 } // variable

@@ -3,8 +3,6 @@
  */
 package org.xtext.compiler.pascal.pascal;
 
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -16,29 +14,120 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.function_declaration#getNames <em>Names</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.function_declaration#getParameters <em>Parameters</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.function_declaration#getTypes <em>Types</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.function_declaration#getBlock <em>Block</em>}</li>
  * </ul>
  *
  * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfunction_declaration()
  * @model
  * @generated
  */
-public interface function_declaration extends procedure_or_function_declaration
+public interface function_declaration extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Types</b></em>' containment reference list.
-   * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.
+   * Returns the value of the '<em><b>Names</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Types</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Names</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Types</em>' containment reference list.
+   * @return the value of the '<em>Names</em>' attribute.
+   * @see #setNames(String)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfunction_declaration_Names()
+   * @model
+   * @generated
+   */
+  String getNames();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.function_declaration#getNames <em>Names</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Names</em>' attribute.
+   * @see #getNames()
+   * @generated
+   */
+  void setNames(String value);
+
+  /**
+   * Returns the value of the '<em><b>Parameters</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Parameters</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Parameters</em>' containment reference.
+   * @see #setParameters(formal_parameter_list)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfunction_declaration_Parameters()
+   * @model containment="true"
+   * @generated
+   */
+  formal_parameter_list getParameters();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.function_declaration#getParameters <em>Parameters</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Parameters</em>' containment reference.
+   * @see #getParameters()
+   * @generated
+   */
+  void setParameters(formal_parameter_list value);
+
+  /**
+   * Returns the value of the '<em><b>Types</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Types</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Types</em>' containment reference.
+   * @see #setTypes(result_type)
    * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfunction_declaration_Types()
    * @model containment="true"
    * @generated
    */
-  EList<EObject> getTypes();
+  result_type getTypes();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.function_declaration#getTypes <em>Types</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Types</em>' containment reference.
+   * @see #getTypes()
+   * @generated
+   */
+  void setTypes(result_type value);
+
+  /**
+   * Returns the value of the '<em><b>Block</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Block</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Block</em>' containment reference.
+   * @see #setBlock(block)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfunction_declaration_Block()
+   * @model containment="true"
+   * @generated
+   */
+  block getBlock();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.function_declaration#getBlock <em>Block</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Block</em>' containment reference.
+   * @see #getBlock()
+   * @generated
+   */
+  void setBlock(block value);
 
 } // function_declaration

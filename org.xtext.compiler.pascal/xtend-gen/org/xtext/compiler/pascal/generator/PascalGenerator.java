@@ -3,10 +3,71 @@
  */
 package org.xtext.compiler.pascal.generator;
 
+import com.google.common.base.Objects;
+import com.google.common.collect.Iterables;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.AbstractGenerator;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IGeneratorContext;
+import org.eclipse.xtext.xbase.lib.Conversions;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.eclipse.xtext.xbase.lib.IteratorExtensions;
+import org.eclipse.xtext.xbase.lib.StringExtensions;
+import org.xtext.compiler.pascal.generator.AddressVariable;
+import org.xtext.compiler.pascal.pascal.actual_parameter;
+import org.xtext.compiler.pascal.pascal.array_type;
+import org.xtext.compiler.pascal.pascal.assignment_statement;
+import org.xtext.compiler.pascal.pascal.block;
+import org.xtext.compiler.pascal.pascal.case_list_element;
+import org.xtext.compiler.pascal.pascal.case_statement;
+import org.xtext.compiler.pascal.pascal.conditional_statement;
+import org.xtext.compiler.pascal.pascal.constant;
+import org.xtext.compiler.pascal.pascal.expression;
+import org.xtext.compiler.pascal.pascal.factor;
+import org.xtext.compiler.pascal.pascal.formal_parameter_section;
+import org.xtext.compiler.pascal.pascal.function_declaration;
+import org.xtext.compiler.pascal.pascal.function_designator;
+import org.xtext.compiler.pascal.pascal.identifier;
+import org.xtext.compiler.pascal.pascal.identifier_list;
+import org.xtext.compiler.pascal.pascal.index_type;
+import org.xtext.compiler.pascal.pascal.parameter_group;
+import org.xtext.compiler.pascal.pascal.procedure_and_function_declaration_part;
+import org.xtext.compiler.pascal.pascal.procedure_declaration;
+import org.xtext.compiler.pascal.pascal.procedure_or_function_declaration;
+import org.xtext.compiler.pascal.pascal.procedure_statement;
+import org.xtext.compiler.pascal.pascal.program;
+import org.xtext.compiler.pascal.pascal.result_type;
+import org.xtext.compiler.pascal.pascal.signed_factor;
+import org.xtext.compiler.pascal.pascal.simple_expression;
+import org.xtext.compiler.pascal.pascal.simple_statement;
+import org.xtext.compiler.pascal.pascal.statement;
+import org.xtext.compiler.pascal.pascal.statements;
+import org.xtext.compiler.pascal.pascal.structured_statement;
+import org.xtext.compiler.pascal.pascal.structured_type;
+import org.xtext.compiler.pascal.pascal.subrange_type;
+import org.xtext.compiler.pascal.pascal.term;
+import org.xtext.compiler.pascal.pascal.type;
+import org.xtext.compiler.pascal.pascal.type_definition;
+import org.xtext.compiler.pascal.pascal.type_identifier;
+import org.xtext.compiler.pascal.pascal.unlabelled_statement;
+import org.xtext.compiler.pascal.pascal.unpacked_structured_type;
+import org.xtext.compiler.pascal.pascal.unsigned_constant;
+import org.xtext.compiler.pascal.pascal.unsigned_number;
+import org.xtext.compiler.pascal.pascal.variable;
+import org.xtext.compiler.pascal.pascal.variable_declaration;
+import org.xtext.compiler.pascal.pascal.variable_declaration_part;
+import org.xtext.compiler.pascal.validation.ExpressionTypeHelper;
+import org.xtext.compiler.pascal.validation.Structures;
+import org.xtext.compiler.pascal.validation.Variable;
 
 /**
  * Generates code from your model files on save.
@@ -15,7 +76,1328 @@ import org.eclipse.xtext.generator.IGeneratorContext;
  */
 @SuppressWarnings("all")
 public class PascalGenerator extends AbstractGenerator {
+  private long currentRegister;
+  
+  private long currentLine;
+  
+  private String temporary;
+  
+  private Object bufferShield;
+  
+  private Map<AddressVariable, String> registerBank;
+  
+  private Map<String, Long> subroutineLocation;
+  
+  public final static int LINE_LENGTH = 8;
+  
+  public String getCurrentRegister() {
+    return String.format("R%s", Long.valueOf(this.currentRegister));
+  }
+  
+  public String getNextRegister() {
+    this.currentRegister++;
+    return String.format("R%s", Long.valueOf(this.currentRegister));
+  }
+  
+  public void shieldBuffer(final Object content) {
+    this.bufferShield = content;
+  }
+  
+  public AddressVariable updateRegisterBank(final String variable, final String subRoutine, final String newRegister) {
+    AddressVariable addrVar = new AddressVariable(variable, subRoutine);
+    this.registerBank.put(addrVar, newRegister);
+    return addrVar;
+  }
+  
+  public boolean variableExists(final String variable) {
+    Iterator<AddressVariable> itr = this.registerBank.keySet().iterator();
+    boolean exists = false;
+    while (itr.hasNext()) {
+      {
+        AddressVariable key = itr.next();
+        boolean _equals = key.getName().equals(variable);
+        if (_equals) {
+          exists = true;
+        }
+      }
+    }
+    return exists;
+  }
+  
+  public boolean variableExists(final String variable, final String subRoutine) {
+    AddressVariable wanted = new AddressVariable(variable, subRoutine);
+    return this.registerBank.containsKey(wanted);
+  }
+  
+  public String getVariableRegister(final String variable, final String subRoutine) {
+    AddressVariable wanted = new AddressVariable(variable, subRoutine);
+    return this.registerBank.get(wanted);
+  }
+  
+  public String getNextLine() {
+    long _currentLine = this.currentLine;
+    this.currentLine = (_currentLine + PascalGenerator.LINE_LENGTH);
+    return String.format("%s: ", Long.valueOf(this.currentLine));
+  }
+  
+  public String getNthLine(final long Nth) {
+    return String.format("%s: ", Long.valueOf(Nth));
+  }
+  
+  public long peekNextLine() {
+    long _currentLine = this.currentLine;
+    this.currentLine = (_currentLine + PascalGenerator.LINE_LENGTH);
+    return (this.currentLine + PascalGenerator.LINE_LENGTH);
+  }
+  
+  public String getValueOfNextLine() {
+    long newLine = this.currentLine;
+    long _newLine = newLine;
+    newLine = (_newLine + PascalGenerator.LINE_LENGTH);
+    return String.format("%s", Long.valueOf(newLine));
+  }
+  
+  public type addTypeDefinition(final type_definition definition) {
+    return Structures.putType(definition.getName(), definition.getType());
+  }
+  
+  public CharSequence compile(final block block) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _nextLine = this.getNextLine();
+    String _plus = (_nextLine + "LD SP, #stackStart");
+    _builder.append(_plus);
+    _builder.newLineIfNotEmpty();
+    String _nextLine_1 = this.getNextLine();
+    String _plus_1 = (_nextLine_1 + "BR %s\n");
+    String _compileSubRoutinesDeclaration = this.compileSubRoutinesDeclaration(block);
+    String _plus_2 = (_plus_1 + _compileSubRoutinesDeclaration);
+    String _format = String.format(_plus_2, this.getValueOfNextLine());
+    _builder.append(_format);
+    _builder.newLineIfNotEmpty();
+    CharSequence _compileVarDeclaration = this.compileVarDeclaration(block, AddressVariable.NO_SUBROUTINE);
+    _builder.append(_compileVarDeclaration);
+    _builder.newLineIfNotEmpty();
+    CharSequence _compileAttribution = this.compileAttribution(block, AddressVariable.NO_SUBROUTINE);
+    _builder.append(_compileAttribution);
+    _builder.newLineIfNotEmpty();
+    String _nextLine_2 = this.getNextLine();
+    String _plus_3 = (_nextLine_2 + "BR *0(SP)");
+    _builder.append(_plus_3);
+    _builder.newLineIfNotEmpty();
+    return _builder;
+  }
+  
+  public CharSequence compileInnerBlock(final block block, final String subRoutine) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _compileSubRoutinesDeclaration = this.compileSubRoutinesDeclaration(block);
+    _builder.append(_compileSubRoutinesDeclaration);
+    _builder.newLineIfNotEmpty();
+    CharSequence _compileVarDeclaration = this.compileVarDeclaration(block, subRoutine);
+    _builder.append(_compileVarDeclaration);
+    _builder.newLineIfNotEmpty();
+    CharSequence _compileAttribution = this.compileAttribution(block, subRoutine);
+    _builder.append(_compileAttribution);
+    _builder.newLineIfNotEmpty();
+    return _builder;
+  }
+  
+  public CharSequence compileVarDeclaration(final block block, final String subRoutine) {
+    StringConcatenation _builder = new StringConcatenation();
+    EList<variable_declaration_part> var_declarations = block.getVariablepart();
+    _builder.newLineIfNotEmpty();
+    {
+      for(final variable_declaration_part declaration : var_declarations) {
+        {
+          EList<variable_declaration> _variable = declaration.getVariable();
+          for(final variable_declaration variable : _variable) {
+            this.createVariables(variable);
+            _builder.newLineIfNotEmpty();
+            {
+              EList<identifier> _names = variable.getList_names().getNames();
+              for(final identifier name : _names) {
+                {
+                  boolean _variableExists = this.variableExists(name.getId(), subRoutine);
+                  boolean _not = (!_variableExists);
+                  if (_not) {
+                    this.shieldBuffer(this.updateRegisterBank(name.getId(), subRoutine, this.getNextRegister()));
+                    _builder.newLineIfNotEmpty();
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return _builder;
+  }
+  
+  public void createVariables(final variable_declaration declared_variables) {
+    List<String> new_variables = new ArrayList<String>();
+    identifier_list names = declared_variables.getList_names();
+    if (((names != null) && (names.getNames() != null))) {
+      EList<identifier> _names = names.getNames();
+      for (final identifier id : _names) {
+        new_variables.add(id.getId());
+      }
+    }
+    for (final String name : new_variables) {
+      type _type_variable = declared_variables.getType_variable();
+      boolean _tripleNotEquals = (_type_variable != null);
+      if (_tripleNotEquals) {
+        structured_type _structured = declared_variables.getType_variable().getStructured();
+        boolean _tripleNotEquals_1 = (_structured != null);
+        if (_tripleNotEquals_1) {
+          unpacked_structured_type _unpacked = declared_variables.getType_variable().getStructured().getUnpacked();
+          boolean _tripleNotEquals_2 = (_unpacked != null);
+          if (_tripleNotEquals_2) {
+            array_type _static_array = declared_variables.getType_variable().getStructured().getUnpacked().getStatic_array();
+            boolean _tripleNotEquals_3 = (_static_array != null);
+            if (_tripleNotEquals_3) {
+              array_type staticArray = declared_variables.getType_variable().getStructured().getUnpacked().getStatic_array();
+              Structures.putArray(name, this.calculateDimensions(staticArray));
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  public String compileSubRoutinesDeclaration(final block block) {
+    StringConcatenation _builder = new StringConcatenation();
+    EList<procedure_and_function_declaration_part> subroutines = block.getProcedure_function_part();
+    _builder.newLineIfNotEmpty();
+    {
+      for(final procedure_and_function_declaration_part declaration : subroutines) {
+        procedure_or_function_declaration subroutine = declaration.getSubroutine();
+        _builder.newLineIfNotEmpty();
+        {
+          if ((subroutine != null)) {
+            {
+              function_declaration _func = subroutine.getFunc();
+              boolean _tripleNotEquals = (_func != null);
+              if (_tripleNotEquals) {
+                String _compileFuncDeclaration = this.compileFuncDeclaration(subroutine.getFunc());
+                _builder.append(_compileFuncDeclaration);
+                _builder.newLineIfNotEmpty();
+                String _nextLine = this.getNextLine();
+                String _plus = (_nextLine + "BR *0(SP)");
+                _builder.append(_plus);
+                _builder.newLineIfNotEmpty();
+              }
+            }
+            {
+              procedure_declaration _proc = subroutine.getProc();
+              boolean _tripleNotEquals_1 = (_proc != null);
+              if (_tripleNotEquals_1) {
+                String _compileProcDeclaration = this.compileProcDeclaration(subroutine.getProc());
+                _builder.append(_compileProcDeclaration);
+                _builder.newLineIfNotEmpty();
+                String _nextLine_1 = this.getNextLine();
+                String _plus_1 = (_nextLine_1 + "BR *0(SP)");
+                _builder.append(_plus_1);
+                _builder.newLineIfNotEmpty();
+              }
+            }
+          }
+        }
+      }
+    }
+    return _builder.toString();
+  }
+  
+  public String compileFuncDeclaration(final function_declaration declaration) {
+    StringConcatenation _builder = new StringConcatenation();
+    this.shieldBuffer(this.subroutineLocation.put(declaration.getNames(), Long.valueOf(this.peekNextLine())));
+    _builder.newLineIfNotEmpty();
+    result_type _types = declaration.getTypes();
+    String type = ExpressionTypeHelper.getType(((type_identifier) _types));
+    _builder.newLineIfNotEmpty();
+    ArrayList<Variable> parameters = new ArrayList<Variable>();
+    _builder.newLineIfNotEmpty();
+    {
+      EList<formal_parameter_section> _parameters = declaration.getParameters().getParameters();
+      for(final formal_parameter_section section : _parameters) {
+        {
+          EList<parameter_group> _parameters_1 = section.getParameters();
+          for(final parameter_group group : _parameters_1) {
+            type_identifier _types_1 = group.getTypes();
+            String param_type = ExpressionTypeHelper.getType(((type_identifier) _types_1));
+            _builder.newLineIfNotEmpty();
+            {
+              EList<identifier> _names = group.getNames().getNames();
+              for(final identifier id : _names) {
+                {
+                  boolean _variableExists = this.variableExists(id.getId(), declaration.getNames());
+                  boolean _not = (!_variableExists);
+                  if (_not) {
+                    this.shieldBuffer(this.updateRegisterBank(id.getId(), declaration.getNames(), this.getNextRegister()));
+                    _builder.newLineIfNotEmpty();
+                  }
+                }
+                String _id = id.getId();
+                Variable newParmVar = new Variable(_id, param_type);
+                _builder.newLineIfNotEmpty();
+                this.shieldBuffer(Boolean.valueOf(parameters.add(newParmVar)));
+                _builder.newLineIfNotEmpty();
+              }
+            }
+          }
+        }
+      }
+    }
+    this.shieldBuffer(Structures.putFunc(declaration.getNames(), type, parameters));
+    _builder.newLineIfNotEmpty();
+    CharSequence _compileInnerBlock = this.compileInnerBlock(declaration.getBlock(), declaration.getNames());
+    _builder.append(_compileInnerBlock);
+    _builder.newLineIfNotEmpty();
+    return _builder.toString();
+  }
+  
+  public String compileProcDeclaration(final procedure_declaration declaration) {
+    StringConcatenation _builder = new StringConcatenation();
+    this.shieldBuffer(this.subroutineLocation.put(declaration.getNames(), Long.valueOf(this.peekNextLine())));
+    _builder.newLineIfNotEmpty();
+    ArrayList<Variable> parameters = new ArrayList<Variable>();
+    _builder.newLineIfNotEmpty();
+    {
+      EList<formal_parameter_section> _parameters = declaration.getParameters().getParameters();
+      for(final formal_parameter_section section : _parameters) {
+        {
+          EList<parameter_group> _parameters_1 = section.getParameters();
+          for(final parameter_group group : _parameters_1) {
+            type_identifier _types = group.getTypes();
+            String param_type = ExpressionTypeHelper.getType(((type_identifier) _types));
+            _builder.newLineIfNotEmpty();
+            {
+              EList<identifier> _names = group.getNames().getNames();
+              for(final identifier id : _names) {
+                {
+                  boolean _variableExists = this.variableExists(id.getId(), declaration.getNames());
+                  boolean _not = (!_variableExists);
+                  if (_not) {
+                    this.shieldBuffer(this.updateRegisterBank(id.getId(), declaration.getNames(), this.getNextRegister()));
+                    _builder.newLineIfNotEmpty();
+                  }
+                }
+                String _id = id.getId();
+                Variable newParmVar = new Variable(_id, param_type);
+                _builder.newLineIfNotEmpty();
+                this.shieldBuffer(Boolean.valueOf(parameters.add(newParmVar)));
+                _builder.newLineIfNotEmpty();
+              }
+            }
+          }
+        }
+      }
+    }
+    this.shieldBuffer(Structures.putProc(declaration.getNames(), parameters));
+    _builder.newLineIfNotEmpty();
+    CharSequence _compileInnerBlock = this.compileInnerBlock(declaration.getBlock(), declaration.getNames());
+    _builder.append(_compileInnerBlock);
+    _builder.newLineIfNotEmpty();
+    return _builder.toString();
+  }
+  
+  public String compileProcStatement(final procedure_statement statement, final String subRoutine) {
+    StringConcatenation _builder = new StringConcatenation();
+    int idx = 0;
+    _builder.newLineIfNotEmpty();
+    String procName = statement.getName_id();
+    _builder.newLineIfNotEmpty();
+    List<Variable> parameters = Structures.getProc(procName).getParameters();
+    _builder.newLineIfNotEmpty();
+    {
+      EList<actual_parameter> _parameters = statement.getParameters().getParameters();
+      for(final actual_parameter parameter : _parameters) {
+        String parm_name = parameters.get(idx).getName();
+        _builder.newLineIfNotEmpty();
+        String register = this.getVariableRegister(parm_name, procName);
+        _builder.newLineIfNotEmpty();
+        String _setTemporary = this.setTemporary("");
+        _builder.append(_setTemporary);
+        _builder.newLineIfNotEmpty();
+        String resultReg = this.compileRecExpression(parameter.getContent().getSimple(), subRoutine);
+        _builder.newLineIfNotEmpty();
+        _builder.append(this.temporary);
+        _builder.newLineIfNotEmpty();
+        String _nextLine = this.getNextLine();
+        String _plus = (_nextLine + "LD ");
+        String _plus_1 = (_plus + register);
+        String _plus_2 = (_plus_1 + ", ");
+        String _plus_3 = (_plus_2 + resultReg);
+        _builder.append(_plus_3);
+        _builder.newLineIfNotEmpty();
+        this.shieldBuffer(Integer.valueOf(idx = (idx + 1)));
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    String _nextLine_1 = this.getNextLine();
+    String _plus_4 = (_nextLine_1 + "ADD SP, SP, #");
+    String _plus_5 = (_plus_4 + subRoutine);
+    String _plus_6 = (_plus_5 + "size");
+    _builder.append(_plus_6);
+    _builder.newLineIfNotEmpty();
+    String _nextLine_2 = this.getNextLine();
+    String _plus_7 = (_nextLine_2 + "ST, *SP, #");
+    String _nthLine = this.getNthLine((this.currentLine + (2 * PascalGenerator.LINE_LENGTH)));
+    String _plus_8 = (_plus_7 + _nthLine);
+    _builder.append(_plus_8);
+    _builder.newLineIfNotEmpty();
+    String _nextLine_3 = this.getNextLine();
+    String _plus_9 = (_nextLine_3 + "BR ");
+    Long _get = this.subroutineLocation.get(procName);
+    String _plus_10 = (_plus_9 + _get);
+    _builder.append(_plus_10);
+    _builder.newLineIfNotEmpty();
+    String _nextLine_4 = this.getNextLine();
+    String _plus_11 = (_nextLine_4 + "SUB SP, SP, #");
+    String _plus_12 = (_plus_11 + subRoutine);
+    String _plus_13 = (_plus_12 + "size");
+    _builder.append(_plus_13);
+    _builder.newLineIfNotEmpty();
+    return _builder.toString();
+  }
+  
+  public CharSequence compileFuncDesignator(final function_designator designator, final String subRoutine) {
+    StringConcatenation _builder = new StringConcatenation();
+    int idx = 0;
+    _builder.newLineIfNotEmpty();
+    String funcName = designator.getName_function();
+    _builder.newLineIfNotEmpty();
+    List<Variable> parameters = Structures.getFunc(funcName).getParameters();
+    _builder.newLineIfNotEmpty();
+    {
+      EList<actual_parameter> _parameters = designator.getParameters().getParameters();
+      for(final actual_parameter parameter : _parameters) {
+        String parm_name = parameters.get(idx).getName();
+        _builder.newLineIfNotEmpty();
+        String register = this.getVariableRegister(parm_name, funcName);
+        _builder.newLineIfNotEmpty();
+        String _setTemporary = this.setTemporary("");
+        _builder.append(_setTemporary);
+        _builder.newLineIfNotEmpty();
+        String resultReg = this.compileRecExpression(parameter.getContent().getSimple(), subRoutine);
+        _builder.newLineIfNotEmpty();
+        _builder.append(this.temporary);
+        _builder.newLineIfNotEmpty();
+        String _nextLine = this.getNextLine();
+        String _plus = (_nextLine + "LD ");
+        String _plus_1 = (_plus + register);
+        String _plus_2 = (_plus_1 + ", ");
+        String _plus_3 = (_plus_2 + resultReg);
+        _builder.append(_plus_3);
+        _builder.newLineIfNotEmpty();
+        this.shieldBuffer(Integer.valueOf(idx = (idx + 1)));
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    String _nextLine_1 = this.getNextLine();
+    String _plus_4 = (_nextLine_1 + "ADD SP, SP, #");
+    String _plus_5 = (_plus_4 + subRoutine);
+    String _plus_6 = (_plus_5 + "size");
+    _builder.append(_plus_6);
+    _builder.newLineIfNotEmpty();
+    String _nextLine_2 = this.getNextLine();
+    String _plus_7 = (_nextLine_2 + "ST, *SP, #");
+    String _nthLine = this.getNthLine((this.currentLine + (2 * PascalGenerator.LINE_LENGTH)));
+    String _plus_8 = (_plus_7 + _nthLine);
+    _builder.append(_plus_8);
+    _builder.newLineIfNotEmpty();
+    String _nextLine_3 = this.getNextLine();
+    String _plus_9 = (_nextLine_3 + "BR ");
+    Long _get = this.subroutineLocation.get(funcName);
+    String _plus_10 = (_plus_9 + _get);
+    _builder.append(_plus_10);
+    _builder.newLineIfNotEmpty();
+    String _nextLine_4 = this.getNextLine();
+    String _plus_11 = (_nextLine_4 + "SUB SP, SP, #");
+    String _plus_12 = (_plus_11 + subRoutine);
+    String _plus_13 = (_plus_12 + "size");
+    _builder.append(_plus_13);
+    _builder.newLineIfNotEmpty();
+    String _nextLine_5 = this.getNextLine();
+    String _plus_14 = (_nextLine_5 + "LD ");
+    String _nextRegister = this.getNextRegister();
+    String _plus_15 = (_plus_14 + _nextRegister);
+    String _plus_16 = (_plus_15 + ", ");
+    String _plus_17 = (_plus_16 + funcName);
+    _builder.append(_plus_17);
+    _builder.newLineIfNotEmpty();
+    return _builder;
+  }
+  
+  public CharSequence compileAttribution(final block block, final String subRoutine) {
+    StringConcatenation _builder = new StringConcatenation();
+    EList<statement> comp_statement = block.getStatement().getSequence().getStatements();
+    _builder.newLineIfNotEmpty();
+    {
+      for(final statement statements : comp_statement) {
+        {
+          EList<unlabelled_statement> _statement = statements.getStatement();
+          for(final unlabelled_statement single_statement : _statement) {
+            {
+              simple_statement _simple = single_statement.getSimple();
+              boolean _tripleNotEquals = (_simple != null);
+              if (_tripleNotEquals) {
+                CharSequence _compileSimpleStatement = this.compileSimpleStatement(single_statement.getSimple(), subRoutine);
+                _builder.append(_compileSimpleStatement);
+                _builder.newLineIfNotEmpty();
+              }
+            }
+            {
+              structured_statement _structured = single_statement.getStructured();
+              boolean _tripleNotEquals_1 = (_structured != null);
+              if (_tripleNotEquals_1) {
+                CharSequence _compileStructuredStatement = this.compileStructuredStatement(single_statement.getStructured(), subRoutine);
+                _builder.append(_compileStructuredStatement);
+                _builder.newLineIfNotEmpty();
+              }
+            }
+          }
+        }
+      }
+    }
+    return _builder;
+  }
+  
+  public CharSequence compileStructuredStatement(final structured_statement statement, final String subRoutine) {
+    StringConcatenation _builder = new StringConcatenation();
+    {
+      conditional_statement _conditional_stat = statement.getConditional_stat();
+      boolean _tripleNotEquals = (_conditional_stat != null);
+      if (_tripleNotEquals) {
+        String _compileCase = this.compileCase(statement.getConditional_stat(), subRoutine);
+        _builder.append(_compileCase);
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    return _builder;
+  }
+  
+  public CharSequence compileSimpleStatement(final simple_statement statement, final String subRoutine) {
+    StringConcatenation _builder = new StringConcatenation();
+    {
+      if ((statement != null)) {
+        {
+          assignment_statement _assignment = statement.getAssignment();
+          boolean _tripleNotEquals = (_assignment != null);
+          if (_tripleNotEquals) {
+            CharSequence _compileAssignment = this.compileAssignment(statement.getAssignment(), subRoutine);
+            _builder.append(_compileAssignment);
+            _builder.newLineIfNotEmpty();
+          }
+        }
+        {
+          procedure_statement _procedure = statement.getProcedure();
+          boolean _tripleNotEquals_1 = (_procedure != null);
+          if (_tripleNotEquals_1) {
+            String _compileProcStatement = this.compileProcStatement(statement.getProcedure(), subRoutine);
+            _builder.append(_compileProcStatement);
+            _builder.newLineIfNotEmpty();
+          }
+        }
+      }
+    }
+    return _builder;
+  }
+  
+  public String setTemporary(final String content) {
+    return this.temporary = content;
+  }
+  
+  public CharSequence compileAssignment(final assignment_statement variable, final String subRoutine) {
+    StringConcatenation _builder = new StringConcatenation();
+    org.xtext.compiler.pascal.pascal.variable declared = variable.getDeclared_variable();
+    _builder.newLineIfNotEmpty();
+    String _setTemporary = this.setTemporary("");
+    _builder.append(_setTemporary);
+    _builder.newLineIfNotEmpty();
+    String resultReg = this.compileRecExpression(variable.getExpression().getSimple(), subRoutine);
+    _builder.newLineIfNotEmpty();
+    _builder.append(this.temporary);
+    _builder.newLineIfNotEmpty();
+    {
+      boolean _variableExists = this.variableExists(this.getVariableName(declared), subRoutine);
+      if (_variableExists) {
+        {
+          if ((IterableExtensions.isNullOrEmpty(declared.getIndice()) || (declared.getIndice() == null))) {
+            String varReg = this.getVariableRegister(this.getVariableName(declared), subRoutine);
+            _builder.newLineIfNotEmpty();
+            String _nextLine = this.getNextLine();
+            String _plus = (_nextLine + "LD ");
+            String _plus_1 = (_plus + varReg);
+            String _plus_2 = (_plus_1 + ", ");
+            String _plus_3 = (_plus_2 + resultReg);
+            _builder.append(_plus_3);
+            _builder.newLineIfNotEmpty();
+            String _nextLine_1 = this.getNextLine();
+            String _plus_4 = (_nextLine_1 + "ST ");
+            String _variableName = this.getVariableName(declared);
+            String _plus_5 = (_plus_4 + _variableName);
+            String _plus_6 = (_plus_5 + ", ");
+            String _plus_7 = (_plus_6 + varReg);
+            _builder.append(_plus_7);
+            _builder.newLineIfNotEmpty();
+          } else {
+            String _setTemporary_1 = this.setTemporary("");
+            _builder.append(_setTemporary_1);
+            _builder.newLineIfNotEmpty();
+            String offsetReg = this.compileOffset(declared, subRoutine);
+            _builder.append("\t\t\t\t");
+            _builder.newLineIfNotEmpty();
+            _builder.append(this.temporary);
+            _builder.newLineIfNotEmpty();
+            String _nextLine_2 = this.getNextLine();
+            String _plus_8 = (_nextLine_2 + "ST ");
+            String _variableName_1 = this.getVariableName(declared);
+            String _plus_9 = (_plus_8 + _variableName_1);
+            String _plus_10 = (_plus_9 + "(");
+            String _plus_11 = (_plus_10 + offsetReg);
+            String _plus_12 = (_plus_11 + ")");
+            String _plus_13 = (_plus_12 + ", ");
+            String _plus_14 = (_plus_13 + resultReg);
+            _builder.append(_plus_14);
+            _builder.append("\t\t\t\t");
+            _builder.newLineIfNotEmpty();
+          }
+        }
+      } else {
+        String _nextLine_3 = this.getNextLine();
+        String _plus_15 = (_nextLine_3 + "ST ");
+        String _name = this.updateRegisterBank(this.getVariableName(declared), subRoutine, resultReg).getName();
+        String _plus_16 = (_plus_15 + _name);
+        String _plus_17 = (_plus_16 + ", ");
+        String _plus_18 = (_plus_17 + resultReg);
+        _builder.append(_plus_18);
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    return _builder;
+  }
+  
+  public CharSequence compileFactorAsConstant(final factor factor) {
+    StringConcatenation _builder = new StringConcatenation();
+    unsigned_constant constant = factor.getConstant();
+    _builder.newLineIfNotEmpty();
+    {
+      unsigned_number _number = constant.getNumber();
+      boolean _tripleNotEquals = (_number != null);
+      if (_tripleNotEquals) {
+        String _nextLine = this.getNextLine();
+        String _plus = (_nextLine + "LD ");
+        String _nextRegister = this.getNextRegister();
+        String _plus_1 = (_plus + _nextRegister);
+        String _plus_2 = (_plus_1 + ", ");
+        String _string = constant.getNumber().getNumbers().toString();
+        String _plus_3 = (_plus_2 + _string);
+        _builder.append(_plus_3);
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    {
+      String _string_1 = constant.getString();
+      boolean _tripleNotEquals_1 = (_string_1 != null);
+      if (_tripleNotEquals_1) {
+        String _nextLine_1 = this.getNextLine();
+        String _plus_4 = (_nextLine_1 + "LD ");
+        String _nextRegister_1 = this.getNextRegister();
+        String _plus_5 = (_plus_4 + _nextRegister_1);
+        String _plus_6 = (_plus_5 + ", ");
+        String _plus_7 = (_plus_6 + "#\'");
+        String _string_2 = constant.getString();
+        String _plus_8 = (_plus_7 + _string_2);
+        String _plus_9 = (_plus_8 + "\'");
+        _builder.append(_plus_9);
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    return _builder;
+  }
+  
+  public CharSequence compileFactorAsBool(final factor factor) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _nextLine = this.getNextLine();
+    String _plus = (_nextLine + "LD ");
+    String _nextRegister = this.getNextRegister();
+    String _plus_1 = (_plus + _nextRegister);
+    String _plus_2 = (_plus_1 + ", ");
+    String _string = factor.getBool_factor().toString();
+    String _plus_3 = (_plus_2 + _string);
+    _builder.append(_plus_3);
+    _builder.newLineIfNotEmpty();
+    return _builder;
+  }
+  
+  public CharSequence compileFactorAsVariable(final factor factor, final String subRoutine) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _nextLine = this.getNextLine();
+    String _plus = (_nextLine + "LD ");
+    String _nextRegister = this.getNextRegister();
+    String _plus_1 = (_plus + _nextRegister);
+    String _plus_2 = (_plus_1 + ", ");
+    String _variableRegister = this.getVariableRegister(this.getVariableName(factor.getVariable()), subRoutine);
+    String _plus_3 = (_plus_2 + _variableRegister);
+    _builder.append(_plus_3);
+    _builder.newLineIfNotEmpty();
+    return _builder;
+  }
+  
+  public CharSequence compileFactorNotOp(final String register) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _nextLine = this.getNextLine();
+    String _plus = (_nextLine + "NOT ");
+    String _nextRegister = this.getNextRegister();
+    String _plus_1 = (_plus + _nextRegister);
+    String _plus_2 = (_plus_1 + ", ");
+    String _plus_3 = (_plus_2 + register);
+    _builder.append(_plus_3);
+    _builder.newLineIfNotEmpty();
+    return _builder;
+  }
+  
+  public CharSequence compileFactorWithSignal(final signed_factor factor) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _nextLine = this.getNextLine();
+    String _plus = (_nextLine + "LD ");
+    String _nextRegister = this.getNextRegister();
+    String _plus_1 = (_plus + _nextRegister);
+    String _plus_2 = (_plus_1 + ", ");
+    String _string = factor.getSignal().toString();
+    String _plus_3 = (_plus_2 + _string);
+    String _string_1 = factor.getFactor().getConstant().getNumber().getNumbers().toString();
+    String _plus_4 = (_plus_3 + _string_1);
+    _builder.append(_plus_4);
+    _builder.newLineIfNotEmpty();
+    return _builder;
+  }
+  
+  public CharSequence compileMULOperation(final String register, final int offset) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _nextLine = this.getNextLine();
+    String _plus = (_nextLine + "MUL ");
+    String _nextRegister = this.getNextRegister();
+    String _plus_1 = (_plus + _nextRegister);
+    String _plus_2 = (_plus_1 + ", ");
+    String _plus_3 = (_plus_2 + register);
+    String _plus_4 = (_plus_3 + ", ");
+    String _plus_5 = (_plus_4 + Integer.valueOf(offset));
+    _builder.append(_plus_5);
+    _builder.newLineIfNotEmpty();
+    return _builder;
+  }
+  
+  public CharSequence compileADDOperation(final String register1, final String register2) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _nextLine = this.getNextLine();
+    String _plus = (_nextLine + "ADD ");
+    String _nextRegister = this.getNextRegister();
+    String _plus_1 = (_plus + _nextRegister);
+    String _plus_2 = (_plus_1 + ", ");
+    String _plus_3 = (_plus_2 + register1);
+    String _plus_4 = (_plus_3 + ", ");
+    String _plus_5 = (_plus_4 + register2);
+    _builder.append(_plus_5);
+    _builder.newLineIfNotEmpty();
+    return _builder;
+  }
+  
+  public CharSequence compileLDOperation(final String register1) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _nextLine = this.getNextLine();
+    String _plus = (_nextLine + "LD ");
+    String _nextRegister = this.getNextRegister();
+    String _plus_1 = (_plus + _nextRegister);
+    String _plus_2 = (_plus_1 + ", ");
+    String _plus_3 = (_plus_2 + register1);
+    _builder.append(_plus_3);
+    _builder.newLineIfNotEmpty();
+    return _builder;
+  }
+  
+  public CharSequence compileArrayOffset(final String variable, final String registerOffset) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _nextLine = this.getNextLine();
+    String _plus = (_nextLine + "LD ");
+    String _nextRegister = this.getNextRegister();
+    String _plus_1 = (_plus + _nextRegister);
+    String _plus_2 = (_plus_1 + ", ");
+    String _plus_3 = (_plus_2 + variable);
+    String _plus_4 = (_plus_3 + "(");
+    String _plus_5 = (_plus_4 + registerOffset);
+    String _plus_6 = (_plus_5 + ")");
+    _builder.append(_plus_6);
+    _builder.newLineIfNotEmpty();
+    return _builder;
+  }
+  
+  public List<Integer> computeOffsetList(final ArrayList<Integer> dimensoes) {
+    ArrayList<Integer> deslocamento = new ArrayList<Integer>();
+    deslocamento.add(Integer.valueOf(8));
+    for (int i = 0; (i < (dimensoes.size() - 1)); i++) {
+      {
+        Integer _get = dimensoes.get(i);
+        Integer _get_1 = deslocamento.get(i);
+        int offset = ((_get).intValue() * (_get_1).intValue());
+        deslocamento.add(Integer.valueOf(offset));
+      }
+    }
+    Collections.reverse(deslocamento);
+    return deslocamento;
+  }
+  
+  public String compileOffset(final variable variableInst, final String subRoutine) {
+    List<Integer> dimensoes = Structures.getDimensions(variableInst.getVariable_id().toString());
+    List<Integer> deslocamento = this.computeOffsetList(((ArrayList<Integer>) dimensoes));
+    String registerResul = "";
+    String offsetRegister = "";
+    for (int i = 0; (i < ((Object[])Conversions.unwrapArray(variableInst.getIndice(), Object.class)).length); i++) {
+      {
+        String register_indice = this.compileRecExpression(variableInst.getIndice().get(i).getSimple(), subRoutine);
+        String _temporary = this.temporary;
+        CharSequence _compileMULOperation = this.compileMULOperation(register_indice, (deslocamento.get(i)).intValue());
+        this.temporary = (_temporary + _compileMULOperation);
+        registerResul = this.getCurrentRegister();
+        boolean _equals = offsetRegister.equals("");
+        if (_equals) {
+          String _temporary_1 = this.temporary;
+          CharSequence _compileLDOperation = this.compileLDOperation(registerResul);
+          this.temporary = (_temporary_1 + _compileLDOperation);
+        } else {
+          String _temporary_2 = this.temporary;
+          CharSequence _compileADDOperation = this.compileADDOperation(registerResul, offsetRegister);
+          this.temporary = (_temporary_2 + _compileADDOperation);
+        }
+        offsetRegister = this.getCurrentRegister();
+      }
+    }
+    return offsetRegister;
+  }
+  
+  public String compileArrayElement(final variable variableInst, final String subRoutine) {
+    String registerOffset = this.compileOffset(variableInst, subRoutine);
+    String _temporary = this.temporary;
+    CharSequence _compileArrayOffset = this.compileArrayOffset(variableInst.getVariable_id().toString(), registerOffset);
+    this.temporary = (_temporary + _compileArrayOffset);
+    return this.getCurrentRegister();
+  }
+  
+  public List<Integer> calculateDimensions(final array_type array) {
+    ArrayList<Integer> listDim = new ArrayList<Integer>();
+    EList<index_type> listIndx = array.getType_l().getIndexes();
+    for (final index_type idx : listIndx) {
+      EList<subrange_type> _subrange_type = idx.getContent().getSubrange_type();
+      for (final subrange_type subrange : _subrange_type) {
+        {
+          int first = Integer.parseInt(subrange.getConstantInit().getUns_number().getNumbers().toString());
+          int last = Integer.parseInt(subrange.getConstantFinal().getUns_number().getNumbers().toString());
+          listDim.add(Integer.valueOf(this.calculateLength(Integer.valueOf(first), Integer.valueOf(last))));
+        }
+      }
+    }
+    Collections.reverse(listDim);
+    return listDim;
+  }
+  
+  public int calculateLength(final Integer first, final Integer last) {
+    int diff = ((last).intValue() - (first).intValue());
+    diff = Math.abs(diff);
+    return diff;
+  }
+  
+  public String compileFactor(final factor factorInst, final String subRoutine) {
+    unsigned_constant _constant = factorInst.getConstant();
+    boolean _tripleNotEquals = (_constant != null);
+    if (_tripleNotEquals) {
+      String _temporary = this.temporary;
+      CharSequence _compileFactorAsConstant = this.compileFactorAsConstant(factorInst);
+      this.temporary = (_temporary + _compileFactorAsConstant);
+      return this.getCurrentRegister();
+    } else {
+      String _bool_factor = factorInst.getBool_factor();
+      boolean _tripleNotEquals_1 = (_bool_factor != null);
+      if (_tripleNotEquals_1) {
+        String _temporary_1 = this.temporary;
+        CharSequence _compileFactorAsBool = this.compileFactorAsBool(factorInst);
+        this.temporary = (_temporary_1 + _compileFactorAsBool);
+        return this.getCurrentRegister();
+      } else {
+        variable _variable = factorInst.getVariable();
+        boolean _tripleNotEquals_2 = (_variable != null);
+        if (_tripleNotEquals_2) {
+          boolean _isNullOrEmpty = IterableExtensions.isNullOrEmpty(factorInst.getVariable().getIndice());
+          if (_isNullOrEmpty) {
+            return this.getVariableRegister(this.getVariableName(factorInst.getVariable()), subRoutine);
+          } else {
+            return this.compileArrayElement(factorInst.getVariable(), subRoutine);
+          }
+        } else {
+          function_designator _function = factorInst.getFunction();
+          boolean _tripleNotEquals_3 = (_function != null);
+          if (_tripleNotEquals_3) {
+            String _temporary_2 = this.temporary;
+            CharSequence _compileFuncDesignator = this.compileFuncDesignator(factorInst.getFunction(), subRoutine);
+            this.temporary = (_temporary_2 + _compileFuncDesignator);
+            return this.getCurrentRegister();
+          } else {
+            factor _not_factor = factorInst.getNot_factor();
+            boolean _tripleNotEquals_4 = (_not_factor != null);
+            if (_tripleNotEquals_4) {
+              String register = this.compileFactor(factorInst.getNot_factor(), subRoutine);
+              String _temporary_3 = this.temporary;
+              CharSequence _compileFactorNotOp = this.compileFactorNotOp(register);
+              this.temporary = (_temporary_3 + _compileFactorNotOp);
+              return this.getCurrentRegister();
+            } else {
+              expression _expression = factorInst.getExpression();
+              boolean _tripleNotEquals_5 = (_expression != null);
+              if (_tripleNotEquals_5) {
+                String register_1 = this.compileRecExpression(factorInst.getExpression().getSimple(), subRoutine);
+                return register_1;
+              }
+            }
+          }
+        }
+      }
+    }
+    return null;
+  }
+  
+  public String compileSignedFactor(final signed_factor factor, final String subRoutine) {
+    String _signal = factor.getSignal();
+    boolean _tripleNotEquals = (_signal != null);
+    if (_tripleNotEquals) {
+      String _temporary = this.temporary;
+      CharSequence _compileFactorWithSignal = this.compileFactorWithSignal(factor);
+      this.temporary = (_temporary + _compileFactorWithSignal);
+      return this.getCurrentRegister();
+    } else {
+      return this.compileFactor(factor.getFactor(), subRoutine);
+    }
+  }
+  
+  public String compileRecTerm(final term term, final String subRoutine) {
+    if ((StringExtensions.isNullOrEmpty(term.getOperator()) || (term.getTerm2() == null))) {
+      String register1 = this.compileSignedFactor(term.getFactor(), subRoutine);
+      return register1;
+    } else {
+      String register2 = this.compileRecTerm(term.getTerm2(), subRoutine);
+      String register1_1 = this.compileSignedFactor(term.getFactor(), subRoutine);
+      String mul_op = term.getOperator().toString();
+      String _temporary = this.temporary;
+      String _compileOperation = this.compileOperation(register1_1, register2, mul_op);
+      this.temporary = (_temporary + _compileOperation);
+      return this.getCurrentRegister();
+    }
+  }
+  
+  public String compileRecExpression(final simple_expression expression, final String subRoutine) {
+    if ((StringExtensions.isNullOrEmpty(expression.getOperator()) || (expression.getExpression() == null))) {
+      return this.compileRecTerm(expression.getTerm_exp(), subRoutine);
+    } else {
+      String register2 = this.compileRecExpression(expression.getExpression(), subRoutine);
+      String register1 = this.compileRecTerm(expression.getTerm_exp(), subRoutine);
+      String addtv_op = expression.getOperator().toString();
+      String _temporary = this.temporary;
+      String _compileOperation = this.compileOperation(register1, register2, addtv_op);
+      this.temporary = (_temporary + _compileOperation);
+      return this.getCurrentRegister();
+    }
+  }
+  
+  public String compileCaseStatements(final statement statement, final String subRoutine) {
+    StringConcatenation _builder = new StringConcatenation();
+    {
+      EList<unlabelled_statement> _statement = statement.getStatement();
+      for(final unlabelled_statement u_statement : _statement) {
+        {
+          simple_statement _simple = u_statement.getSimple();
+          boolean _tripleNotEquals = (_simple != null);
+          if (_tripleNotEquals) {
+            CharSequence _compileSimpleStatement = this.compileSimpleStatement(u_statement.getSimple(), subRoutine);
+            _builder.append(_compileSimpleStatement);
+            _builder.newLineIfNotEmpty();
+          }
+        }
+      }
+    }
+    return _builder.toString();
+  }
+  
+  public String compileCaseForTypes(final EList<constant> constants, final String expRegister) {
+    StringConcatenation _builder = new StringConcatenation();
+    {
+      for(final constant const_ : constants) {
+        int _indexOf = constants.indexOf(const_);
+        int _size = constants.size();
+        int _minus = (_size - 1);
+        boolean hasMoreConsts = (_indexOf < _minus);
+        _builder.newLineIfNotEmpty();
+        {
+          unsigned_number _uns_number = const_.getUns_number();
+          boolean _tripleNotEquals = (_uns_number != null);
+          if (_tripleNotEquals) {
+            String _nextLine = this.getNextLine();
+            String _plus = (_nextLine + "SUB ");
+            String _nextRegister = this.getNextRegister();
+            String _plus_1 = (_plus + _nextRegister);
+            String _plus_2 = (_plus_1 + ", ");
+            String _plus_3 = (_plus_2 + expRegister);
+            String _plus_4 = (_plus_3 + ", ");
+            String _numberContent = this.getNumberContent(const_.getUns_number());
+            String _plus_5 = (_plus_4 + _numberContent);
+            _builder.append(_plus_5);
+            _builder.newLineIfNotEmpty();
+            {
+              if (hasMoreConsts) {
+                String _nextLine_1 = this.getNextLine();
+                String _plus_6 = (_nextLine_1 + "BEZ ");
+                String _currentRegister = this.getCurrentRegister();
+                String _plus_7 = (_plus_6 + _currentRegister);
+                String _plus_8 = (_plus_7 + ", ");
+                String _plus_9 = (_plus_8 + "B_EQUALS");
+                _builder.append(_plus_9);
+                _builder.newLineIfNotEmpty();
+              } else {
+                String _nextLine_2 = this.getNextLine();
+                String _plus_10 = (_nextLine_2 + "BNEZ ");
+                String _currentRegister_1 = this.getCurrentRegister();
+                String _plus_11 = (_plus_10 + _currentRegister_1);
+                String _plus_12 = (_plus_11 + ", ");
+                String _plus_13 = (_plus_12 + "%s");
+                _builder.append(_plus_13);
+                _builder.newLineIfNotEmpty();
+              }
+            }
+          } else {
+            unsigned_number _sig_number = const_.getSig_number();
+            boolean _tripleNotEquals_1 = (_sig_number != null);
+            if (_tripleNotEquals_1) {
+              String _nextLine_3 = this.getNextLine();
+              String _plus_14 = (_nextLine_3 + "SUB ");
+              String _nextRegister_1 = this.getNextRegister();
+              String _plus_15 = (_plus_14 + _nextRegister_1);
+              String _plus_16 = (_plus_15 + ", ");
+              String _plus_17 = (_plus_16 + expRegister);
+              String _plus_18 = (_plus_17 + ", ");
+              String _numberContent_1 = this.getNumberContent(const_.getSig_number());
+              String _plus_19 = (_plus_18 + _numberContent_1);
+              _builder.append(_plus_19);
+              _builder.newLineIfNotEmpty();
+              {
+                if (hasMoreConsts) {
+                  String _nextLine_4 = this.getNextLine();
+                  String _plus_20 = (_nextLine_4 + "BEZ ");
+                  String _currentRegister_2 = this.getCurrentRegister();
+                  String _plus_21 = (_plus_20 + _currentRegister_2);
+                  String _plus_22 = (_plus_21 + ", ");
+                  String _plus_23 = (_plus_22 + "B_EQUALS");
+                  _builder.append(_plus_23);
+                  _builder.newLineIfNotEmpty();
+                } else {
+                  String _nextLine_5 = this.getNextLine();
+                  String _plus_24 = (_nextLine_5 + "BNEZ ");
+                  String _currentRegister_3 = this.getCurrentRegister();
+                  String _plus_25 = (_plus_24 + _currentRegister_3);
+                  String _plus_26 = (_plus_25 + ", ");
+                  String _plus_27 = (_plus_26 + "%s");
+                  _builder.append(_plus_27);
+                  _builder.newLineIfNotEmpty();
+                }
+              }
+            } else {
+              boolean _isNullOrEmpty = StringExtensions.isNullOrEmpty(const_.getString());
+              boolean _not = (!_isNullOrEmpty);
+              if (_not) {
+                String _nextLine_6 = this.getNextLine();
+                String _plus_28 = (_nextLine_6 + "LD ");
+                String _nextRegister_2 = this.getNextRegister();
+                String _plus_29 = (_plus_28 + _nextRegister_2);
+                String _plus_30 = (_plus_29 + ", ");
+                String _plus_31 = (_plus_30 + "#\'");
+                String _string = const_.getString();
+                String _plus_32 = (_plus_31 + _string);
+                String _plus_33 = (_plus_32 + "\'");
+                _builder.append(_plus_33);
+                _builder.newLineIfNotEmpty();
+                {
+                  if (hasMoreConsts) {
+                    String _nextLine_7 = this.getNextLine();
+                    String _plus_34 = (_nextLine_7 + "BEQ ");
+                    String _plus_35 = (_plus_34 + expRegister);
+                    String _plus_36 = (_plus_35 + ", ");
+                    String _currentRegister_4 = this.getCurrentRegister();
+                    String _plus_37 = (_plus_36 + _currentRegister_4);
+                    String _plus_38 = (_plus_37 + ", ");
+                    String _plus_39 = (_plus_38 + "B_EQUALS");
+                    _builder.append(_plus_39);
+                    _builder.newLineIfNotEmpty();
+                  } else {
+                    String _nextLine_8 = this.getNextLine();
+                    String _plus_40 = (_nextLine_8 + "BNE ");
+                    String _plus_41 = (_plus_40 + expRegister);
+                    String _plus_42 = (_plus_41 + ", ");
+                    String _currentRegister_5 = this.getCurrentRegister();
+                    String _plus_43 = (_plus_42 + _currentRegister_5);
+                    String _plus_44 = (_plus_43 + ", ");
+                    String _plus_45 = (_plus_44 + "%s");
+                    _builder.append(_plus_45);
+                    _builder.newLineIfNotEmpty();
+                  }
+                }
+              } else {
+                boolean _isNullOrEmpty_1 = StringExtensions.isNullOrEmpty(const_.getBooltype());
+                boolean _not_1 = (!_isNullOrEmpty_1);
+                if (_not_1) {
+                  String _nextLine_9 = this.getNextLine();
+                  String _plus_46 = (_nextLine_9 + "LD ");
+                  String _nextRegister_3 = this.getNextRegister();
+                  String _plus_47 = (_plus_46 + _nextRegister_3);
+                  String _plus_48 = (_plus_47 + ", ");
+                  String _booltype = const_.getBooltype();
+                  String _plus_49 = (_plus_48 + _booltype);
+                  _builder.append(_plus_49);
+                  _builder.newLineIfNotEmpty();
+                  {
+                    if (hasMoreConsts) {
+                      String _nextLine_10 = this.getNextLine();
+                      String _plus_50 = (_nextLine_10 + "BEQ ");
+                      String _plus_51 = (_plus_50 + expRegister);
+                      String _plus_52 = (_plus_51 + ", ");
+                      String _currentRegister_6 = this.getCurrentRegister();
+                      String _plus_53 = (_plus_52 + _currentRegister_6);
+                      String _plus_54 = (_plus_53 + ", ");
+                      String _plus_55 = (_plus_54 + "B_EQUALS");
+                      _builder.append(_plus_55);
+                      _builder.newLineIfNotEmpty();
+                    } else {
+                      String _nextLine_11 = this.getNextLine();
+                      String _plus_56 = (_nextLine_11 + "BNE ");
+                      String _plus_57 = (_plus_56 + expRegister);
+                      String _plus_58 = (_plus_57 + ", ");
+                      String _currentRegister_7 = this.getCurrentRegister();
+                      String _plus_59 = (_plus_58 + _currentRegister_7);
+                      String _plus_60 = (_plus_59 + ", ");
+                      String _plus_61 = (_plus_60 + "%s");
+                      _builder.append(_plus_61);
+                      _builder.newLineIfNotEmpty();
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return _builder.toString();
+  }
+  
+  public String compileCaseForBranch(final case_list_element element, final String expRegister, final String subRoutine) {
+    StringConcatenation _builder = new StringConcatenation();
+    EList<constant> constants = element.getConsts().getConstants();
+    _builder.newLineIfNotEmpty();
+    String _replace = this.compileCaseForTypes(constants, expRegister).replace("B_EQUALS", this.getValueOfNextLine());
+    _builder.append(_replace);
+    _builder.newLineIfNotEmpty();
+    String _compileCaseStatements = this.compileCaseStatements(element.getCase_statement(), subRoutine);
+    _builder.append(_compileCaseStatements);
+    _builder.newLineIfNotEmpty();
+    String _nextLine = this.getNextLine();
+    String _plus = (_nextLine + "BR END_CASE");
+    _builder.append(_plus);
+    _builder.newLineIfNotEmpty();
+    return _builder.toString();
+  }
+  
+  public String compileAllCases(final case_statement case_statement, final String expRegister, final String subRoutine) {
+    StringConcatenation _builder = new StringConcatenation();
+    {
+      EList<case_list_element> _case_list = case_statement.getCase_list();
+      for(final case_list_element element : _case_list) {
+        String _format = String.format(this.compileCaseForBranch(element, expRegister, subRoutine), this.getValueOfNextLine());
+        _builder.append(_format);
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    _builder.newLine();
+    {
+      statements _case_statements = case_statement.getCase_statements();
+      boolean _tripleNotEquals = (_case_statements != null);
+      if (_tripleNotEquals) {
+        {
+          EList<statement> _statements = case_statement.getCase_statements().getStatements();
+          for(final statement statement : _statements) {
+            String _compileCaseStatements = this.compileCaseStatements(statement, subRoutine);
+            _builder.append(_compileCaseStatements);
+            _builder.newLineIfNotEmpty();
+          }
+        }
+      }
+    }
+    return _builder.toString();
+  }
+  
+  public String compileCase(final conditional_statement conditional_statement, final String subRoutine) {
+    StringConcatenation _builder = new StringConcatenation();
+    case_statement case_statement = conditional_statement.getCond_statements();
+    _builder.newLineIfNotEmpty();
+    expression expression = case_statement.getExp();
+    _builder.newLineIfNotEmpty();
+    String _setTemporary = this.setTemporary("");
+    _builder.append(_setTemporary);
+    _builder.newLineIfNotEmpty();
+    String resultingReg = this.compileRecExpression(expression.getSimple(), subRoutine);
+    _builder.newLineIfNotEmpty();
+    String expRegister = this.getNextRegister();
+    _builder.newLineIfNotEmpty();
+    _builder.append(this.temporary);
+    _builder.newLineIfNotEmpty();
+    String _nextLine = this.getNextLine();
+    String _plus = (_nextLine + "LD ");
+    String _plus_1 = (_plus + expRegister);
+    String _plus_2 = (_plus_1 + ", ");
+    String _plus_3 = (_plus_2 + resultingReg);
+    _builder.append(_plus_3);
+    _builder.newLineIfNotEmpty();
+    String _replace = this.compileAllCases(case_statement, expRegister, subRoutine).replace("END_CASE", this.getValueOfNextLine());
+    _builder.append(_replace);
+    _builder.newLineIfNotEmpty();
+    return _builder.toString();
+  }
+  
+  public String compileOperation(final String reg1, final String reg2, final String operator) {
+    StringConcatenation _builder = new StringConcatenation();
+    {
+      boolean _equals = Objects.equal(operator, "+");
+      if (_equals) {
+        String _nextLine = this.getNextLine();
+        String _plus = (_nextLine + "ADD ");
+        String _nextRegister = this.getNextRegister();
+        String _plus_1 = (_plus + _nextRegister);
+        String _plus_2 = (_plus_1 + ", ");
+        String _plus_3 = (_plus_2 + reg1);
+        String _plus_4 = (_plus_3 + ", ");
+        String _plus_5 = (_plus_4 + reg2);
+        _builder.append(_plus_5);
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    {
+      boolean _equals_1 = Objects.equal(operator, "-");
+      if (_equals_1) {
+        String _nextLine_1 = this.getNextLine();
+        String _plus_6 = (_nextLine_1 + "MINUS ");
+        String _nextRegister_1 = this.getNextRegister();
+        String _plus_7 = (_plus_6 + _nextRegister_1);
+        String _plus_8 = (_plus_7 + ", ");
+        String _plus_9 = (_plus_8 + reg1);
+        String _plus_10 = (_plus_9 + ", ");
+        String _plus_11 = (_plus_10 + reg2);
+        _builder.append(_plus_11);
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    {
+      boolean _equalsIgnoreCase = operator.equalsIgnoreCase("OR");
+      if (_equalsIgnoreCase) {
+        String _nextLine_2 = this.getNextLine();
+        String _plus_12 = (_nextLine_2 + "OR ");
+        String _nextRegister_2 = this.getNextRegister();
+        String _plus_13 = (_plus_12 + _nextRegister_2);
+        String _plus_14 = (_plus_13 + ", ");
+        String _plus_15 = (_plus_14 + reg1);
+        String _plus_16 = (_plus_15 + ", ");
+        String _plus_17 = (_plus_16 + reg2);
+        _builder.append(_plus_17);
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    {
+      boolean _equalsIgnoreCase_1 = operator.equalsIgnoreCase("AND");
+      if (_equalsIgnoreCase_1) {
+        String _nextLine_3 = this.getNextLine();
+        String _plus_18 = (_nextLine_3 + "AND ");
+        String _nextRegister_3 = this.getNextRegister();
+        String _plus_19 = (_plus_18 + _nextRegister_3);
+        String _plus_20 = (_plus_19 + ", ");
+        String _plus_21 = (_plus_20 + reg1);
+        String _plus_22 = (_plus_21 + ", ");
+        String _plus_23 = (_plus_22 + reg2);
+        _builder.append(_plus_23);
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    {
+      boolean _equals_2 = Objects.equal(operator, "*");
+      if (_equals_2) {
+        String _nextLine_4 = this.getNextLine();
+        String _plus_24 = (_nextLine_4 + "MUL ");
+        String _nextRegister_4 = this.getNextRegister();
+        String _plus_25 = (_plus_24 + _nextRegister_4);
+        String _plus_26 = (_plus_25 + ", ");
+        String _plus_27 = (_plus_26 + reg1);
+        String _plus_28 = (_plus_27 + ", ");
+        String _plus_29 = (_plus_28 + reg2);
+        _builder.append(_plus_29);
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    {
+      boolean _equals_3 = Objects.equal(operator, "/");
+      if (_equals_3) {
+        String _nextLine_5 = this.getNextLine();
+        String _plus_30 = (_nextLine_5 + "DIV ");
+        String _nextRegister_5 = this.getNextRegister();
+        String _plus_31 = (_plus_30 + _nextRegister_5);
+        String _plus_32 = (_plus_31 + ", ");
+        String _plus_33 = (_plus_32 + reg1);
+        String _plus_34 = (_plus_33 + ", ");
+        String _plus_35 = (_plus_34 + reg2);
+        _builder.append(_plus_35);
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    return _builder.toString();
+  }
+  
+  public String getVariableName(final variable varbl) {
+    Object _xifexpression = null;
+    if ((varbl.getExpression().isEmpty() && varbl.getNames_exp().isEmpty())) {
+      return varbl.getVariable_id();
+    } else {
+      _xifexpression = null;
+    }
+    return ((String)_xifexpression);
+  }
+  
+  public String getNumberContent(final unsigned_number number) {
+    String output = "";
+    String _numbers = number.getNumbers();
+    boolean _tripleNotEquals = (_numbers != null);
+    if (_tripleNotEquals) {
+      String _output = output;
+      String _numbers_1 = number.getNumbers();
+      output = (_output + _numbers_1);
+    }
+    return output;
+  }
+  
   @Override
   public void doGenerate(final Resource resource, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
+    Iterable<program> _filter = Iterables.<program>filter(IteratorExtensions.<EObject>toIterable(resource.getAllContents()), program.class);
+    for (final program p : _filter) {
+      {
+        this.currentRegister = 0;
+        this.currentLine = 0;
+        this.temporary = "";
+        HashMap<AddressVariable, String> _hashMap = new HashMap<AddressVariable, String>();
+        this.registerBank = _hashMap;
+        HashMap<String, Long> _hashMap_1 = new HashMap<String, Long>();
+        this.subroutineLocation = _hashMap_1;
+        fsa.deleteFile("output.asm");
+        fsa.generateFile("output.asm", this.compile(p.getBlock()));
+      }
+    }
   }
 }

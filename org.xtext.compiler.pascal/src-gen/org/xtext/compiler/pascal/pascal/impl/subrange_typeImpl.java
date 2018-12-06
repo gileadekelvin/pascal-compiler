@@ -3,19 +3,14 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
-import java.util.Collection;
-
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.constant;
@@ -29,7 +24,8 @@ import org.xtext.compiler.pascal.pascal.subrange_type;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.subrange_typeImpl#getConstants <em>Constants</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.subrange_typeImpl#getConstantInit <em>Constant Init</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.subrange_typeImpl#getConstantFinal <em>Constant Final</em>}</li>
  * </ul>
  *
  * @generated
@@ -37,14 +33,24 @@ import org.xtext.compiler.pascal.pascal.subrange_type;
 public class subrange_typeImpl extends MinimalEObjectImpl.Container implements subrange_type
 {
   /**
-   * The cached value of the '{@link #getConstants() <em>Constants</em>}' containment reference list.
+   * The cached value of the '{@link #getConstantInit() <em>Constant Init</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getConstants()
+   * @see #getConstantInit()
    * @generated
    * @ordered
    */
-  protected EList<constant> constants;
+  protected constant constantInit;
+
+  /**
+   * The cached value of the '{@link #getConstantFinal() <em>Constant Final</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getConstantFinal()
+   * @generated
+   * @ordered
+   */
+  protected constant constantFinal;
 
   /**
    * <!-- begin-user-doc -->
@@ -72,13 +78,95 @@ public class subrange_typeImpl extends MinimalEObjectImpl.Container implements s
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<constant> getConstants()
+  public constant getConstantInit()
   {
-    if (constants == null)
+    return constantInit;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetConstantInit(constant newConstantInit, NotificationChain msgs)
+  {
+    constant oldConstantInit = constantInit;
+    constantInit = newConstantInit;
+    if (eNotificationRequired())
     {
-      constants = new EObjectContainmentEList<constant>(constant.class, this, PascalPackage.SUBRANGE_TYPE__CONSTANTS);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.SUBRANGE_TYPE__CONSTANT_INIT, oldConstantInit, newConstantInit);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
-    return constants;
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setConstantInit(constant newConstantInit)
+  {
+    if (newConstantInit != constantInit)
+    {
+      NotificationChain msgs = null;
+      if (constantInit != null)
+        msgs = ((InternalEObject)constantInit).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.SUBRANGE_TYPE__CONSTANT_INIT, null, msgs);
+      if (newConstantInit != null)
+        msgs = ((InternalEObject)newConstantInit).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.SUBRANGE_TYPE__CONSTANT_INIT, null, msgs);
+      msgs = basicSetConstantInit(newConstantInit, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.SUBRANGE_TYPE__CONSTANT_INIT, newConstantInit, newConstantInit));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public constant getConstantFinal()
+  {
+    return constantFinal;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetConstantFinal(constant newConstantFinal, NotificationChain msgs)
+  {
+    constant oldConstantFinal = constantFinal;
+    constantFinal = newConstantFinal;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.SUBRANGE_TYPE__CONSTANT_FINAL, oldConstantFinal, newConstantFinal);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setConstantFinal(constant newConstantFinal)
+  {
+    if (newConstantFinal != constantFinal)
+    {
+      NotificationChain msgs = null;
+      if (constantFinal != null)
+        msgs = ((InternalEObject)constantFinal).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.SUBRANGE_TYPE__CONSTANT_FINAL, null, msgs);
+      if (newConstantFinal != null)
+        msgs = ((InternalEObject)newConstantFinal).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.SUBRANGE_TYPE__CONSTANT_FINAL, null, msgs);
+      msgs = basicSetConstantFinal(newConstantFinal, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.SUBRANGE_TYPE__CONSTANT_FINAL, newConstantFinal, newConstantFinal));
   }
 
   /**
@@ -91,8 +179,10 @@ public class subrange_typeImpl extends MinimalEObjectImpl.Container implements s
   {
     switch (featureID)
     {
-      case PascalPackage.SUBRANGE_TYPE__CONSTANTS:
-        return ((InternalEList<?>)getConstants()).basicRemove(otherEnd, msgs);
+      case PascalPackage.SUBRANGE_TYPE__CONSTANT_INIT:
+        return basicSetConstantInit(null, msgs);
+      case PascalPackage.SUBRANGE_TYPE__CONSTANT_FINAL:
+        return basicSetConstantFinal(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -107,8 +197,10 @@ public class subrange_typeImpl extends MinimalEObjectImpl.Container implements s
   {
     switch (featureID)
     {
-      case PascalPackage.SUBRANGE_TYPE__CONSTANTS:
-        return getConstants();
+      case PascalPackage.SUBRANGE_TYPE__CONSTANT_INIT:
+        return getConstantInit();
+      case PascalPackage.SUBRANGE_TYPE__CONSTANT_FINAL:
+        return getConstantFinal();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -118,15 +210,16 @@ public class subrange_typeImpl extends MinimalEObjectImpl.Container implements s
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case PascalPackage.SUBRANGE_TYPE__CONSTANTS:
-        getConstants().clear();
-        getConstants().addAll((Collection<? extends constant>)newValue);
+      case PascalPackage.SUBRANGE_TYPE__CONSTANT_INIT:
+        setConstantInit((constant)newValue);
+        return;
+      case PascalPackage.SUBRANGE_TYPE__CONSTANT_FINAL:
+        setConstantFinal((constant)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -142,8 +235,11 @@ public class subrange_typeImpl extends MinimalEObjectImpl.Container implements s
   {
     switch (featureID)
     {
-      case PascalPackage.SUBRANGE_TYPE__CONSTANTS:
-        getConstants().clear();
+      case PascalPackage.SUBRANGE_TYPE__CONSTANT_INIT:
+        setConstantInit((constant)null);
+        return;
+      case PascalPackage.SUBRANGE_TYPE__CONSTANT_FINAL:
+        setConstantFinal((constant)null);
         return;
     }
     super.eUnset(featureID);
@@ -159,8 +255,10 @@ public class subrange_typeImpl extends MinimalEObjectImpl.Container implements s
   {
     switch (featureID)
     {
-      case PascalPackage.SUBRANGE_TYPE__CONSTANTS:
-        return constants != null && !constants.isEmpty();
+      case PascalPackage.SUBRANGE_TYPE__CONSTANT_INIT:
+        return constantInit != null;
+      case PascalPackage.SUBRANGE_TYPE__CONSTANT_FINAL:
+        return constantFinal != null;
     }
     return super.eIsSet(featureID);
   }

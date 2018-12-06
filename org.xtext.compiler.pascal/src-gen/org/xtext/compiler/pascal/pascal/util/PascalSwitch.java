@@ -98,11 +98,13 @@ public class PascalSwitch<T> extends Switch<T>
       {
         identifier_list identifier_list = (identifier_list)theEObject;
         T result = caseidentifier_list(identifier_list);
-        if (result == null) result = casevariable_declaration(identifier_list);
-        if (result == null) result = casescalar_type(identifier_list);
-        if (result == null) result = caseparameter_group(identifier_list);
-        if (result == null) result = caseformal_parameter_section(identifier_list);
-        if (result == null) result = caseformal_parameter_list(identifier_list);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.IDENTIFIER:
+      {
+        identifier identifier = (identifier)theEObject;
+        T result = caseidentifier(identifier);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -132,6 +134,20 @@ public class PascalSwitch<T> extends Switch<T>
         constant constant = (constant)theEObject;
         T result = caseconstant(constant);
         if (result == null) result = caseconstant_definition(constant);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.TYPE_DEFINITION_PART:
+      {
+        type_definition_part type_definition_part = (type_definition_part)theEObject;
+        T result = casetype_definition_part(type_definition_part);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.TYPE_DEFINITION:
+      {
+        type_definition type_definition = (type_definition)theEObject;
+        T result = casetype_definition(type_definition);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -177,13 +193,6 @@ public class PascalSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case PascalPackage.LABEL:
-      {
-        label label = (label)theEObject;
-        T result = caselabel(label);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       case PascalPackage.SIMPLE_STATEMENT:
       {
         simple_statement simple_statement = (simple_statement)theEObject;
@@ -209,8 +218,6 @@ public class PascalSwitch<T> extends Switch<T>
       {
         expression expression = (expression)theEObject;
         T result = caseexpression(expression);
-        if (result == null) result = caseactual_parameter(expression);
-        if (result == null) result = caseparameter_list(expression);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -242,32 +249,11 @@ public class PascalSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case PascalPackage.SET:
-      {
-        set set = (set)theEObject;
-        T result = caseset(set);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case PascalPackage.ELEMENT_LIST:
-      {
-        elementList elementList = (elementList)theEObject;
-        T result = caseelementList(elementList);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case PascalPackage.ELEMENT:
-      {
-        element element = (element)theEObject;
-        T result = caseelement(element);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       case PascalPackage.TYPE:
       {
         type type = (type)theEObject;
         T result = casetype(type);
-        if (result == null) result = casetype_definition(type);
+        if (result == null) result = casecomponent_type(type);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -278,17 +264,59 @@ public class PascalSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case PascalPackage.SCALAR_TYPE:
-      {
-        scalar_type scalar_type = (scalar_type)theEObject;
-        T result = casescalar_type(scalar_type);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       case PascalPackage.SUBRANGE_TYPE:
       {
         subrange_type subrange_type = (subrange_type)theEObject;
         T result = casesubrange_type(subrange_type);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.STRUCTURED_TYPE:
+      {
+        structured_type structured_type = (structured_type)theEObject;
+        T result = casestructured_type(structured_type);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.UNPACKED_STRUCTURED_TYPE:
+      {
+        unpacked_structured_type unpacked_structured_type = (unpacked_structured_type)theEObject;
+        T result = caseunpacked_structured_type(unpacked_structured_type);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.DYNAMIC_ARRAY_TYPE:
+      {
+        dynamic_array_type dynamic_array_type = (dynamic_array_type)theEObject;
+        T result = casedynamic_array_type(dynamic_array_type);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.ARRAY_TYPE:
+      {
+        array_type array_type = (array_type)theEObject;
+        T result = casearray_type(array_type);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.TYPE_LIST:
+      {
+        type_list type_list = (type_list)theEObject;
+        T result = casetype_list(type_list);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.INDEX_TYPE:
+      {
+        index_type index_type = (index_type)theEObject;
+        T result = caseindex_type(index_type);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.COMPONENT_TYPE:
+      {
+        component_type component_type = (component_type)theEObject;
+        T result = casecomponent_type(component_type);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -297,13 +325,6 @@ public class PascalSwitch<T> extends Switch<T>
         type_identifier type_identifier = (type_identifier)theEObject;
         T result = casetype_identifier(type_identifier);
         if (result == null) result = caseresult_type(type_identifier);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case PascalPackage.STRING_TYPE:
-      {
-        string_type string_type = (string_type)theEObject;
-        T result = casestring_type(string_type);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -318,17 +339,6 @@ public class PascalSwitch<T> extends Switch<T>
       {
         unsigned_number unsigned_number = (unsigned_number)theEObject;
         T result = caseunsigned_number(unsigned_number);
-        if (result == null) result = caseconstant(unsigned_number);
-        if (result == null) result = caseconstant_definition(unsigned_number);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case PascalPackage.CONSTANT_CHR:
-      {
-        constant_chr constant_chr = (constant_chr)theEObject;
-        T result = caseconstant_chr(constant_chr);
-        if (result == null) result = caseconstant(constant_chr);
-        if (result == null) result = caseconstant_definition(constant_chr);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -350,7 +360,41 @@ public class PascalSwitch<T> extends Switch<T>
       {
         actual_parameter actual_parameter = (actual_parameter)theEObject;
         T result = caseactual_parameter(actual_parameter);
-        if (result == null) result = caseparameter_list(actual_parameter);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.STRUCTURED_STATEMENT:
+      {
+        structured_statement structured_statement = (structured_statement)theEObject;
+        T result = casestructured_statement(structured_statement);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.CONDITIONAL_STATEMENT:
+      {
+        conditional_statement conditional_statement = (conditional_statement)theEObject;
+        T result = caseconditional_statement(conditional_statement);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.CASE_STATEMENT:
+      {
+        case_statement case_statement = (case_statement)theEObject;
+        T result = casecase_statement(case_statement);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.CASE_LIST_ELEMENT:
+      {
+        case_list_element case_list_element = (case_list_element)theEObject;
+        T result = casecase_list_element(case_list_element);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case PascalPackage.CONST_LIST:
+      {
+        const_list const_list = (const_list)theEObject;
+        T result = caseconst_list(const_list);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -365,7 +409,6 @@ public class PascalSwitch<T> extends Switch<T>
       {
         procedure_or_function_declaration procedure_or_function_declaration = (procedure_or_function_declaration)theEObject;
         T result = caseprocedure_or_function_declaration(procedure_or_function_declaration);
-        if (result == null) result = caseprocedure_and_function_declaration_part(procedure_or_function_declaration);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -373,15 +416,6 @@ public class PascalSwitch<T> extends Switch<T>
       {
         procedure_declaration procedure_declaration = (procedure_declaration)theEObject;
         T result = caseprocedure_declaration(procedure_declaration);
-        if (result == null) result = caseprocedure_or_function_declaration(procedure_declaration);
-        if (result == null) result = caseprocedure_and_function_declaration_part(procedure_declaration);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case PascalPackage.TYPE_DEFINITION:
-      {
-        type_definition type_definition = (type_definition)theEObject;
-        T result = casetype_definition(type_definition);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -389,7 +423,6 @@ public class PascalSwitch<T> extends Switch<T>
       {
         procedure_type procedure_type = (procedure_type)theEObject;
         T result = caseprocedure_type(procedure_type);
-        if (result == null) result = casetype_definition(procedure_type);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -397,8 +430,6 @@ public class PascalSwitch<T> extends Switch<T>
       {
         function_declaration function_declaration = (function_declaration)theEObject;
         T result = casefunction_declaration(function_declaration);
-        if (result == null) result = caseprocedure_or_function_declaration(function_declaration);
-        if (result == null) result = caseprocedure_and_function_declaration_part(function_declaration);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -406,7 +437,6 @@ public class PascalSwitch<T> extends Switch<T>
       {
         function_type function_type = (function_type)theEObject;
         T result = casefunction_type(function_type);
-        if (result == null) result = casetype_definition(function_type);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -414,7 +444,6 @@ public class PascalSwitch<T> extends Switch<T>
       {
         function_designator function_designator = (function_designator)theEObject;
         T result = casefunction_designator(function_designator);
-        if (result == null) result = casefactor(function_designator);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -429,7 +458,6 @@ public class PascalSwitch<T> extends Switch<T>
       {
         formal_parameter_section formal_parameter_section = (formal_parameter_section)theEObject;
         T result = caseformal_parameter_section(formal_parameter_section);
-        if (result == null) result = caseformal_parameter_list(formal_parameter_section);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -437,8 +465,6 @@ public class PascalSwitch<T> extends Switch<T>
       {
         parameter_group parameter_group = (parameter_group)theEObject;
         T result = caseparameter_group(parameter_group);
-        if (result == null) result = caseformal_parameter_section(parameter_group);
-        if (result == null) result = caseformal_parameter_list(parameter_group);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -518,6 +544,22 @@ public class PascalSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>identifier</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>identifier</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseidentifier(identifier object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>block</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -577,6 +619,38 @@ public class PascalSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseconstant(constant object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>type definition part</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>type definition part</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casetype_definition_part(type_definition_part object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>type definition</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>type definition</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casetype_definition(type_definition object)
   {
     return null;
   }
@@ -673,22 +747,6 @@ public class PascalSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseunlabelled_statement(unlabelled_statement object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>label</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>label</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caselabel(label object)
   {
     return null;
   }
@@ -822,54 +880,6 @@ public class PascalSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>set</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>set</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseset(set object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>element List</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>element List</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseelementList(elementList object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>element</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>element</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseelement(element object)
-  {
-    return null;
-  }
-
-  /**
    * Returns the result of interpreting the object as an instance of '<em>type</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -902,22 +912,6 @@ public class PascalSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>scalar type</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>scalar type</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T casescalar_type(scalar_type object)
-  {
-    return null;
-  }
-
-  /**
    * Returns the result of interpreting the object as an instance of '<em>subrange type</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -934,6 +928,118 @@ public class PascalSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>structured type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>structured type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casestructured_type(structured_type object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>unpacked structured type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>unpacked structured type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseunpacked_structured_type(unpacked_structured_type object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>dynamic array type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>dynamic array type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casedynamic_array_type(dynamic_array_type object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>array type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>array type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casearray_type(array_type object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>type list</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>type list</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casetype_list(type_list object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>index type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>index type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseindex_type(index_type object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>component type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>component type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casecomponent_type(component_type object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>type identifier</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -945,22 +1051,6 @@ public class PascalSwitch<T> extends Switch<T>
    * @generated
    */
   public T casetype_identifier(type_identifier object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>string type</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>string type</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T casestring_type(string_type object)
   {
     return null;
   }
@@ -993,22 +1083,6 @@ public class PascalSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseunsigned_number(unsigned_number object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>constant chr</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>constant chr</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseconstant_chr(constant_chr object)
   {
     return null;
   }
@@ -1062,6 +1136,86 @@ public class PascalSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>structured statement</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>structured statement</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casestructured_statement(structured_statement object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>conditional statement</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>conditional statement</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseconditional_statement(conditional_statement object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>case statement</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>case statement</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casecase_statement(case_statement object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>case list element</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>case list element</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casecase_list_element(case_list_element object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>const list</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>const list</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseconst_list(const_list object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>procedure and function declaration part</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -1105,22 +1259,6 @@ public class PascalSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseprocedure_declaration(procedure_declaration object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>type definition</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>type definition</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T casetype_definition(type_definition object)
   {
     return null;
   }

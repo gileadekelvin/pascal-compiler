@@ -16,7 +16,6 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link org.xtext.compiler.pascal.pascal.simple_statement#getAssignment <em>Assignment</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.simple_statement#getProcedure <em>Procedure</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.simple_statement#getGoto <em>Goto</em>}</li>
  * </ul>
  *
  * @see org.xtext.compiler.pascal.pascal.PascalPackage#getsimple_statement()
@@ -76,31 +75,5 @@ public interface simple_statement extends EObject
    * @generated
    */
   void setProcedure(procedure_statement value);
-
-  /**
-   * Returns the value of the '<em><b>Goto</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Goto</em>' attribute isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Goto</em>' attribute.
-   * @see #setGoto(String)
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getsimple_statement_Goto()
-   * @model
-   * @generated
-   */
-  String getGoto();
-
-  /**
-   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.simple_statement#getGoto <em>Goto</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Goto</em>' attribute.
-   * @see #getGoto()
-   * @generated
-   */
-  void setGoto(String value);
 
 } // simple_statement

@@ -3,7 +3,7 @@
  */
 package org.xtext.compiler.pascal.pascal;
 
-import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,29 +14,39 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.actual_parameter#getTypes <em>Types</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.actual_parameter#getContent <em>Content</em>}</li>
  * </ul>
  *
  * @see org.xtext.compiler.pascal.pascal.PascalPackage#getactual_parameter()
  * @model
  * @generated
  */
-public interface actual_parameter extends parameter_list
+public interface actual_parameter extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Types</b></em>' containment reference list.
-   * The list contents are of type {@link org.xtext.compiler.pascal.pascal.actual_parameter}.
+   * Returns the value of the '<em><b>Content</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Types</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Content</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Types</em>' containment reference list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getactual_parameter_Types()
+   * @return the value of the '<em>Content</em>' containment reference.
+   * @see #setContent(expression)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getactual_parameter_Content()
    * @model containment="true"
    * @generated
    */
-  EList<actual_parameter> getTypes();
+  expression getContent();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.actual_parameter#getContent <em>Content</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Content</em>' containment reference.
+   * @see #getContent()
+   * @generated
+   */
+  void setContent(expression value);
 
 } // actual_parameter

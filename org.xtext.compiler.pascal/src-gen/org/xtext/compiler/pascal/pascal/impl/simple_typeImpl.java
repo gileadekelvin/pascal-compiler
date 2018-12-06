@@ -5,14 +5,15 @@ package org.xtext.compiler.pascal.pascal.impl;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
@@ -20,6 +21,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.simple_type;
+import org.xtext.compiler.pascal.pascal.subrange_type;
+import org.xtext.compiler.pascal.pascal.type_identifier;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,7 +32,8 @@ import org.xtext.compiler.pascal.pascal.simple_type;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.simple_typeImpl#getTypes <em>Types</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.simple_typeImpl#getType <em>Type</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.simple_typeImpl#getSubrange_type <em>Subrange type</em>}</li>
  * </ul>
  *
  * @generated
@@ -37,14 +41,24 @@ import org.xtext.compiler.pascal.pascal.simple_type;
 public class simple_typeImpl extends MinimalEObjectImpl.Container implements simple_type
 {
   /**
-   * The cached value of the '{@link #getTypes() <em>Types</em>}' containment reference list.
+   * The cached value of the '{@link #getType() <em>Type</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getTypes()
+   * @see #getType()
    * @generated
    * @ordered
    */
-  protected EList<EObject> types;
+  protected type_identifier type;
+
+  /**
+   * The cached value of the '{@link #getSubrange_type() <em>Subrange type</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getSubrange_type()
+   * @generated
+   * @ordered
+   */
+  protected EList<subrange_type> subrange_type;
 
   /**
    * <!-- begin-user-doc -->
@@ -72,13 +86,61 @@ public class simple_typeImpl extends MinimalEObjectImpl.Container implements sim
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<EObject> getTypes()
+  public type_identifier getType()
   {
-    if (types == null)
+    return type;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetType(type_identifier newType, NotificationChain msgs)
+  {
+    type_identifier oldType = type;
+    type = newType;
+    if (eNotificationRequired())
     {
-      types = new EObjectContainmentEList<EObject>(EObject.class, this, PascalPackage.SIMPLE_TYPE__TYPES);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.SIMPLE_TYPE__TYPE, oldType, newType);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
-    return types;
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setType(type_identifier newType)
+  {
+    if (newType != type)
+    {
+      NotificationChain msgs = null;
+      if (type != null)
+        msgs = ((InternalEObject)type).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.SIMPLE_TYPE__TYPE, null, msgs);
+      if (newType != null)
+        msgs = ((InternalEObject)newType).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.SIMPLE_TYPE__TYPE, null, msgs);
+      msgs = basicSetType(newType, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.SIMPLE_TYPE__TYPE, newType, newType));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EList<subrange_type> getSubrange_type()
+  {
+    if (subrange_type == null)
+    {
+      subrange_type = new EObjectContainmentEList<subrange_type>(subrange_type.class, this, PascalPackage.SIMPLE_TYPE__SUBRANGE_TYPE);
+    }
+    return subrange_type;
   }
 
   /**
@@ -91,8 +153,10 @@ public class simple_typeImpl extends MinimalEObjectImpl.Container implements sim
   {
     switch (featureID)
     {
-      case PascalPackage.SIMPLE_TYPE__TYPES:
-        return ((InternalEList<?>)getTypes()).basicRemove(otherEnd, msgs);
+      case PascalPackage.SIMPLE_TYPE__TYPE:
+        return basicSetType(null, msgs);
+      case PascalPackage.SIMPLE_TYPE__SUBRANGE_TYPE:
+        return ((InternalEList<?>)getSubrange_type()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -107,8 +171,10 @@ public class simple_typeImpl extends MinimalEObjectImpl.Container implements sim
   {
     switch (featureID)
     {
-      case PascalPackage.SIMPLE_TYPE__TYPES:
-        return getTypes();
+      case PascalPackage.SIMPLE_TYPE__TYPE:
+        return getType();
+      case PascalPackage.SIMPLE_TYPE__SUBRANGE_TYPE:
+        return getSubrange_type();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -124,9 +190,12 @@ public class simple_typeImpl extends MinimalEObjectImpl.Container implements sim
   {
     switch (featureID)
     {
-      case PascalPackage.SIMPLE_TYPE__TYPES:
-        getTypes().clear();
-        getTypes().addAll((Collection<? extends EObject>)newValue);
+      case PascalPackage.SIMPLE_TYPE__TYPE:
+        setType((type_identifier)newValue);
+        return;
+      case PascalPackage.SIMPLE_TYPE__SUBRANGE_TYPE:
+        getSubrange_type().clear();
+        getSubrange_type().addAll((Collection<? extends subrange_type>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -142,8 +211,11 @@ public class simple_typeImpl extends MinimalEObjectImpl.Container implements sim
   {
     switch (featureID)
     {
-      case PascalPackage.SIMPLE_TYPE__TYPES:
-        getTypes().clear();
+      case PascalPackage.SIMPLE_TYPE__TYPE:
+        setType((type_identifier)null);
+        return;
+      case PascalPackage.SIMPLE_TYPE__SUBRANGE_TYPE:
+        getSubrange_type().clear();
         return;
     }
     super.eUnset(featureID);
@@ -159,8 +231,10 @@ public class simple_typeImpl extends MinimalEObjectImpl.Container implements sim
   {
     switch (featureID)
     {
-      case PascalPackage.SIMPLE_TYPE__TYPES:
-        return types != null && !types.isEmpty();
+      case PascalPackage.SIMPLE_TYPE__TYPE:
+        return type != null;
+      case PascalPackage.SIMPLE_TYPE__SUBRANGE_TYPE:
+        return subrange_type != null && !subrange_type.isEmpty();
     }
     return super.eIsSet(featureID);
   }

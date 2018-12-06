@@ -3,22 +3,56 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
-import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
+import org.xtext.compiler.pascal.pascal.identifier_list;
+import org.xtext.compiler.pascal.pascal.type;
 import org.xtext.compiler.pascal.pascal.variable_declaration;
 
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>variable declaration</b></em>'.
  * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.variable_declarationImpl#getList_names <em>List names</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.variable_declarationImpl#getType_variable <em>Type variable</em>}</li>
+ * </ul>
  *
  * @generated
  */
 public class variable_declarationImpl extends MinimalEObjectImpl.Container implements variable_declaration
 {
+  /**
+   * The cached value of the '{@link #getList_names() <em>List names</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getList_names()
+   * @generated
+   * @ordered
+   */
+  protected identifier_list list_names;
+
+  /**
+   * The cached value of the '{@link #getType_variable() <em>Type variable</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getType_variable()
+   * @generated
+   * @ordered
+   */
+  protected type type_variable;
+
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -38,6 +72,196 @@ public class variable_declarationImpl extends MinimalEObjectImpl.Container imple
   protected EClass eStaticClass()
   {
     return PascalPackage.Literals.VARIABLE_DECLARATION;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public identifier_list getList_names()
+  {
+    return list_names;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetList_names(identifier_list newList_names, NotificationChain msgs)
+  {
+    identifier_list oldList_names = list_names;
+    list_names = newList_names;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.VARIABLE_DECLARATION__LIST_NAMES, oldList_names, newList_names);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setList_names(identifier_list newList_names)
+  {
+    if (newList_names != list_names)
+    {
+      NotificationChain msgs = null;
+      if (list_names != null)
+        msgs = ((InternalEObject)list_names).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.VARIABLE_DECLARATION__LIST_NAMES, null, msgs);
+      if (newList_names != null)
+        msgs = ((InternalEObject)newList_names).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.VARIABLE_DECLARATION__LIST_NAMES, null, msgs);
+      msgs = basicSetList_names(newList_names, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.VARIABLE_DECLARATION__LIST_NAMES, newList_names, newList_names));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public type getType_variable()
+  {
+    return type_variable;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetType_variable(type newType_variable, NotificationChain msgs)
+  {
+    type oldType_variable = type_variable;
+    type_variable = newType_variable;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.VARIABLE_DECLARATION__TYPE_VARIABLE, oldType_variable, newType_variable);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setType_variable(type newType_variable)
+  {
+    if (newType_variable != type_variable)
+    {
+      NotificationChain msgs = null;
+      if (type_variable != null)
+        msgs = ((InternalEObject)type_variable).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.VARIABLE_DECLARATION__TYPE_VARIABLE, null, msgs);
+      if (newType_variable != null)
+        msgs = ((InternalEObject)newType_variable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.VARIABLE_DECLARATION__TYPE_VARIABLE, null, msgs);
+      msgs = basicSetType_variable(newType_variable, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.VARIABLE_DECLARATION__TYPE_VARIABLE, newType_variable, newType_variable));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
+    {
+      case PascalPackage.VARIABLE_DECLARATION__LIST_NAMES:
+        return basicSetList_names(null, msgs);
+      case PascalPackage.VARIABLE_DECLARATION__TYPE_VARIABLE:
+        return basicSetType_variable(null, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
+  {
+    switch (featureID)
+    {
+      case PascalPackage.VARIABLE_DECLARATION__LIST_NAMES:
+        return getList_names();
+      case PascalPackage.VARIABLE_DECLARATION__TYPE_VARIABLE:
+        return getType_variable();
+    }
+    return super.eGet(featureID, resolve, coreType);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void eSet(int featureID, Object newValue)
+  {
+    switch (featureID)
+    {
+      case PascalPackage.VARIABLE_DECLARATION__LIST_NAMES:
+        setList_names((identifier_list)newValue);
+        return;
+      case PascalPackage.VARIABLE_DECLARATION__TYPE_VARIABLE:
+        setType_variable((type)newValue);
+        return;
+    }
+    super.eSet(featureID, newValue);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void eUnset(int featureID)
+  {
+    switch (featureID)
+    {
+      case PascalPackage.VARIABLE_DECLARATION__LIST_NAMES:
+        setList_names((identifier_list)null);
+        return;
+      case PascalPackage.VARIABLE_DECLARATION__TYPE_VARIABLE:
+        setType_variable((type)null);
+        return;
+    }
+    super.eUnset(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public boolean eIsSet(int featureID)
+  {
+    switch (featureID)
+    {
+      case PascalPackage.VARIABLE_DECLARATION__LIST_NAMES:
+        return list_names != null;
+      case PascalPackage.VARIABLE_DECLARATION__TYPE_VARIABLE:
+        return type_variable != null;
+    }
+    return super.eIsSet(featureID);
   }
 
 } //variable_declarationImpl

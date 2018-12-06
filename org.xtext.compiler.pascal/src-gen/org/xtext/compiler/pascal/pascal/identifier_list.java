@@ -5,6 +5,8 @@ package org.xtext.compiler.pascal.pascal;
 
 import org.eclipse.emf.common.util.EList;
 
+import org.eclipse.emf.ecore.EObject;
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>identifier list</b></em>'.
@@ -21,22 +23,22 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface identifier_list extends variable_declaration, scalar_type, parameter_group
+public interface identifier_list extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Names</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * Returns the value of the '<em><b>Names</b></em>' containment reference list.
+   * The list contents are of type {@link org.xtext.compiler.pascal.pascal.identifier}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Names</em>' attribute list isn't clear,
+   * If the meaning of the '<em>Names</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Names</em>' attribute list.
+   * @return the value of the '<em>Names</em>' containment reference list.
    * @see org.xtext.compiler.pascal.pascal.PascalPackage#getidentifier_list_Names()
-   * @model unique="false"
+   * @model containment="true"
    * @generated
    */
-  EList<String> getNames();
+  EList<identifier> getNames();
 
 } // identifier_list

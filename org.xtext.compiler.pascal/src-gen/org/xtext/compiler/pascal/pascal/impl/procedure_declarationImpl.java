@@ -3,19 +3,17 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
-import java.util.Collection;
-
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
+import org.xtext.compiler.pascal.pascal.block;
 import org.xtext.compiler.pascal.pascal.formal_parameter_list;
 import org.xtext.compiler.pascal.pascal.procedure_declaration;
 
@@ -27,22 +25,54 @@ import org.xtext.compiler.pascal.pascal.procedure_declaration;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.procedure_declarationImpl#getTypes <em>Types</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.procedure_declarationImpl#getNames <em>Names</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.procedure_declarationImpl#getParameters <em>Parameters</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.procedure_declarationImpl#getBlock <em>Block</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class procedure_declarationImpl extends procedure_or_function_declarationImpl implements procedure_declaration
+public class procedure_declarationImpl extends MinimalEObjectImpl.Container implements procedure_declaration
 {
   /**
-   * The cached value of the '{@link #getTypes() <em>Types</em>}' containment reference list.
+   * The default value of the '{@link #getNames() <em>Names</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getTypes()
+   * @see #getNames()
    * @generated
    * @ordered
    */
-  protected EList<formal_parameter_list> types;
+  protected static final String NAMES_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getNames() <em>Names</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getNames()
+   * @generated
+   * @ordered
+   */
+  protected String names = NAMES_EDEFAULT;
+
+  /**
+   * The cached value of the '{@link #getParameters() <em>Parameters</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getParameters()
+   * @generated
+   * @ordered
+   */
+  protected formal_parameter_list parameters;
+
+  /**
+   * The cached value of the '{@link #getBlock() <em>Block</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getBlock()
+   * @generated
+   * @ordered
+   */
+  protected block block;
 
   /**
    * <!-- begin-user-doc -->
@@ -70,13 +100,118 @@ public class procedure_declarationImpl extends procedure_or_function_declaration
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<formal_parameter_list> getTypes()
+  public String getNames()
   {
-    if (types == null)
+    return names;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setNames(String newNames)
+  {
+    String oldNames = names;
+    names = newNames;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.PROCEDURE_DECLARATION__NAMES, oldNames, names));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public formal_parameter_list getParameters()
+  {
+    return parameters;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetParameters(formal_parameter_list newParameters, NotificationChain msgs)
+  {
+    formal_parameter_list oldParameters = parameters;
+    parameters = newParameters;
+    if (eNotificationRequired())
     {
-      types = new EObjectContainmentEList<formal_parameter_list>(formal_parameter_list.class, this, PascalPackage.PROCEDURE_DECLARATION__TYPES);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.PROCEDURE_DECLARATION__PARAMETERS, oldParameters, newParameters);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
-    return types;
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setParameters(formal_parameter_list newParameters)
+  {
+    if (newParameters != parameters)
+    {
+      NotificationChain msgs = null;
+      if (parameters != null)
+        msgs = ((InternalEObject)parameters).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.PROCEDURE_DECLARATION__PARAMETERS, null, msgs);
+      if (newParameters != null)
+        msgs = ((InternalEObject)newParameters).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.PROCEDURE_DECLARATION__PARAMETERS, null, msgs);
+      msgs = basicSetParameters(newParameters, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.PROCEDURE_DECLARATION__PARAMETERS, newParameters, newParameters));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public block getBlock()
+  {
+    return block;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetBlock(block newBlock, NotificationChain msgs)
+  {
+    block oldBlock = block;
+    block = newBlock;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.PROCEDURE_DECLARATION__BLOCK, oldBlock, newBlock);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setBlock(block newBlock)
+  {
+    if (newBlock != block)
+    {
+      NotificationChain msgs = null;
+      if (block != null)
+        msgs = ((InternalEObject)block).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.PROCEDURE_DECLARATION__BLOCK, null, msgs);
+      if (newBlock != null)
+        msgs = ((InternalEObject)newBlock).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.PROCEDURE_DECLARATION__BLOCK, null, msgs);
+      msgs = basicSetBlock(newBlock, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.PROCEDURE_DECLARATION__BLOCK, newBlock, newBlock));
   }
 
   /**
@@ -89,8 +224,10 @@ public class procedure_declarationImpl extends procedure_or_function_declaration
   {
     switch (featureID)
     {
-      case PascalPackage.PROCEDURE_DECLARATION__TYPES:
-        return ((InternalEList<?>)getTypes()).basicRemove(otherEnd, msgs);
+      case PascalPackage.PROCEDURE_DECLARATION__PARAMETERS:
+        return basicSetParameters(null, msgs);
+      case PascalPackage.PROCEDURE_DECLARATION__BLOCK:
+        return basicSetBlock(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -105,8 +242,12 @@ public class procedure_declarationImpl extends procedure_or_function_declaration
   {
     switch (featureID)
     {
-      case PascalPackage.PROCEDURE_DECLARATION__TYPES:
-        return getTypes();
+      case PascalPackage.PROCEDURE_DECLARATION__NAMES:
+        return getNames();
+      case PascalPackage.PROCEDURE_DECLARATION__PARAMETERS:
+        return getParameters();
+      case PascalPackage.PROCEDURE_DECLARATION__BLOCK:
+        return getBlock();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -116,15 +257,19 @@ public class procedure_declarationImpl extends procedure_or_function_declaration
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case PascalPackage.PROCEDURE_DECLARATION__TYPES:
-        getTypes().clear();
-        getTypes().addAll((Collection<? extends formal_parameter_list>)newValue);
+      case PascalPackage.PROCEDURE_DECLARATION__NAMES:
+        setNames((String)newValue);
+        return;
+      case PascalPackage.PROCEDURE_DECLARATION__PARAMETERS:
+        setParameters((formal_parameter_list)newValue);
+        return;
+      case PascalPackage.PROCEDURE_DECLARATION__BLOCK:
+        setBlock((block)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -140,8 +285,14 @@ public class procedure_declarationImpl extends procedure_or_function_declaration
   {
     switch (featureID)
     {
-      case PascalPackage.PROCEDURE_DECLARATION__TYPES:
-        getTypes().clear();
+      case PascalPackage.PROCEDURE_DECLARATION__NAMES:
+        setNames(NAMES_EDEFAULT);
+        return;
+      case PascalPackage.PROCEDURE_DECLARATION__PARAMETERS:
+        setParameters((formal_parameter_list)null);
+        return;
+      case PascalPackage.PROCEDURE_DECLARATION__BLOCK:
+        setBlock((block)null);
         return;
     }
     super.eUnset(featureID);
@@ -157,10 +308,31 @@ public class procedure_declarationImpl extends procedure_or_function_declaration
   {
     switch (featureID)
     {
-      case PascalPackage.PROCEDURE_DECLARATION__TYPES:
-        return types != null && !types.isEmpty();
+      case PascalPackage.PROCEDURE_DECLARATION__NAMES:
+        return NAMES_EDEFAULT == null ? names != null : !NAMES_EDEFAULT.equals(names);
+      case PascalPackage.PROCEDURE_DECLARATION__PARAMETERS:
+        return parameters != null;
+      case PascalPackage.PROCEDURE_DECLARATION__BLOCK:
+        return block != null;
     }
     return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String toString()
+  {
+    if (eIsProxy()) return super.toString();
+
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (names: ");
+    result.append(names);
+    result.append(')');
+    return result.toString();
   }
 
 } //procedure_declarationImpl

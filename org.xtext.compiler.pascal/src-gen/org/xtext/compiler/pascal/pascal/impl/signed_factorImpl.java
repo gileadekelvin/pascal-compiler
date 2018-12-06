@@ -3,20 +3,14 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
-import java.util.Collection;
-
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
-import org.eclipse.emf.ecore.util.EDataTypeEList;
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.factor;
@@ -30,8 +24,8 @@ import org.xtext.compiler.pascal.pascal.signed_factor;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.signed_factorImpl#getOperators <em>Operators</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.signed_factorImpl#getFactors <em>Factors</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.signed_factorImpl#getSignal <em>Signal</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.signed_factorImpl#getFactor <em>Factor</em>}</li>
  * </ul>
  *
  * @generated
@@ -39,24 +33,34 @@ import org.xtext.compiler.pascal.pascal.signed_factor;
 public class signed_factorImpl extends MinimalEObjectImpl.Container implements signed_factor
 {
   /**
-   * The cached value of the '{@link #getOperators() <em>Operators</em>}' attribute list.
+   * The default value of the '{@link #getSignal() <em>Signal</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getOperators()
+   * @see #getSignal()
    * @generated
    * @ordered
    */
-  protected EList<String> operators;
+  protected static final String SIGNAL_EDEFAULT = null;
 
   /**
-   * The cached value of the '{@link #getFactors() <em>Factors</em>}' containment reference list.
+   * The cached value of the '{@link #getSignal() <em>Signal</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getFactors()
+   * @see #getSignal()
    * @generated
    * @ordered
    */
-  protected EList<factor> factors;
+  protected String signal = SIGNAL_EDEFAULT;
+
+  /**
+   * The cached value of the '{@link #getFactor() <em>Factor</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getFactor()
+   * @generated
+   * @ordered
+   */
+  protected factor factor;
 
   /**
    * <!-- begin-user-doc -->
@@ -84,13 +88,9 @@ public class signed_factorImpl extends MinimalEObjectImpl.Container implements s
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<String> getOperators()
+  public String getSignal()
   {
-    if (operators == null)
-    {
-      operators = new EDataTypeEList<String>(String.class, this, PascalPackage.SIGNED_FACTOR__OPERATORS);
-    }
-    return operators;
+    return signal;
   }
 
   /**
@@ -98,13 +98,60 @@ public class signed_factorImpl extends MinimalEObjectImpl.Container implements s
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<factor> getFactors()
+  public void setSignal(String newSignal)
   {
-    if (factors == null)
+    String oldSignal = signal;
+    signal = newSignal;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.SIGNED_FACTOR__SIGNAL, oldSignal, signal));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public factor getFactor()
+  {
+    return factor;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetFactor(factor newFactor, NotificationChain msgs)
+  {
+    factor oldFactor = factor;
+    factor = newFactor;
+    if (eNotificationRequired())
     {
-      factors = new EObjectContainmentEList<factor>(factor.class, this, PascalPackage.SIGNED_FACTOR__FACTORS);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.SIGNED_FACTOR__FACTOR, oldFactor, newFactor);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
-    return factors;
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setFactor(factor newFactor)
+  {
+    if (newFactor != factor)
+    {
+      NotificationChain msgs = null;
+      if (factor != null)
+        msgs = ((InternalEObject)factor).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.SIGNED_FACTOR__FACTOR, null, msgs);
+      if (newFactor != null)
+        msgs = ((InternalEObject)newFactor).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.SIGNED_FACTOR__FACTOR, null, msgs);
+      msgs = basicSetFactor(newFactor, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.SIGNED_FACTOR__FACTOR, newFactor, newFactor));
   }
 
   /**
@@ -117,8 +164,8 @@ public class signed_factorImpl extends MinimalEObjectImpl.Container implements s
   {
     switch (featureID)
     {
-      case PascalPackage.SIGNED_FACTOR__FACTORS:
-        return ((InternalEList<?>)getFactors()).basicRemove(otherEnd, msgs);
+      case PascalPackage.SIGNED_FACTOR__FACTOR:
+        return basicSetFactor(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -133,10 +180,10 @@ public class signed_factorImpl extends MinimalEObjectImpl.Container implements s
   {
     switch (featureID)
     {
-      case PascalPackage.SIGNED_FACTOR__OPERATORS:
-        return getOperators();
-      case PascalPackage.SIGNED_FACTOR__FACTORS:
-        return getFactors();
+      case PascalPackage.SIGNED_FACTOR__SIGNAL:
+        return getSignal();
+      case PascalPackage.SIGNED_FACTOR__FACTOR:
+        return getFactor();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -146,19 +193,16 @@ public class signed_factorImpl extends MinimalEObjectImpl.Container implements s
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case PascalPackage.SIGNED_FACTOR__OPERATORS:
-        getOperators().clear();
-        getOperators().addAll((Collection<? extends String>)newValue);
+      case PascalPackage.SIGNED_FACTOR__SIGNAL:
+        setSignal((String)newValue);
         return;
-      case PascalPackage.SIGNED_FACTOR__FACTORS:
-        getFactors().clear();
-        getFactors().addAll((Collection<? extends factor>)newValue);
+      case PascalPackage.SIGNED_FACTOR__FACTOR:
+        setFactor((factor)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -174,11 +218,11 @@ public class signed_factorImpl extends MinimalEObjectImpl.Container implements s
   {
     switch (featureID)
     {
-      case PascalPackage.SIGNED_FACTOR__OPERATORS:
-        getOperators().clear();
+      case PascalPackage.SIGNED_FACTOR__SIGNAL:
+        setSignal(SIGNAL_EDEFAULT);
         return;
-      case PascalPackage.SIGNED_FACTOR__FACTORS:
-        getFactors().clear();
+      case PascalPackage.SIGNED_FACTOR__FACTOR:
+        setFactor((factor)null);
         return;
     }
     super.eUnset(featureID);
@@ -194,10 +238,10 @@ public class signed_factorImpl extends MinimalEObjectImpl.Container implements s
   {
     switch (featureID)
     {
-      case PascalPackage.SIGNED_FACTOR__OPERATORS:
-        return operators != null && !operators.isEmpty();
-      case PascalPackage.SIGNED_FACTOR__FACTORS:
-        return factors != null && !factors.isEmpty();
+      case PascalPackage.SIGNED_FACTOR__SIGNAL:
+        return SIGNAL_EDEFAULT == null ? signal != null : !SIGNAL_EDEFAULT.equals(signal);
+      case PascalPackage.SIGNED_FACTOR__FACTOR:
+        return factor != null;
     }
     return super.eIsSet(featureID);
   }
@@ -213,8 +257,8 @@ public class signed_factorImpl extends MinimalEObjectImpl.Container implements s
     if (eIsProxy()) return super.toString();
 
     StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (operators: ");
-    result.append(operators);
+    result.append(" (signal: ");
+    result.append(signal);
     result.append(')');
     return result.toString();
   }
