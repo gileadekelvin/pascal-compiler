@@ -427,8 +427,9 @@ class PascalGenerator extends AbstractGenerator {
 		var listIndx = array.type_l.indexes;
 		for (index_type idx : listIndx) {
 			for (subrange_type subrange : idx.content.subrange_type) {
-				var first = Integer.parseInt(subrange.constantInit.uns_number.numbers.toString);
-				var last = Integer.parseInt(subrange.constantFinal.uns_number.numbers.toString);
+
+				var first = ExpressionTypeHelper.convertArrayIndex(subrange.constantInit);
+				var last = ExpressionTypeHelper.convertArrayIndex(subrange.constantFinal);
 				listDim.add(calculateLength(first, last));
 			}
 

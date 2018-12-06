@@ -42,7 +42,7 @@ constant_definition:
 
 constant: 
 	 uns_number=unsigned_number
-   | sign sig_number=unsigned_number
+   | signed=sign sig_number=unsigned_number
    | name_id=ID
    | sign sig_name_id=ID
    | string=STRING

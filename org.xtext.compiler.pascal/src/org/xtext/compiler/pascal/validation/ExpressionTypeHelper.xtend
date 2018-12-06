@@ -150,6 +150,17 @@ class ExpressionTypeHelper {
 			}
 		}
 		return "erro_tipo"
-	}	
+	}
+	
+	def static Integer convertArrayIndex(constant const) {
+		if (const.uns_number !== null) {
+			return Integer.parseInt(const.uns_number.numbers.toString);
+		} else {
+			return Integer.parseInt(const.signed + const.sig_number.numbers.toString);
+		}
+	}
+	
+	
+	
 		
 }

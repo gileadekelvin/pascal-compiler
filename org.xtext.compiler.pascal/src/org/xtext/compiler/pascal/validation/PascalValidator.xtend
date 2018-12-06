@@ -405,18 +405,25 @@ class PascalValidator extends AbstractPascalValidator {
 
 	}
 
+// Checa o range da definição do array
 	@Check
-	def checkArrayRange(subrange_type range) {
-		if (range.constantInit.uns_number === null) {
+	def checkArrayRange(subrange_type range) {	
+		var initial_index = range.constantInit;
+		var final_index = range.constantFinal;
+
+		if (initial_index.uns_number === null && initial_index.sig_number === null) { // Se o index inicial não é int
 			var error_message = String.format("Índice inicial do intervalo não é do tipo inteiro.");
 			error(error_message, null);
-		} else if (range.constantFinal.uns_number === null) {
+		} else if (final_index.uns_number === null && final_index.sig_number === null) { // Se o index final não é int
 			var error_message = String.format("Índice final do intervalo não é do tipo inteiro.");
 			error(error_message, null);
-		} else if (range.constantFinal.uns_number.numbers < range.constantInit.uns_number.numbers) {
-			var error_message = String.format("Índice inicial do intervalo é maior que o índice final.");
-			error(error_message, null);
+		} else {
+			var initial_value = ExpressionTypeHelper.convertArrayIndex(initial_index);
+			var last_value = ExpressionTypeHelper.convertArrayIndex(final_index);
+			if (initial_value > last_value) {
+				var error_message = String.format("Índice final do intervalo é menor que o inicial.");
+				error(error_message, null);
+			}
 		}
 	}
-
 }
