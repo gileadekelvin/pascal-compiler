@@ -3,8 +3,6 @@
  */
 package org.xtext.compiler.pascal.pascal;
 
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -16,46 +14,39 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.expression#getExpressions <em>Expressions</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.expression#getOperators <em>Operators</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.expression#getSimple <em>Simple</em>}</li>
  * </ul>
  *
  * @see org.xtext.compiler.pascal.pascal.PascalPackage#getexpression()
  * @model
  * @generated
  */
-public interface expression extends actual_parameter
+public interface expression extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Expressions</b></em>' containment reference list.
-   * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.
+   * Returns the value of the '<em><b>Simple</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Expressions</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Simple</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Expressions</em>' containment reference list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getexpression_Expressions()
+   * @return the value of the '<em>Simple</em>' containment reference.
+   * @see #setSimple(simple_expression)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getexpression_Simple()
    * @model containment="true"
    * @generated
    */
-  EList<EObject> getExpressions();
+  simple_expression getSimple();
 
   /**
-   * Returns the value of the '<em><b>Operators</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.expression#getSimple <em>Simple</em>}' containment reference.
    * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Operators</em>' attribute list isn't clear,
-   * there really should be more of a description here...
-   * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Operators</em>' attribute list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getexpression_Operators()
-   * @model unique="false"
+   * @param value the new value of the '<em>Simple</em>' containment reference.
+   * @see #getSimple()
    * @generated
    */
-  EList<String> getOperators();
+  void setSimple(simple_expression value);
 
 } // expression

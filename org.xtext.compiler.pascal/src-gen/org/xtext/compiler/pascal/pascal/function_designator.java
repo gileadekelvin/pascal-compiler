@@ -3,7 +3,7 @@
  */
 package org.xtext.compiler.pascal.pascal;
 
-import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,46 +14,66 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.function_designator#getNames <em>Names</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.function_designator#getTypes <em>Types</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.function_designator#getName_function <em>Name function</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.function_designator#getParameters <em>Parameters</em>}</li>
  * </ul>
  *
  * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfunction_designator()
  * @model
  * @generated
  */
-public interface function_designator extends factor
+public interface function_designator extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Names</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * Returns the value of the '<em><b>Name function</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Names</em>' attribute list isn't clear,
+   * If the meaning of the '<em>Name function</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Names</em>' attribute list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfunction_designator_Names()
-   * @model unique="false"
+   * @return the value of the '<em>Name function</em>' attribute.
+   * @see #setName_function(String)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfunction_designator_Name_function()
+   * @model
    * @generated
    */
-  EList<String> getNames();
+  String getName_function();
 
   /**
-   * Returns the value of the '<em><b>Types</b></em>' containment reference list.
-   * The list contents are of type {@link org.xtext.compiler.pascal.pascal.parameter_list}.
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.function_designator#getName_function <em>Name function</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Name function</em>' attribute.
+   * @see #getName_function()
+   * @generated
+   */
+  void setName_function(String value);
+
+  /**
+   * Returns the value of the '<em><b>Parameters</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Types</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Parameters</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Types</em>' containment reference list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfunction_designator_Types()
+   * @return the value of the '<em>Parameters</em>' containment reference.
+   * @see #setParameters(parameter_list)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfunction_designator_Parameters()
    * @model containment="true"
    * @generated
    */
-  EList<parameter_list> getTypes();
+  parameter_list getParameters();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.function_designator#getParameters <em>Parameters</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Parameters</em>' containment reference.
+   * @see #getParameters()
+   * @generated
+   */
+  void setParameters(parameter_list value);
 
 } // function_designator

@@ -3,8 +3,6 @@
  */
 package org.xtext.compiler.pascal.pascal;
 
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -17,7 +15,6 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.compiler.pascal.pascal.unsigned_constant#getNumber <em>Number</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.unsigned_constant#getChar <em>Char</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.unsigned_constant#getString <em>String</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.unsigned_constant#getNil <em>Nil</em>}</li>
  * </ul>
@@ -29,67 +26,81 @@ import org.eclipse.emf.ecore.EObject;
 public interface unsigned_constant extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Number</b></em>' containment reference list.
-   * The list contents are of type {@link org.xtext.compiler.pascal.pascal.unsigned_number}.
+   * Returns the value of the '<em><b>Number</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Number</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Number</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Number</em>' containment reference list.
+   * @return the value of the '<em>Number</em>' containment reference.
+   * @see #setNumber(unsigned_number)
    * @see org.xtext.compiler.pascal.pascal.PascalPackage#getunsigned_constant_Number()
    * @model containment="true"
    * @generated
    */
-  EList<unsigned_number> getNumber();
+  unsigned_number getNumber();
 
   /**
-   * Returns the value of the '<em><b>Char</b></em>' containment reference list.
-   * The list contents are of type {@link org.xtext.compiler.pascal.pascal.constant_chr}.
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.unsigned_constant#getNumber <em>Number</em>}' containment reference.
    * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Char</em>' containment reference list isn't clear,
-   * there really should be more of a description here...
-   * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Char</em>' containment reference list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getunsigned_constant_Char()
-   * @model containment="true"
+   * @param value the new value of the '<em>Number</em>' containment reference.
+   * @see #getNumber()
    * @generated
    */
-  EList<constant_chr> getChar();
+  void setNumber(unsigned_number value);
 
   /**
-   * Returns the value of the '<em><b>String</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * Returns the value of the '<em><b>String</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>String</em>' attribute list isn't clear,
+   * If the meaning of the '<em>String</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>String</em>' attribute list.
+   * @return the value of the '<em>String</em>' attribute.
+   * @see #setString(String)
    * @see org.xtext.compiler.pascal.pascal.PascalPackage#getunsigned_constant_String()
-   * @model unique="false"
+   * @model
    * @generated
    */
-  EList<String> getString();
+  String getString();
 
   /**
-   * Returns the value of the '<em><b>Nil</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.unsigned_constant#getString <em>String</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>String</em>' attribute.
+   * @see #getString()
+   * @generated
+   */
+  void setString(String value);
+
+  /**
+   * Returns the value of the '<em><b>Nil</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Nil</em>' attribute list isn't clear,
+   * If the meaning of the '<em>Nil</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Nil</em>' attribute list.
+   * @return the value of the '<em>Nil</em>' attribute.
+   * @see #setNil(String)
    * @see org.xtext.compiler.pascal.pascal.PascalPackage#getunsigned_constant_Nil()
-   * @model unique="false"
+   * @model
    * @generated
    */
-  EList<String> getNil();
+  String getNil();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.unsigned_constant#getNil <em>Nil</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Nil</em>' attribute.
+   * @see #getNil()
+   * @generated
+   */
+  void setNil(String value);
 
 } // unsigned_constant

@@ -10,7 +10,6 @@ import org.eclipse.xtext.IGrammarAccess;
 import org.eclipse.xtext.RuleCall;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.serializer.analysis.GrammarAlias.AbstractElementAlias;
-import org.eclipse.xtext.serializer.analysis.GrammarAlias.AlternativeAlias;
 import org.eclipse.xtext.serializer.analysis.GrammarAlias.TokenAlias;
 import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISynNavigable;
 import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISynTransition;
@@ -21,15 +20,13 @@ import org.xtext.compiler.pascal.services.PascalGrammarAccess;
 public class PascalSyntacticSequencer extends AbstractSyntacticSequencer {
 
 	protected PascalGrammarAccess grammarAccess;
-	protected AbstractElementAlias match_constant_SignParserRuleCall_1_0_q;
-	protected AbstractElementAlias match_formal_parameter_section___FUNCTIONTerminalRuleCall_2_0_or_PROCEDURETerminalRuleCall_3_0_or_VARTerminalRuleCall_1_0__q;
+	protected AbstractElementAlias match_case_statement_SemicolonKeyword_5_q;
 	protected AbstractElementAlias match_variable_CircumflexAccentKeyword_1_3_a;
 	
 	@Inject
 	protected void init(IGrammarAccess access) {
 		grammarAccess = (PascalGrammarAccess) access;
-		match_constant_SignParserRuleCall_1_0_q = new TokenAlias(false, true, grammarAccess.getConstantAccess().getSignParserRuleCall_1_0());
-		match_formal_parameter_section___FUNCTIONTerminalRuleCall_2_0_or_PROCEDURETerminalRuleCall_3_0_or_VARTerminalRuleCall_1_0__q = new AlternativeAlias(false, true, new TokenAlias(false, false, grammarAccess.getFormal_parameter_sectionAccess().getFUNCTIONTerminalRuleCall_2_0()), new TokenAlias(false, false, grammarAccess.getFormal_parameter_sectionAccess().getPROCEDURETerminalRuleCall_3_0()), new TokenAlias(false, false, grammarAccess.getFormal_parameter_sectionAccess().getVARTerminalRuleCall_1_0()));
+		match_case_statement_SemicolonKeyword_5_q = new TokenAlias(false, true, grammarAccess.getCase_statementAccess().getSemicolonKeyword_5());
 		match_variable_CircumflexAccentKeyword_1_3_a = new TokenAlias(true, true, grammarAccess.getVariableAccess().getCircumflexAccentKeyword_1_3());
 	}
 	
@@ -41,14 +38,12 @@ public class PascalSyntacticSequencer extends AbstractSyntacticSequencer {
 			return getDOTDOTToken(semanticObject, ruleCall, node);
 		else if (ruleCall.getRule() == grammarAccess.getEQUALRule())
 			return getEQUALToken(semanticObject, ruleCall, node);
-		else if (ruleCall.getRule() == grammarAccess.getFUNCTIONRule())
-			return getFUNCTIONToken(semanticObject, ruleCall, node);
 		else if (ruleCall.getRule() == grammarAccess.getNOTRule())
 			return getNOTToken(semanticObject, ruleCall, node);
-		else if (ruleCall.getRule() == grammarAccess.getPROCEDURERule())
-			return getPROCEDUREToken(semanticObject, ruleCall, node);
-		else if (ruleCall.getRule() == grammarAccess.getVARRule())
-			return getVARToken(semanticObject, ruleCall, node);
+		else if (ruleCall.getRule() == grammarAccess.getFunctionRule())
+			return getfunctionToken(semanticObject, ruleCall, node);
+		else if (ruleCall.getRule() == grammarAccess.getProcedureRule())
+			return getprocedureToken(semanticObject, ruleCall, node);
 		else if (ruleCall.getRule() == grammarAccess.getSignRule())
 			return getsignToken(semanticObject, ruleCall, node);
 		return "";
@@ -88,19 +83,8 @@ public class PascalSyntacticSequencer extends AbstractSyntacticSequencer {
 	}
 	
 	/**
-	 * terminal FUNCTION:
-	 * 	('F'|'f')('U'|'u')('N'|'n')('C'|'c')('T'|'t')('I'|'i')('O'|'o')('N'|'n')
-	 * ;
-	 */
-	protected String getFUNCTIONToken(EObject semanticObject, RuleCall ruleCall, INode node) {
-		if (node != null)
-			return getTokenText(node);
-		return "FUNCTION";
-	}
-	
-	/**
 	 * terminal NOT:
-	 * 	('N'|'n')('O'|'o')('T'|'t')
+	 * 	('N'|'n') ('O'|'o') ('T'|'t')	
 	 * ;
 	 */
 	protected String getNOTToken(EObject semanticObject, RuleCall ruleCall, INode node) {
@@ -110,25 +94,25 @@ public class PascalSyntacticSequencer extends AbstractSyntacticSequencer {
 	}
 	
 	/**
-	 * terminal PROCEDURE:
-	 * 	('P'|'p')('R'|'r')('O'|'o')('C'|'c')('E'|'e')('D'|'d')('U'|'u')('R'|'r')('E'|'e')
+	 * function:
+	 * 	'function'
 	 * ;
 	 */
-	protected String getPROCEDUREToken(EObject semanticObject, RuleCall ruleCall, INode node) {
+	protected String getfunctionToken(EObject semanticObject, RuleCall ruleCall, INode node) {
 		if (node != null)
 			return getTokenText(node);
-		return "PROCEDURE";
+		return "function";
 	}
 	
 	/**
-	 * terminal VAR:
-	 * 	('V'|'v')('A'|'a')('R'|'r')
+	 * procedure:
+	 * 	'procedure'
 	 * ;
 	 */
-	protected String getVARToken(EObject semanticObject, RuleCall ruleCall, INode node) {
+	protected String getprocedureToken(EObject semanticObject, RuleCall ruleCall, INode node) {
 		if (node != null)
 			return getTokenText(node);
-		return "VAR";
+		return "procedure";
 	}
 	
 	/**
@@ -149,10 +133,8 @@ public class PascalSyntacticSequencer extends AbstractSyntacticSequencer {
 		List<INode> transitionNodes = collectNodes(fromNode, toNode);
 		for (AbstractElementAlias syntax : transition.getAmbiguousSyntaxes()) {
 			List<INode> syntaxNodes = getNodesFor(transitionNodes, syntax);
-			if (match_constant_SignParserRuleCall_1_0_q.equals(syntax))
-				emit_constant_SignParserRuleCall_1_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if (match_formal_parameter_section___FUNCTIONTerminalRuleCall_2_0_or_PROCEDURETerminalRuleCall_3_0_or_VARTerminalRuleCall_1_0__q.equals(syntax))
-				emit_formal_parameter_section___FUNCTIONTerminalRuleCall_2_0_or_PROCEDURETerminalRuleCall_3_0_or_VARTerminalRuleCall_1_0__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			if (match_case_statement_SemicolonKeyword_5_q.equals(syntax))
+				emit_case_statement_SemicolonKeyword_5_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_variable_CircumflexAccentKeyword_1_3_a.equals(syntax))
 				emit_variable_CircumflexAccentKeyword_1_3_a(semanticObject, getLastNavigableState(), syntaxNodes);
 			else acceptNodes(getLastNavigableState(), syntaxNodes);
@@ -161,27 +143,13 @@ public class PascalSyntacticSequencer extends AbstractSyntacticSequencer {
 
 	/**
 	 * Ambiguous syntax:
-	 *     sign?
+	 *     ';'?
 	 *
 	 * This ambiguous syntax occurs at:
-	 *     (rule start) (ambiguity) numbers+=unsigned_integer
-	 *     (rule start) (ambiguity) numbers+=unsigned_real
-	 *     name=ID EQUAL (ambiguity) numbers+=unsigned_integer
-	 *     name=ID EQUAL (ambiguity) numbers+=unsigned_real
+	 *     case_list+=case_list_element (ambiguity) 'else' case_statements=statements
+	 *     case_list+=case_list_element (ambiguity) 'end' (rule end)
 	 */
-	protected void emit_constant_SignParserRuleCall_1_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Ambiguous syntax:
-	 *     (VAR | FUNCTION | PROCEDURE)?
-	 *
-	 * This ambiguous syntax occurs at:
-	 *     (rule start) '(' (ambiguity) names+=ID
-	 *     (rule start) (ambiguity) names+=ID
-	 */
-	protected void emit_formal_parameter_section___FUNCTIONTerminalRuleCall_2_0_or_PROCEDURETerminalRuleCall_3_0_or_VARTerminalRuleCall_1_0__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_case_statement_SemicolonKeyword_5_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -191,17 +159,21 @@ public class PascalSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *
 	 * This ambiguous syntax occurs at:
 	 *     expression+=expression '.)' (ambiguity) '(.' expression+=expression
-	 *     expression+=expression '.)' (ambiguity) '.' names+=ID
-	 *     expression+=expression '.)' (ambiguity) '[' expression+=expression
+	 *     expression+=expression '.)' (ambiguity) '.' names_exp+=ID
+	 *     expression+=expression '.)' (ambiguity) '[' indice+=expression
 	 *     expression+=expression '.)' (ambiguity) (rule end)
-	 *     expression+=expression ']' (ambiguity) '(.' expression+=expression
-	 *     expression+=expression ']' (ambiguity) '.' names+=ID
-	 *     expression+=expression ']' (ambiguity) '[' expression+=expression
-	 *     expression+=expression ']' (ambiguity) (rule end)
-	 *     names+=ID (ambiguity) '(.' expression+=expression
-	 *     names+=ID (ambiguity) '.' names+=ID
-	 *     names+=ID (ambiguity) '[' expression+=expression
-	 *     names+=ID (ambiguity) (rule end)
+	 *     indice+=expression ']' (ambiguity) '(.' expression+=expression
+	 *     indice+=expression ']' (ambiguity) '.' names_exp+=ID
+	 *     indice+=expression ']' (ambiguity) '[' indice+=expression
+	 *     indice+=expression ']' (ambiguity) (rule end)
+	 *     names_exp+=ID (ambiguity) '(.' expression+=expression
+	 *     names_exp+=ID (ambiguity) '.' names_exp+=ID
+	 *     names_exp+=ID (ambiguity) '[' indice+=expression
+	 *     names_exp+=ID (ambiguity) (rule end)
+	 *     variable_id=ID (ambiguity) '(.' expression+=expression
+	 *     variable_id=ID (ambiguity) '.' names_exp+=ID
+	 *     variable_id=ID (ambiguity) '[' indice+=expression
+	 *     variable_id=ID (ambiguity) (rule end)
 	 */
 	protected void emit_variable_CircumflexAccentKeyword_1_3_a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);

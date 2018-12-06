@@ -3,20 +3,14 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
-import java.util.Collection;
-
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
-import org.eclipse.emf.ecore.util.EDataTypeEList;
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.signed_factor;
@@ -30,9 +24,9 @@ import org.xtext.compiler.pascal.pascal.term;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.termImpl#getFactors <em>Factors</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.termImpl#getOperators <em>Operators</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.termImpl#getTerms <em>Terms</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.termImpl#getFactor <em>Factor</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.termImpl#getOperator <em>Operator</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.termImpl#getTerm2 <em>Term2</em>}</li>
  * </ul>
  *
  * @generated
@@ -40,34 +34,44 @@ import org.xtext.compiler.pascal.pascal.term;
 public class termImpl extends MinimalEObjectImpl.Container implements term
 {
   /**
-   * The cached value of the '{@link #getFactors() <em>Factors</em>}' containment reference list.
+   * The cached value of the '{@link #getFactor() <em>Factor</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getFactors()
+   * @see #getFactor()
    * @generated
    * @ordered
    */
-  protected EList<signed_factor> factors;
+  protected signed_factor factor;
 
   /**
-   * The cached value of the '{@link #getOperators() <em>Operators</em>}' attribute list.
+   * The default value of the '{@link #getOperator() <em>Operator</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getOperators()
+   * @see #getOperator()
    * @generated
    * @ordered
    */
-  protected EList<String> operators;
+  protected static final String OPERATOR_EDEFAULT = null;
 
   /**
-   * The cached value of the '{@link #getTerms() <em>Terms</em>}' containment reference list.
+   * The cached value of the '{@link #getOperator() <em>Operator</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getTerms()
+   * @see #getOperator()
    * @generated
    * @ordered
    */
-  protected EList<term> terms;
+  protected String operator = OPERATOR_EDEFAULT;
+
+  /**
+   * The cached value of the '{@link #getTerm2() <em>Term2</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getTerm2()
+   * @generated
+   * @ordered
+   */
+  protected term term2;
 
   /**
    * <!-- begin-user-doc -->
@@ -95,13 +99,9 @@ public class termImpl extends MinimalEObjectImpl.Container implements term
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<signed_factor> getFactors()
+  public signed_factor getFactor()
   {
-    if (factors == null)
-    {
-      factors = new EObjectContainmentEList<signed_factor>(signed_factor.class, this, PascalPackage.TERM__FACTORS);
-    }
-    return factors;
+    return factor;
   }
 
   /**
@@ -109,13 +109,16 @@ public class termImpl extends MinimalEObjectImpl.Container implements term
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<String> getOperators()
+  public NotificationChain basicSetFactor(signed_factor newFactor, NotificationChain msgs)
   {
-    if (operators == null)
+    signed_factor oldFactor = factor;
+    factor = newFactor;
+    if (eNotificationRequired())
     {
-      operators = new EDataTypeEList<String>(String.class, this, PascalPackage.TERM__OPERATORS);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.TERM__FACTOR, oldFactor, newFactor);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
-    return operators;
+    return msgs;
   }
 
   /**
@@ -123,13 +126,91 @@ public class termImpl extends MinimalEObjectImpl.Container implements term
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<term> getTerms()
+  public void setFactor(signed_factor newFactor)
   {
-    if (terms == null)
+    if (newFactor != factor)
     {
-      terms = new EObjectContainmentEList<term>(term.class, this, PascalPackage.TERM__TERMS);
+      NotificationChain msgs = null;
+      if (factor != null)
+        msgs = ((InternalEObject)factor).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.TERM__FACTOR, null, msgs);
+      if (newFactor != null)
+        msgs = ((InternalEObject)newFactor).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.TERM__FACTOR, null, msgs);
+      msgs = basicSetFactor(newFactor, msgs);
+      if (msgs != null) msgs.dispatch();
     }
-    return terms;
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.TERM__FACTOR, newFactor, newFactor));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String getOperator()
+  {
+    return operator;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setOperator(String newOperator)
+  {
+    String oldOperator = operator;
+    operator = newOperator;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.TERM__OPERATOR, oldOperator, operator));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public term getTerm2()
+  {
+    return term2;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetTerm2(term newTerm2, NotificationChain msgs)
+  {
+    term oldTerm2 = term2;
+    term2 = newTerm2;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.TERM__TERM2, oldTerm2, newTerm2);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setTerm2(term newTerm2)
+  {
+    if (newTerm2 != term2)
+    {
+      NotificationChain msgs = null;
+      if (term2 != null)
+        msgs = ((InternalEObject)term2).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.TERM__TERM2, null, msgs);
+      if (newTerm2 != null)
+        msgs = ((InternalEObject)newTerm2).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.TERM__TERM2, null, msgs);
+      msgs = basicSetTerm2(newTerm2, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.TERM__TERM2, newTerm2, newTerm2));
   }
 
   /**
@@ -142,10 +223,10 @@ public class termImpl extends MinimalEObjectImpl.Container implements term
   {
     switch (featureID)
     {
-      case PascalPackage.TERM__FACTORS:
-        return ((InternalEList<?>)getFactors()).basicRemove(otherEnd, msgs);
-      case PascalPackage.TERM__TERMS:
-        return ((InternalEList<?>)getTerms()).basicRemove(otherEnd, msgs);
+      case PascalPackage.TERM__FACTOR:
+        return basicSetFactor(null, msgs);
+      case PascalPackage.TERM__TERM2:
+        return basicSetTerm2(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -160,12 +241,12 @@ public class termImpl extends MinimalEObjectImpl.Container implements term
   {
     switch (featureID)
     {
-      case PascalPackage.TERM__FACTORS:
-        return getFactors();
-      case PascalPackage.TERM__OPERATORS:
-        return getOperators();
-      case PascalPackage.TERM__TERMS:
-        return getTerms();
+      case PascalPackage.TERM__FACTOR:
+        return getFactor();
+      case PascalPackage.TERM__OPERATOR:
+        return getOperator();
+      case PascalPackage.TERM__TERM2:
+        return getTerm2();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -175,23 +256,19 @@ public class termImpl extends MinimalEObjectImpl.Container implements term
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case PascalPackage.TERM__FACTORS:
-        getFactors().clear();
-        getFactors().addAll((Collection<? extends signed_factor>)newValue);
+      case PascalPackage.TERM__FACTOR:
+        setFactor((signed_factor)newValue);
         return;
-      case PascalPackage.TERM__OPERATORS:
-        getOperators().clear();
-        getOperators().addAll((Collection<? extends String>)newValue);
+      case PascalPackage.TERM__OPERATOR:
+        setOperator((String)newValue);
         return;
-      case PascalPackage.TERM__TERMS:
-        getTerms().clear();
-        getTerms().addAll((Collection<? extends term>)newValue);
+      case PascalPackage.TERM__TERM2:
+        setTerm2((term)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -207,14 +284,14 @@ public class termImpl extends MinimalEObjectImpl.Container implements term
   {
     switch (featureID)
     {
-      case PascalPackage.TERM__FACTORS:
-        getFactors().clear();
+      case PascalPackage.TERM__FACTOR:
+        setFactor((signed_factor)null);
         return;
-      case PascalPackage.TERM__OPERATORS:
-        getOperators().clear();
+      case PascalPackage.TERM__OPERATOR:
+        setOperator(OPERATOR_EDEFAULT);
         return;
-      case PascalPackage.TERM__TERMS:
-        getTerms().clear();
+      case PascalPackage.TERM__TERM2:
+        setTerm2((term)null);
         return;
     }
     super.eUnset(featureID);
@@ -230,12 +307,12 @@ public class termImpl extends MinimalEObjectImpl.Container implements term
   {
     switch (featureID)
     {
-      case PascalPackage.TERM__FACTORS:
-        return factors != null && !factors.isEmpty();
-      case PascalPackage.TERM__OPERATORS:
-        return operators != null && !operators.isEmpty();
-      case PascalPackage.TERM__TERMS:
-        return terms != null && !terms.isEmpty();
+      case PascalPackage.TERM__FACTOR:
+        return factor != null;
+      case PascalPackage.TERM__OPERATOR:
+        return OPERATOR_EDEFAULT == null ? operator != null : !OPERATOR_EDEFAULT.equals(operator);
+      case PascalPackage.TERM__TERM2:
+        return term2 != null;
     }
     return super.eIsSet(featureID);
   }
@@ -251,8 +328,8 @@ public class termImpl extends MinimalEObjectImpl.Container implements term
     if (eIsProxy()) return super.toString();
 
     StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (operators: ");
-    result.append(operators);
+    result.append(" (operator: ");
+    result.append(operator);
     result.append(')');
     return result.toString();
   }

@@ -10,6 +10,12 @@ import org.eclipse.emf.ecore.EObject;
  * A representation of the model object '<em><b>procedure and function declaration part</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.procedure_and_function_declaration_part#getSubroutine <em>Subroutine</em>}</li>
+ * </ul>
  *
  * @see org.xtext.compiler.pascal.pascal.PascalPackage#getprocedure_and_function_declaration_part()
  * @model
@@ -17,4 +23,30 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface procedure_and_function_declaration_part extends EObject
 {
+  /**
+   * Returns the value of the '<em><b>Subroutine</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Subroutine</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Subroutine</em>' containment reference.
+   * @see #setSubroutine(procedure_or_function_declaration)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getprocedure_and_function_declaration_part_Subroutine()
+   * @model containment="true"
+   * @generated
+   */
+  procedure_or_function_declaration getSubroutine();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.procedure_and_function_declaration_part#getSubroutine <em>Subroutine</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Subroutine</em>' containment reference.
+   * @see #getSubroutine()
+   * @generated
+   */
+  void setSubroutine(procedure_or_function_declaration value);
+
 } // procedure_and_function_declaration_part

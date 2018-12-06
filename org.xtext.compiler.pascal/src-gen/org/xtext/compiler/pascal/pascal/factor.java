@@ -3,8 +3,6 @@
  */
 package org.xtext.compiler.pascal.pascal;
 
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -18,10 +16,10 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link org.xtext.compiler.pascal.pascal.factor#getVariable <em>Variable</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.factor#getExpression <em>Expression</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.factor#getFunction <em>Function</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.factor#getConstant <em>Constant</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.factor#getSet <em>Set</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.factor#getFactor <em>Factor</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.factor#getBoolean <em>Boolean</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.factor#getNot_factor <em>Not factor</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.factor#getBool_factor <em>Bool factor</em>}</li>
  * </ul>
  *
  * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfactor()
@@ -83,6 +81,32 @@ public interface factor extends EObject
   void setExpression(expression value);
 
   /**
+   * Returns the value of the '<em><b>Function</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Function</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Function</em>' containment reference.
+   * @see #setFunction(function_designator)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfactor_Function()
+   * @model containment="true"
+   * @generated
+   */
+  function_designator getFunction();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.factor#getFunction <em>Function</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Function</em>' containment reference.
+   * @see #getFunction()
+   * @generated
+   */
+  void setFunction(function_designator value);
+
+  /**
    * Returns the value of the '<em><b>Constant</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
@@ -109,71 +133,55 @@ public interface factor extends EObject
   void setConstant(unsigned_constant value);
 
   /**
-   * Returns the value of the '<em><b>Set</b></em>' containment reference.
+   * Returns the value of the '<em><b>Not factor</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Set</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Not factor</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Set</em>' containment reference.
-   * @see #setSet(set)
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfactor_Set()
+   * @return the value of the '<em>Not factor</em>' containment reference.
+   * @see #setNot_factor(factor)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfactor_Not_factor()
    * @model containment="true"
    * @generated
    */
-  set getSet();
+  factor getNot_factor();
 
   /**
-   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.factor#getSet <em>Set</em>}' containment reference.
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.factor#getNot_factor <em>Not factor</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Set</em>' containment reference.
-   * @see #getSet()
+   * @param value the new value of the '<em>Not factor</em>' containment reference.
+   * @see #getNot_factor()
    * @generated
    */
-  void setSet(set value);
+  void setNot_factor(factor value);
 
   /**
-   * Returns the value of the '<em><b>Factor</b></em>' containment reference.
+   * Returns the value of the '<em><b>Bool factor</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Factor</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Bool factor</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Factor</em>' containment reference.
-   * @see #setFactor(factor)
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfactor_Factor()
-   * @model containment="true"
+   * @return the value of the '<em>Bool factor</em>' attribute.
+   * @see #setBool_factor(String)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfactor_Bool_factor()
+   * @model
    * @generated
    */
-  factor getFactor();
+  String getBool_factor();
 
   /**
-   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.factor#getFactor <em>Factor</em>}' containment reference.
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.factor#getBool_factor <em>Bool factor</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Factor</em>' containment reference.
-   * @see #getFactor()
+   * @param value the new value of the '<em>Bool factor</em>' attribute.
+   * @see #getBool_factor()
    * @generated
    */
-  void setFactor(factor value);
-
-  /**
-   * Returns the value of the '<em><b>Boolean</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Boolean</em>' attribute list isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Boolean</em>' attribute list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getfactor_Boolean()
-   * @model unique="false"
-   * @generated
-   */
-  EList<String> getBoolean();
+  void setBool_factor(String value);
 
 } // factor

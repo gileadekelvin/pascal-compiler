@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.simple_statement;
+import org.xtext.compiler.pascal.pascal.structured_statement;
 import org.xtext.compiler.pascal.pascal.unlabelled_statement;
 
 /**
@@ -43,24 +44,14 @@ public class unlabelled_statementImpl extends MinimalEObjectImpl.Container imple
   protected simple_statement simple;
 
   /**
-   * The default value of the '{@link #getStructured() <em>Structured</em>}' attribute.
+   * The cached value of the '{@link #getStructured() <em>Structured</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getStructured()
    * @generated
    * @ordered
    */
-  protected static final String STRUCTURED_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getStructured() <em>Structured</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getStructured()
-   * @generated
-   * @ordered
-   */
-  protected String structured = STRUCTURED_EDEFAULT;
+  protected structured_statement structured;
 
   /**
    * <!-- begin-user-doc -->
@@ -136,7 +127,7 @@ public class unlabelled_statementImpl extends MinimalEObjectImpl.Container imple
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getStructured()
+  public structured_statement getStructured()
   {
     return structured;
   }
@@ -146,12 +137,37 @@ public class unlabelled_statementImpl extends MinimalEObjectImpl.Container imple
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setStructured(String newStructured)
+  public NotificationChain basicSetStructured(structured_statement newStructured, NotificationChain msgs)
   {
-    String oldStructured = structured;
+    structured_statement oldStructured = structured;
     structured = newStructured;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.UNLABELLED_STATEMENT__STRUCTURED, oldStructured, structured));
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.UNLABELLED_STATEMENT__STRUCTURED, oldStructured, newStructured);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setStructured(structured_statement newStructured)
+  {
+    if (newStructured != structured)
+    {
+      NotificationChain msgs = null;
+      if (structured != null)
+        msgs = ((InternalEObject)structured).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.UNLABELLED_STATEMENT__STRUCTURED, null, msgs);
+      if (newStructured != null)
+        msgs = ((InternalEObject)newStructured).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.UNLABELLED_STATEMENT__STRUCTURED, null, msgs);
+      msgs = basicSetStructured(newStructured, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.UNLABELLED_STATEMENT__STRUCTURED, newStructured, newStructured));
   }
 
   /**
@@ -166,6 +182,8 @@ public class unlabelled_statementImpl extends MinimalEObjectImpl.Container imple
     {
       case PascalPackage.UNLABELLED_STATEMENT__SIMPLE:
         return basicSetSimple(null, msgs);
+      case PascalPackage.UNLABELLED_STATEMENT__STRUCTURED:
+        return basicSetStructured(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -202,7 +220,7 @@ public class unlabelled_statementImpl extends MinimalEObjectImpl.Container imple
         setSimple((simple_statement)newValue);
         return;
       case PascalPackage.UNLABELLED_STATEMENT__STRUCTURED:
-        setStructured((String)newValue);
+        setStructured((structured_statement)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -222,7 +240,7 @@ public class unlabelled_statementImpl extends MinimalEObjectImpl.Container imple
         setSimple((simple_statement)null);
         return;
       case PascalPackage.UNLABELLED_STATEMENT__STRUCTURED:
-        setStructured(STRUCTURED_EDEFAULT);
+        setStructured((structured_statement)null);
         return;
     }
     super.eUnset(featureID);
@@ -241,26 +259,9 @@ public class unlabelled_statementImpl extends MinimalEObjectImpl.Container imple
       case PascalPackage.UNLABELLED_STATEMENT__SIMPLE:
         return simple != null;
       case PascalPackage.UNLABELLED_STATEMENT__STRUCTURED:
-        return STRUCTURED_EDEFAULT == null ? structured != null : !STRUCTURED_EDEFAULT.equals(structured);
+        return structured != null;
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (structured: ");
-    result.append(structured);
-    result.append(')');
-    return result.toString();
   }
 
 } //unlabelled_statementImpl

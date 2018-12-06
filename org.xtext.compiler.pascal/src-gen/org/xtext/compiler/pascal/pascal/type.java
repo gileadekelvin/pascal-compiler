@@ -3,7 +3,6 @@
  */
 package org.xtext.compiler.pascal.pascal;
 
-import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,29 +13,66 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.type#getType <em>Type</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.type#getSimple <em>Simple</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.type#getStructured <em>Structured</em>}</li>
  * </ul>
  *
  * @see org.xtext.compiler.pascal.pascal.PascalPackage#gettype()
  * @model
  * @generated
  */
-public interface type extends type_definition
+public interface type extends component_type
 {
   /**
-   * Returns the value of the '<em><b>Type</b></em>' containment reference list.
-   * The list contents are of type {@link org.xtext.compiler.pascal.pascal.simple_type}.
+   * Returns the value of the '<em><b>Simple</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Type</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Simple</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Type</em>' containment reference list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#gettype_Type()
+   * @return the value of the '<em>Simple</em>' containment reference.
+   * @see #setSimple(simple_type)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#gettype_Simple()
    * @model containment="true"
    * @generated
    */
-  EList<simple_type> getType();
+  simple_type getSimple();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.type#getSimple <em>Simple</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Simple</em>' containment reference.
+   * @see #getSimple()
+   * @generated
+   */
+  void setSimple(simple_type value);
+
+  /**
+   * Returns the value of the '<em><b>Structured</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Structured</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Structured</em>' containment reference.
+   * @see #setStructured(structured_type)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#gettype_Structured()
+   * @model containment="true"
+   * @generated
+   */
+  structured_type getStructured();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.type#getStructured <em>Structured</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Structured</em>' containment reference.
+   * @see #getStructured()
+   * @generated
+   */
+  void setStructured(structured_type value);
 
 } // type

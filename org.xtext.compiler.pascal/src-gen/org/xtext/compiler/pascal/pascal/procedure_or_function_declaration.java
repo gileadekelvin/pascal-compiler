@@ -3,7 +3,7 @@
  */
 package org.xtext.compiler.pascal.pascal;
 
-import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,56 +14,66 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.procedure_or_function_declaration#getNames <em>Names</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.procedure_or_function_declaration#getBlock <em>Block</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.procedure_or_function_declaration#getProc <em>Proc</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.procedure_or_function_declaration#getFunc <em>Func</em>}</li>
  * </ul>
  *
  * @see org.xtext.compiler.pascal.pascal.PascalPackage#getprocedure_or_function_declaration()
  * @model
  * @generated
  */
-public interface procedure_or_function_declaration extends procedure_and_function_declaration_part
+public interface procedure_or_function_declaration extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Names</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * Returns the value of the '<em><b>Proc</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Names</em>' attribute list isn't clear,
+   * If the meaning of the '<em>Proc</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Names</em>' attribute list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getprocedure_or_function_declaration_Names()
-   * @model unique="false"
-   * @generated
-   */
-  EList<String> getNames();
-
-  /**
-   * Returns the value of the '<em><b>Block</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Block</em>' containment reference isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Block</em>' containment reference.
-   * @see #setBlock(block)
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getprocedure_or_function_declaration_Block()
+   * @return the value of the '<em>Proc</em>' containment reference.
+   * @see #setProc(procedure_declaration)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getprocedure_or_function_declaration_Proc()
    * @model containment="true"
    * @generated
    */
-  block getBlock();
+  procedure_declaration getProc();
 
   /**
-   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.procedure_or_function_declaration#getBlock <em>Block</em>}' containment reference.
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.procedure_or_function_declaration#getProc <em>Proc</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Block</em>' containment reference.
-   * @see #getBlock()
+   * @param value the new value of the '<em>Proc</em>' containment reference.
+   * @see #getProc()
    * @generated
    */
-  void setBlock(block value);
+  void setProc(procedure_declaration value);
+
+  /**
+   * Returns the value of the '<em><b>Func</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Func</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Func</em>' containment reference.
+   * @see #setFunc(function_declaration)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getprocedure_or_function_declaration_Func()
+   * @model containment="true"
+   * @generated
+   */
+  function_declaration getFunc();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.procedure_or_function_declaration#getFunc <em>Func</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Func</em>' containment reference.
+   * @see #getFunc()
+   * @generated
+   */
+  void setFunc(function_declaration value);
 
 } // procedure_or_function_declaration

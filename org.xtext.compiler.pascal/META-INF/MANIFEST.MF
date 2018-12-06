@@ -26,5 +26,6 @@ Export-Package: org.xtext.compiler.pascal.services,
  org.xtext.compiler.pascal,
  org.xtext.compiler.pascal.serializer,
  org.xtext.compiler.pascal.pascal.util,
- org.xtext.compiler.pascal.scoping
+ org.xtext.compiler.pascal.scoping,
+ org.xtext.compiler.pascal.parser.antlr.lexer
 Import-Package: org.apache.log4j

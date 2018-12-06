@@ -3,23 +3,16 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
-import java.util.Collection;
-
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.eclipse.emf.ecore.util.EDataTypeEList;
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
-
 import org.xtext.compiler.pascal.pascal.PascalPackage;
-import org.xtext.compiler.pascal.pascal.constant_chr;
 import org.xtext.compiler.pascal.pascal.unsigned_constant;
 import org.xtext.compiler.pascal.pascal.unsigned_number;
 
@@ -32,7 +25,6 @@ import org.xtext.compiler.pascal.pascal.unsigned_number;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.compiler.pascal.pascal.impl.unsigned_constantImpl#getNumber <em>Number</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.unsigned_constantImpl#getChar <em>Char</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.impl.unsigned_constantImpl#getString <em>String</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.impl.unsigned_constantImpl#getNil <em>Nil</em>}</li>
  * </ul>
@@ -42,44 +34,54 @@ import org.xtext.compiler.pascal.pascal.unsigned_number;
 public class unsigned_constantImpl extends MinimalEObjectImpl.Container implements unsigned_constant
 {
   /**
-   * The cached value of the '{@link #getNumber() <em>Number</em>}' containment reference list.
+   * The cached value of the '{@link #getNumber() <em>Number</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getNumber()
    * @generated
    * @ordered
    */
-  protected EList<unsigned_number> number;
+  protected unsigned_number number;
 
   /**
-   * The cached value of the '{@link #getChar() <em>Char</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getChar()
-   * @generated
-   * @ordered
-   */
-  protected EList<constant_chr> char_;
-
-  /**
-   * The cached value of the '{@link #getString() <em>String</em>}' attribute list.
+   * The default value of the '{@link #getString() <em>String</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getString()
    * @generated
    * @ordered
    */
-  protected EList<String> string;
+  protected static final String STRING_EDEFAULT = null;
 
   /**
-   * The cached value of the '{@link #getNil() <em>Nil</em>}' attribute list.
+   * The cached value of the '{@link #getString() <em>String</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getString()
+   * @generated
+   * @ordered
+   */
+  protected String string = STRING_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #getNil() <em>Nil</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getNil()
    * @generated
    * @ordered
    */
-  protected EList<String> nil;
+  protected static final String NIL_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getNil() <em>Nil</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getNil()
+   * @generated
+   * @ordered
+   */
+  protected String nil = NIL_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -107,12 +109,8 @@ public class unsigned_constantImpl extends MinimalEObjectImpl.Container implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<unsigned_number> getNumber()
+  public unsigned_number getNumber()
   {
-    if (number == null)
-    {
-      number = new EObjectContainmentEList<unsigned_number>(unsigned_number.class, this, PascalPackage.UNSIGNED_CONSTANT__NUMBER);
-    }
     return number;
   }
 
@@ -121,13 +119,16 @@ public class unsigned_constantImpl extends MinimalEObjectImpl.Container implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<constant_chr> getChar()
+  public NotificationChain basicSetNumber(unsigned_number newNumber, NotificationChain msgs)
   {
-    if (char_ == null)
+    unsigned_number oldNumber = number;
+    number = newNumber;
+    if (eNotificationRequired())
     {
-      char_ = new EObjectContainmentEList<constant_chr>(constant_chr.class, this, PascalPackage.UNSIGNED_CONSTANT__CHAR);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.UNSIGNED_CONSTANT__NUMBER, oldNumber, newNumber);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
-    return char_;
+    return msgs;
   }
 
   /**
@@ -135,12 +136,29 @@ public class unsigned_constantImpl extends MinimalEObjectImpl.Container implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<String> getString()
+  public void setNumber(unsigned_number newNumber)
   {
-    if (string == null)
+    if (newNumber != number)
     {
-      string = new EDataTypeEList<String>(String.class, this, PascalPackage.UNSIGNED_CONSTANT__STRING);
+      NotificationChain msgs = null;
+      if (number != null)
+        msgs = ((InternalEObject)number).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.UNSIGNED_CONSTANT__NUMBER, null, msgs);
+      if (newNumber != null)
+        msgs = ((InternalEObject)newNumber).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.UNSIGNED_CONSTANT__NUMBER, null, msgs);
+      msgs = basicSetNumber(newNumber, msgs);
+      if (msgs != null) msgs.dispatch();
     }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.UNSIGNED_CONSTANT__NUMBER, newNumber, newNumber));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String getString()
+  {
     return string;
   }
 
@@ -149,13 +167,35 @@ public class unsigned_constantImpl extends MinimalEObjectImpl.Container implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<String> getNil()
+  public void setString(String newString)
   {
-    if (nil == null)
-    {
-      nil = new EDataTypeEList<String>(String.class, this, PascalPackage.UNSIGNED_CONSTANT__NIL);
-    }
+    String oldString = string;
+    string = newString;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.UNSIGNED_CONSTANT__STRING, oldString, string));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String getNil()
+  {
     return nil;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setNil(String newNil)
+  {
+    String oldNil = nil;
+    nil = newNil;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.UNSIGNED_CONSTANT__NIL, oldNil, nil));
   }
 
   /**
@@ -169,9 +209,7 @@ public class unsigned_constantImpl extends MinimalEObjectImpl.Container implemen
     switch (featureID)
     {
       case PascalPackage.UNSIGNED_CONSTANT__NUMBER:
-        return ((InternalEList<?>)getNumber()).basicRemove(otherEnd, msgs);
-      case PascalPackage.UNSIGNED_CONSTANT__CHAR:
-        return ((InternalEList<?>)getChar()).basicRemove(otherEnd, msgs);
+        return basicSetNumber(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -188,8 +226,6 @@ public class unsigned_constantImpl extends MinimalEObjectImpl.Container implemen
     {
       case PascalPackage.UNSIGNED_CONSTANT__NUMBER:
         return getNumber();
-      case PascalPackage.UNSIGNED_CONSTANT__CHAR:
-        return getChar();
       case PascalPackage.UNSIGNED_CONSTANT__STRING:
         return getString();
       case PascalPackage.UNSIGNED_CONSTANT__NIL:
@@ -203,27 +239,19 @@ public class unsigned_constantImpl extends MinimalEObjectImpl.Container implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
       case PascalPackage.UNSIGNED_CONSTANT__NUMBER:
-        getNumber().clear();
-        getNumber().addAll((Collection<? extends unsigned_number>)newValue);
-        return;
-      case PascalPackage.UNSIGNED_CONSTANT__CHAR:
-        getChar().clear();
-        getChar().addAll((Collection<? extends constant_chr>)newValue);
+        setNumber((unsigned_number)newValue);
         return;
       case PascalPackage.UNSIGNED_CONSTANT__STRING:
-        getString().clear();
-        getString().addAll((Collection<? extends String>)newValue);
+        setString((String)newValue);
         return;
       case PascalPackage.UNSIGNED_CONSTANT__NIL:
-        getNil().clear();
-        getNil().addAll((Collection<? extends String>)newValue);
+        setNil((String)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -240,16 +268,13 @@ public class unsigned_constantImpl extends MinimalEObjectImpl.Container implemen
     switch (featureID)
     {
       case PascalPackage.UNSIGNED_CONSTANT__NUMBER:
-        getNumber().clear();
-        return;
-      case PascalPackage.UNSIGNED_CONSTANT__CHAR:
-        getChar().clear();
+        setNumber((unsigned_number)null);
         return;
       case PascalPackage.UNSIGNED_CONSTANT__STRING:
-        getString().clear();
+        setString(STRING_EDEFAULT);
         return;
       case PascalPackage.UNSIGNED_CONSTANT__NIL:
-        getNil().clear();
+        setNil(NIL_EDEFAULT);
         return;
     }
     super.eUnset(featureID);
@@ -266,13 +291,11 @@ public class unsigned_constantImpl extends MinimalEObjectImpl.Container implemen
     switch (featureID)
     {
       case PascalPackage.UNSIGNED_CONSTANT__NUMBER:
-        return number != null && !number.isEmpty();
-      case PascalPackage.UNSIGNED_CONSTANT__CHAR:
-        return char_ != null && !char_.isEmpty();
+        return number != null;
       case PascalPackage.UNSIGNED_CONSTANT__STRING:
-        return string != null && !string.isEmpty();
+        return STRING_EDEFAULT == null ? string != null : !STRING_EDEFAULT.equals(string);
       case PascalPackage.UNSIGNED_CONSTANT__NIL:
-        return nil != null && !nil.isEmpty();
+        return NIL_EDEFAULT == null ? nil != null : !NIL_EDEFAULT.equals(nil);
     }
     return super.eIsSet(featureID);
   }

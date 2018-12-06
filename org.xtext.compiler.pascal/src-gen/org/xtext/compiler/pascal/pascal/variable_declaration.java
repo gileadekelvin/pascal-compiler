@@ -10,6 +10,13 @@ import org.eclipse.emf.ecore.EObject;
  * A representation of the model object '<em><b>variable declaration</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.variable_declaration#getList_names <em>List names</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.variable_declaration#getType_variable <em>Type variable</em>}</li>
+ * </ul>
  *
  * @see org.xtext.compiler.pascal.pascal.PascalPackage#getvariable_declaration()
  * @model
@@ -17,4 +24,56 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface variable_declaration extends EObject
 {
+  /**
+   * Returns the value of the '<em><b>List names</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>List names</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>List names</em>' containment reference.
+   * @see #setList_names(identifier_list)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getvariable_declaration_List_names()
+   * @model containment="true"
+   * @generated
+   */
+  identifier_list getList_names();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.variable_declaration#getList_names <em>List names</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>List names</em>' containment reference.
+   * @see #getList_names()
+   * @generated
+   */
+  void setList_names(identifier_list value);
+
+  /**
+   * Returns the value of the '<em><b>Type variable</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Type variable</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Type variable</em>' containment reference.
+   * @see #setType_variable(type)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getvariable_declaration_Type_variable()
+   * @model containment="true"
+   * @generated
+   */
+  type getType_variable();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.variable_declaration#getType_variable <em>Type variable</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Type variable</em>' containment reference.
+   * @see #getType_variable()
+   * @generated
+   */
+  void setType_variable(type value);
+
 } // variable_declaration

@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.assignment_statement#getVariable <em>Variable</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.assignment_statement#getDeclared_variable <em>Declared variable</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.assignment_statement#getExpression <em>Expression</em>}</li>
  * </ul>
  *
@@ -25,30 +25,30 @@ import org.eclipse.emf.ecore.EObject;
 public interface assignment_statement extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Variable</b></em>' containment reference.
+   * Returns the value of the '<em><b>Declared variable</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Variable</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Declared variable</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Variable</em>' containment reference.
-   * @see #setVariable(variable)
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getassignment_statement_Variable()
+   * @return the value of the '<em>Declared variable</em>' containment reference.
+   * @see #setDeclared_variable(variable)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getassignment_statement_Declared_variable()
    * @model containment="true"
    * @generated
    */
-  variable getVariable();
+  variable getDeclared_variable();
 
   /**
-   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.assignment_statement#getVariable <em>Variable</em>}' containment reference.
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.assignment_statement#getDeclared_variable <em>Declared variable</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Variable</em>' containment reference.
-   * @see #getVariable()
+   * @param value the new value of the '<em>Declared variable</em>' containment reference.
+   * @see #getDeclared_variable()
    * @generated
    */
-  void setVariable(variable value);
+  void setDeclared_variable(variable value);
 
   /**
    * Returns the value of the '<em><b>Expression</b></em>' containment reference.

@@ -25,7 +25,7 @@ import org.xtext.compiler.pascal.pascal.variable;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.assignment_statementImpl#getVariable <em>Variable</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.assignment_statementImpl#getDeclared_variable <em>Declared variable</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.impl.assignment_statementImpl#getExpression <em>Expression</em>}</li>
  * </ul>
  *
@@ -34,14 +34,14 @@ import org.xtext.compiler.pascal.pascal.variable;
 public class assignment_statementImpl extends MinimalEObjectImpl.Container implements assignment_statement
 {
   /**
-   * The cached value of the '{@link #getVariable() <em>Variable</em>}' containment reference.
+   * The cached value of the '{@link #getDeclared_variable() <em>Declared variable</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getVariable()
+   * @see #getDeclared_variable()
    * @generated
    * @ordered
    */
-  protected variable variable;
+  protected variable declared_variable;
 
   /**
    * The cached value of the '{@link #getExpression() <em>Expression</em>}' containment reference.
@@ -79,9 +79,9 @@ public class assignment_statementImpl extends MinimalEObjectImpl.Container imple
    * <!-- end-user-doc -->
    * @generated
    */
-  public variable getVariable()
+  public variable getDeclared_variable()
   {
-    return variable;
+    return declared_variable;
   }
 
   /**
@@ -89,13 +89,13 @@ public class assignment_statementImpl extends MinimalEObjectImpl.Container imple
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetVariable(variable newVariable, NotificationChain msgs)
+  public NotificationChain basicSetDeclared_variable(variable newDeclared_variable, NotificationChain msgs)
   {
-    variable oldVariable = variable;
-    variable = newVariable;
+    variable oldDeclared_variable = declared_variable;
+    declared_variable = newDeclared_variable;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.ASSIGNMENT_STATEMENT__VARIABLE, oldVariable, newVariable);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.ASSIGNMENT_STATEMENT__DECLARED_VARIABLE, oldDeclared_variable, newDeclared_variable);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -106,20 +106,20 @@ public class assignment_statementImpl extends MinimalEObjectImpl.Container imple
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setVariable(variable newVariable)
+  public void setDeclared_variable(variable newDeclared_variable)
   {
-    if (newVariable != variable)
+    if (newDeclared_variable != declared_variable)
     {
       NotificationChain msgs = null;
-      if (variable != null)
-        msgs = ((InternalEObject)variable).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.ASSIGNMENT_STATEMENT__VARIABLE, null, msgs);
-      if (newVariable != null)
-        msgs = ((InternalEObject)newVariable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.ASSIGNMENT_STATEMENT__VARIABLE, null, msgs);
-      msgs = basicSetVariable(newVariable, msgs);
+      if (declared_variable != null)
+        msgs = ((InternalEObject)declared_variable).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.ASSIGNMENT_STATEMENT__DECLARED_VARIABLE, null, msgs);
+      if (newDeclared_variable != null)
+        msgs = ((InternalEObject)newDeclared_variable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.ASSIGNMENT_STATEMENT__DECLARED_VARIABLE, null, msgs);
+      msgs = basicSetDeclared_variable(newDeclared_variable, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.ASSIGNMENT_STATEMENT__VARIABLE, newVariable, newVariable));
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.ASSIGNMENT_STATEMENT__DECLARED_VARIABLE, newDeclared_variable, newDeclared_variable));
   }
 
   /**
@@ -180,8 +180,8 @@ public class assignment_statementImpl extends MinimalEObjectImpl.Container imple
   {
     switch (featureID)
     {
-      case PascalPackage.ASSIGNMENT_STATEMENT__VARIABLE:
-        return basicSetVariable(null, msgs);
+      case PascalPackage.ASSIGNMENT_STATEMENT__DECLARED_VARIABLE:
+        return basicSetDeclared_variable(null, msgs);
       case PascalPackage.ASSIGNMENT_STATEMENT__EXPRESSION:
         return basicSetExpression(null, msgs);
     }
@@ -198,8 +198,8 @@ public class assignment_statementImpl extends MinimalEObjectImpl.Container imple
   {
     switch (featureID)
     {
-      case PascalPackage.ASSIGNMENT_STATEMENT__VARIABLE:
-        return getVariable();
+      case PascalPackage.ASSIGNMENT_STATEMENT__DECLARED_VARIABLE:
+        return getDeclared_variable();
       case PascalPackage.ASSIGNMENT_STATEMENT__EXPRESSION:
         return getExpression();
     }
@@ -216,8 +216,8 @@ public class assignment_statementImpl extends MinimalEObjectImpl.Container imple
   {
     switch (featureID)
     {
-      case PascalPackage.ASSIGNMENT_STATEMENT__VARIABLE:
-        setVariable((variable)newValue);
+      case PascalPackage.ASSIGNMENT_STATEMENT__DECLARED_VARIABLE:
+        setDeclared_variable((variable)newValue);
         return;
       case PascalPackage.ASSIGNMENT_STATEMENT__EXPRESSION:
         setExpression((expression)newValue);
@@ -236,8 +236,8 @@ public class assignment_statementImpl extends MinimalEObjectImpl.Container imple
   {
     switch (featureID)
     {
-      case PascalPackage.ASSIGNMENT_STATEMENT__VARIABLE:
-        setVariable((variable)null);
+      case PascalPackage.ASSIGNMENT_STATEMENT__DECLARED_VARIABLE:
+        setDeclared_variable((variable)null);
         return;
       case PascalPackage.ASSIGNMENT_STATEMENT__EXPRESSION:
         setExpression((expression)null);
@@ -256,8 +256,8 @@ public class assignment_statementImpl extends MinimalEObjectImpl.Container imple
   {
     switch (featureID)
     {
-      case PascalPackage.ASSIGNMENT_STATEMENT__VARIABLE:
-        return variable != null;
+      case PascalPackage.ASSIGNMENT_STATEMENT__DECLARED_VARIABLE:
+        return declared_variable != null;
       case PascalPackage.ASSIGNMENT_STATEMENT__EXPRESSION:
         return expression != null;
     }

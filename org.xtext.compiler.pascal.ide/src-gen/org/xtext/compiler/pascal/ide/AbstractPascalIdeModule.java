@@ -17,7 +17,7 @@ import org.eclipse.xtext.ide.refactoring.IRenameStrategy2;
 import org.eclipse.xtext.ide.server.rename.IRenameService;
 import org.eclipse.xtext.ide.server.rename.RenameService;
 import org.xtext.compiler.pascal.ide.contentassist.antlr.PascalParser;
-import org.xtext.compiler.pascal.ide.contentassist.antlr.internal.InternalPascalLexer;
+import org.xtext.compiler.pascal.ide.contentassist.antlr.lexer.InternalPascalLexer;
 
 /**
  * Manual modifications go to {@link PascalIdeModule}.

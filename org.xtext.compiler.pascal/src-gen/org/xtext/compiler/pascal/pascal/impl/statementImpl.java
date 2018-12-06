@@ -5,7 +5,6 @@ package org.xtext.compiler.pascal.pascal.impl;
 
 import java.util.Collection;
 
-import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
@@ -13,14 +12,12 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
-import org.xtext.compiler.pascal.pascal.label;
 import org.xtext.compiler.pascal.pascal.statement;
 import org.xtext.compiler.pascal.pascal.unlabelled_statement;
 
@@ -32,7 +29,6 @@ import org.xtext.compiler.pascal.pascal.unlabelled_statement;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.statementImpl#getLabel <em>Label</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.impl.statementImpl#getStatement <em>Statement</em>}</li>
  * </ul>
  *
@@ -40,16 +36,6 @@ import org.xtext.compiler.pascal.pascal.unlabelled_statement;
  */
 public class statementImpl extends MinimalEObjectImpl.Container implements statement
 {
-  /**
-   * The cached value of the '{@link #getLabel() <em>Label</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getLabel()
-   * @generated
-   * @ordered
-   */
-  protected label label;
-
   /**
    * The cached value of the '{@link #getStatement() <em>Statement</em>}' containment reference list.
    * <!-- begin-user-doc -->
@@ -86,54 +72,6 @@ public class statementImpl extends MinimalEObjectImpl.Container implements state
    * <!-- end-user-doc -->
    * @generated
    */
-  public label getLabel()
-  {
-    return label;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetLabel(label newLabel, NotificationChain msgs)
-  {
-    label oldLabel = label;
-    label = newLabel;
-    if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.STATEMENT__LABEL, oldLabel, newLabel);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setLabel(label newLabel)
-  {
-    if (newLabel != label)
-    {
-      NotificationChain msgs = null;
-      if (label != null)
-        msgs = ((InternalEObject)label).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.STATEMENT__LABEL, null, msgs);
-      if (newLabel != null)
-        msgs = ((InternalEObject)newLabel).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.STATEMENT__LABEL, null, msgs);
-      msgs = basicSetLabel(newLabel, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.STATEMENT__LABEL, newLabel, newLabel));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EList<unlabelled_statement> getStatement()
   {
     if (statement == null)
@@ -153,8 +91,6 @@ public class statementImpl extends MinimalEObjectImpl.Container implements state
   {
     switch (featureID)
     {
-      case PascalPackage.STATEMENT__LABEL:
-        return basicSetLabel(null, msgs);
       case PascalPackage.STATEMENT__STATEMENT:
         return ((InternalEList<?>)getStatement()).basicRemove(otherEnd, msgs);
     }
@@ -171,8 +107,6 @@ public class statementImpl extends MinimalEObjectImpl.Container implements state
   {
     switch (featureID)
     {
-      case PascalPackage.STATEMENT__LABEL:
-        return getLabel();
       case PascalPackage.STATEMENT__STATEMENT:
         return getStatement();
     }
@@ -190,9 +124,6 @@ public class statementImpl extends MinimalEObjectImpl.Container implements state
   {
     switch (featureID)
     {
-      case PascalPackage.STATEMENT__LABEL:
-        setLabel((label)newValue);
-        return;
       case PascalPackage.STATEMENT__STATEMENT:
         getStatement().clear();
         getStatement().addAll((Collection<? extends unlabelled_statement>)newValue);
@@ -211,9 +142,6 @@ public class statementImpl extends MinimalEObjectImpl.Container implements state
   {
     switch (featureID)
     {
-      case PascalPackage.STATEMENT__LABEL:
-        setLabel((label)null);
-        return;
       case PascalPackage.STATEMENT__STATEMENT:
         getStatement().clear();
         return;
@@ -231,8 +159,6 @@ public class statementImpl extends MinimalEObjectImpl.Container implements state
   {
     switch (featureID)
     {
-      case PascalPackage.STATEMENT__LABEL:
-        return label != null;
       case PascalPackage.STATEMENT__STATEMENT:
         return statement != null && !statement.isEmpty();
     }

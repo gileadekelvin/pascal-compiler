@@ -3,7 +3,6 @@
  */
 package org.xtext.compiler.pascal.pascal;
 
-import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,9 +13,12 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.constant#getNames <em>Names</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.constant#getUns_number <em>Uns number</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.constant#getSig_number <em>Sig number</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.constant#getName_id <em>Name id</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.constant#getSig_name_id <em>Sig name id</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.constant#getString <em>String</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.constant#getNumbers <em>Numbers</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.constant#getBooltype <em>Booltype</em>}</li>
  * </ul>
  *
  * @see org.xtext.compiler.pascal.pascal.PascalPackage#getconstant()
@@ -26,51 +28,159 @@ import org.eclipse.emf.common.util.EList;
 public interface constant extends constant_definition
 {
   /**
-   * Returns the value of the '<em><b>Names</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * Returns the value of the '<em><b>Uns number</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Names</em>' attribute list isn't clear,
+   * If the meaning of the '<em>Uns number</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Names</em>' attribute list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getconstant_Names()
-   * @model unique="false"
+   * @return the value of the '<em>Uns number</em>' containment reference.
+   * @see #setUns_number(unsigned_number)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getconstant_Uns_number()
+   * @model containment="true"
    * @generated
    */
-  EList<String> getNames();
+  unsigned_number getUns_number();
 
   /**
-   * Returns the value of the '<em><b>String</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.constant#getUns_number <em>Uns number</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Uns number</em>' containment reference.
+   * @see #getUns_number()
+   * @generated
+   */
+  void setUns_number(unsigned_number value);
+
+  /**
+   * Returns the value of the '<em><b>Sig number</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>String</em>' attribute list isn't clear,
+   * If the meaning of the '<em>Sig number</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>String</em>' attribute list.
+   * @return the value of the '<em>Sig number</em>' containment reference.
+   * @see #setSig_number(unsigned_number)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getconstant_Sig_number()
+   * @model containment="true"
+   * @generated
+   */
+  unsigned_number getSig_number();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.constant#getSig_number <em>Sig number</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Sig number</em>' containment reference.
+   * @see #getSig_number()
+   * @generated
+   */
+  void setSig_number(unsigned_number value);
+
+  /**
+   * Returns the value of the '<em><b>Name id</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Name id</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Name id</em>' attribute.
+   * @see #setName_id(String)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getconstant_Name_id()
+   * @model
+   * @generated
+   */
+  String getName_id();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.constant#getName_id <em>Name id</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Name id</em>' attribute.
+   * @see #getName_id()
+   * @generated
+   */
+  void setName_id(String value);
+
+  /**
+   * Returns the value of the '<em><b>Sig name id</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Sig name id</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Sig name id</em>' attribute.
+   * @see #setSig_name_id(String)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getconstant_Sig_name_id()
+   * @model
+   * @generated
+   */
+  String getSig_name_id();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.constant#getSig_name_id <em>Sig name id</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Sig name id</em>' attribute.
+   * @see #getSig_name_id()
+   * @generated
+   */
+  void setSig_name_id(String value);
+
+  /**
+   * Returns the value of the '<em><b>String</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>String</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>String</em>' attribute.
+   * @see #setString(String)
    * @see org.xtext.compiler.pascal.pascal.PascalPackage#getconstant_String()
-   * @model unique="false"
+   * @model
    * @generated
    */
-  EList<String> getString();
+  String getString();
 
   /**
-   * Returns the value of the '<em><b>Numbers</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.constant#getString <em>String</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>String</em>' attribute.
+   * @see #getString()
+   * @generated
+   */
+  void setString(String value);
+
+  /**
+   * Returns the value of the '<em><b>Booltype</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Numbers</em>' attribute list isn't clear,
+   * If the meaning of the '<em>Booltype</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Numbers</em>' attribute list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getconstant_Numbers()
-   * @model unique="false"
+   * @return the value of the '<em>Booltype</em>' attribute.
+   * @see #setBooltype(String)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getconstant_Booltype()
+   * @model
    * @generated
    */
-  EList<String> getNumbers();
+  String getBooltype();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.constant#getBooltype <em>Booltype</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Booltype</em>' attribute.
+   * @see #getBooltype()
+   * @generated
+   */
+  void setBooltype(String value);
 
 } // constant

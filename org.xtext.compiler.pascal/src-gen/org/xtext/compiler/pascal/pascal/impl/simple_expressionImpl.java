@@ -3,20 +3,14 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
-import java.util.Collection;
-
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
-import org.eclipse.emf.ecore.util.EDataTypeEList;
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.simple_expression;
@@ -30,8 +24,8 @@ import org.xtext.compiler.pascal.pascal.term;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.simple_expressionImpl#getTerms <em>Terms</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.simple_expressionImpl#getOperators <em>Operators</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.simple_expressionImpl#getTerm_exp <em>Term exp</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.simple_expressionImpl#getOperator <em>Operator</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.impl.simple_expressionImpl#getExpression <em>Expression</em>}</li>
  * </ul>
  *
@@ -40,34 +34,44 @@ import org.xtext.compiler.pascal.pascal.term;
 public class simple_expressionImpl extends MinimalEObjectImpl.Container implements simple_expression
 {
   /**
-   * The cached value of the '{@link #getTerms() <em>Terms</em>}' containment reference list.
+   * The cached value of the '{@link #getTerm_exp() <em>Term exp</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getTerms()
+   * @see #getTerm_exp()
    * @generated
    * @ordered
    */
-  protected EList<term> terms;
+  protected term term_exp;
 
   /**
-   * The cached value of the '{@link #getOperators() <em>Operators</em>}' attribute list.
+   * The default value of the '{@link #getOperator() <em>Operator</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getOperators()
+   * @see #getOperator()
    * @generated
    * @ordered
    */
-  protected EList<String> operators;
+  protected static final String OPERATOR_EDEFAULT = null;
 
   /**
-   * The cached value of the '{@link #getExpression() <em>Expression</em>}' containment reference list.
+   * The cached value of the '{@link #getOperator() <em>Operator</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getOperator()
+   * @generated
+   * @ordered
+   */
+  protected String operator = OPERATOR_EDEFAULT;
+
+  /**
+   * The cached value of the '{@link #getExpression() <em>Expression</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getExpression()
    * @generated
    * @ordered
    */
-  protected EList<simple_expression> expression;
+  protected simple_expression expression;
 
   /**
    * <!-- begin-user-doc -->
@@ -95,13 +99,9 @@ public class simple_expressionImpl extends MinimalEObjectImpl.Container implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<term> getTerms()
+  public term getTerm_exp()
   {
-    if (terms == null)
-    {
-      terms = new EObjectContainmentEList<term>(term.class, this, PascalPackage.SIMPLE_EXPRESSION__TERMS);
-    }
-    return terms;
+    return term_exp;
   }
 
   /**
@@ -109,13 +109,16 @@ public class simple_expressionImpl extends MinimalEObjectImpl.Container implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<String> getOperators()
+  public NotificationChain basicSetTerm_exp(term newTerm_exp, NotificationChain msgs)
   {
-    if (operators == null)
+    term oldTerm_exp = term_exp;
+    term_exp = newTerm_exp;
+    if (eNotificationRequired())
     {
-      operators = new EDataTypeEList<String>(String.class, this, PascalPackage.SIMPLE_EXPRESSION__OPERATORS);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.SIMPLE_EXPRESSION__TERM_EXP, oldTerm_exp, newTerm_exp);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
-    return operators;
+    return msgs;
   }
 
   /**
@@ -123,13 +126,91 @@ public class simple_expressionImpl extends MinimalEObjectImpl.Container implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<simple_expression> getExpression()
+  public void setTerm_exp(term newTerm_exp)
   {
-    if (expression == null)
+    if (newTerm_exp != term_exp)
     {
-      expression = new EObjectContainmentEList<simple_expression>(simple_expression.class, this, PascalPackage.SIMPLE_EXPRESSION__EXPRESSION);
+      NotificationChain msgs = null;
+      if (term_exp != null)
+        msgs = ((InternalEObject)term_exp).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.SIMPLE_EXPRESSION__TERM_EXP, null, msgs);
+      if (newTerm_exp != null)
+        msgs = ((InternalEObject)newTerm_exp).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.SIMPLE_EXPRESSION__TERM_EXP, null, msgs);
+      msgs = basicSetTerm_exp(newTerm_exp, msgs);
+      if (msgs != null) msgs.dispatch();
     }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.SIMPLE_EXPRESSION__TERM_EXP, newTerm_exp, newTerm_exp));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String getOperator()
+  {
+    return operator;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setOperator(String newOperator)
+  {
+    String oldOperator = operator;
+    operator = newOperator;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.SIMPLE_EXPRESSION__OPERATOR, oldOperator, operator));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public simple_expression getExpression()
+  {
     return expression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetExpression(simple_expression newExpression, NotificationChain msgs)
+  {
+    simple_expression oldExpression = expression;
+    expression = newExpression;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.SIMPLE_EXPRESSION__EXPRESSION, oldExpression, newExpression);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setExpression(simple_expression newExpression)
+  {
+    if (newExpression != expression)
+    {
+      NotificationChain msgs = null;
+      if (expression != null)
+        msgs = ((InternalEObject)expression).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.SIMPLE_EXPRESSION__EXPRESSION, null, msgs);
+      if (newExpression != null)
+        msgs = ((InternalEObject)newExpression).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.SIMPLE_EXPRESSION__EXPRESSION, null, msgs);
+      msgs = basicSetExpression(newExpression, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.SIMPLE_EXPRESSION__EXPRESSION, newExpression, newExpression));
   }
 
   /**
@@ -142,10 +223,10 @@ public class simple_expressionImpl extends MinimalEObjectImpl.Container implemen
   {
     switch (featureID)
     {
-      case PascalPackage.SIMPLE_EXPRESSION__TERMS:
-        return ((InternalEList<?>)getTerms()).basicRemove(otherEnd, msgs);
+      case PascalPackage.SIMPLE_EXPRESSION__TERM_EXP:
+        return basicSetTerm_exp(null, msgs);
       case PascalPackage.SIMPLE_EXPRESSION__EXPRESSION:
-        return ((InternalEList<?>)getExpression()).basicRemove(otherEnd, msgs);
+        return basicSetExpression(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -160,10 +241,10 @@ public class simple_expressionImpl extends MinimalEObjectImpl.Container implemen
   {
     switch (featureID)
     {
-      case PascalPackage.SIMPLE_EXPRESSION__TERMS:
-        return getTerms();
-      case PascalPackage.SIMPLE_EXPRESSION__OPERATORS:
-        return getOperators();
+      case PascalPackage.SIMPLE_EXPRESSION__TERM_EXP:
+        return getTerm_exp();
+      case PascalPackage.SIMPLE_EXPRESSION__OPERATOR:
+        return getOperator();
       case PascalPackage.SIMPLE_EXPRESSION__EXPRESSION:
         return getExpression();
     }
@@ -175,23 +256,19 @@ public class simple_expressionImpl extends MinimalEObjectImpl.Container implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case PascalPackage.SIMPLE_EXPRESSION__TERMS:
-        getTerms().clear();
-        getTerms().addAll((Collection<? extends term>)newValue);
+      case PascalPackage.SIMPLE_EXPRESSION__TERM_EXP:
+        setTerm_exp((term)newValue);
         return;
-      case PascalPackage.SIMPLE_EXPRESSION__OPERATORS:
-        getOperators().clear();
-        getOperators().addAll((Collection<? extends String>)newValue);
+      case PascalPackage.SIMPLE_EXPRESSION__OPERATOR:
+        setOperator((String)newValue);
         return;
       case PascalPackage.SIMPLE_EXPRESSION__EXPRESSION:
-        getExpression().clear();
-        getExpression().addAll((Collection<? extends simple_expression>)newValue);
+        setExpression((simple_expression)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -207,14 +284,14 @@ public class simple_expressionImpl extends MinimalEObjectImpl.Container implemen
   {
     switch (featureID)
     {
-      case PascalPackage.SIMPLE_EXPRESSION__TERMS:
-        getTerms().clear();
+      case PascalPackage.SIMPLE_EXPRESSION__TERM_EXP:
+        setTerm_exp((term)null);
         return;
-      case PascalPackage.SIMPLE_EXPRESSION__OPERATORS:
-        getOperators().clear();
+      case PascalPackage.SIMPLE_EXPRESSION__OPERATOR:
+        setOperator(OPERATOR_EDEFAULT);
         return;
       case PascalPackage.SIMPLE_EXPRESSION__EXPRESSION:
-        getExpression().clear();
+        setExpression((simple_expression)null);
         return;
     }
     super.eUnset(featureID);
@@ -230,12 +307,12 @@ public class simple_expressionImpl extends MinimalEObjectImpl.Container implemen
   {
     switch (featureID)
     {
-      case PascalPackage.SIMPLE_EXPRESSION__TERMS:
-        return terms != null && !terms.isEmpty();
-      case PascalPackage.SIMPLE_EXPRESSION__OPERATORS:
-        return operators != null && !operators.isEmpty();
+      case PascalPackage.SIMPLE_EXPRESSION__TERM_EXP:
+        return term_exp != null;
+      case PascalPackage.SIMPLE_EXPRESSION__OPERATOR:
+        return OPERATOR_EDEFAULT == null ? operator != null : !OPERATOR_EDEFAULT.equals(operator);
       case PascalPackage.SIMPLE_EXPRESSION__EXPRESSION:
-        return expression != null && !expression.isEmpty();
+        return expression != null;
     }
     return super.eIsSet(featureID);
   }
@@ -251,8 +328,8 @@ public class simple_expressionImpl extends MinimalEObjectImpl.Container implemen
     if (eIsProxy()) return super.toString();
 
     StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (operators: ");
-    result.append(operators);
+    result.append(" (operator: ");
+    result.append(operator);
     result.append(')');
     return result.toString();
   }

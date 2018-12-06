@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.compiler.pascal.pascal.block#getConstantpart <em>Constantpart</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.block#getType_part <em>Type part</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.block#getVariablepart <em>Variablepart</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.block#getProcedure_function_part <em>Procedure function part</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.block#getStatement <em>Statement</em>}</li>
@@ -43,6 +44,22 @@ public interface block extends EObject
    * @generated
    */
   EList<constant_definition_part> getConstantpart();
+
+  /**
+   * Returns the value of the '<em><b>Type part</b></em>' containment reference list.
+   * The list contents are of type {@link org.xtext.compiler.pascal.pascal.type_definition_part}.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Type part</em>' containment reference list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Type part</em>' containment reference list.
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getblock_Type_part()
+   * @model containment="true"
+   * @generated
+   */
+  EList<type_definition_part> getType_part();
 
   /**
    * Returns the value of the '<em><b>Variablepart</b></em>' containment reference list.

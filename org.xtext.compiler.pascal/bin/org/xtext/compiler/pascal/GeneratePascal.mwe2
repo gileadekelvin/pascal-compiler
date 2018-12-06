@@ -44,6 +44,14 @@ Workflow {
 			junitSupport = {
 				junitVersion = "5"
 			}
+			parserGenerator = {
+                options = {
+					ignoreCase=true
+				}
+            }
+            scopeProvider = {
+					ignoreCase = true //Case Insensitive "name=ID" 
+			}
 		}
 	}
 }

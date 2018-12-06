@@ -10,19 +10,16 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.util.EDataTypeEList;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
-import org.xtext.compiler.pascal.pascal.formal_parameter_list;
-import org.xtext.compiler.pascal.pascal.formal_parameter_section;
+import org.xtext.compiler.pascal.pascal.identifier;
 import org.xtext.compiler.pascal.pascal.identifier_list;
-import org.xtext.compiler.pascal.pascal.parameter_group;
-import org.xtext.compiler.pascal.pascal.scalar_type;
 
 /**
  * <!-- begin-user-doc -->
@@ -32,33 +29,22 @@ import org.xtext.compiler.pascal.pascal.scalar_type;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.identifier_listImpl#getTypes <em>Types</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.impl.identifier_listImpl#getNames <em>Names</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class identifier_listImpl extends variable_declarationImpl implements identifier_list
+public class identifier_listImpl extends MinimalEObjectImpl.Container implements identifier_list
 {
   /**
-   * The cached value of the '{@link #getTypes() <em>Types</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getTypes()
-   * @generated
-   * @ordered
-   */
-  protected EList<EObject> types;
-
-  /**
-   * The cached value of the '{@link #getNames() <em>Names</em>}' attribute list.
+   * The cached value of the '{@link #getNames() <em>Names</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getNames()
    * @generated
    * @ordered
    */
-  protected EList<String> names;
+  protected EList<identifier> names;
 
   /**
    * <!-- begin-user-doc -->
@@ -86,25 +72,11 @@ public class identifier_listImpl extends variable_declarationImpl implements ide
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<EObject> getTypes()
-  {
-    if (types == null)
-    {
-      types = new EObjectContainmentEList<EObject>(EObject.class, this, PascalPackage.IDENTIFIER_LIST__TYPES);
-    }
-    return types;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EList<String> getNames()
+  public EList<identifier> getNames()
   {
     if (names == null)
     {
-      names = new EDataTypeEList<String>(String.class, this, PascalPackage.IDENTIFIER_LIST__NAMES);
+      names = new EObjectContainmentEList<identifier>(identifier.class, this, PascalPackage.IDENTIFIER_LIST__NAMES);
     }
     return names;
   }
@@ -119,8 +91,8 @@ public class identifier_listImpl extends variable_declarationImpl implements ide
   {
     switch (featureID)
     {
-      case PascalPackage.IDENTIFIER_LIST__TYPES:
-        return ((InternalEList<?>)getTypes()).basicRemove(otherEnd, msgs);
+      case PascalPackage.IDENTIFIER_LIST__NAMES:
+        return ((InternalEList<?>)getNames()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -135,8 +107,6 @@ public class identifier_listImpl extends variable_declarationImpl implements ide
   {
     switch (featureID)
     {
-      case PascalPackage.IDENTIFIER_LIST__TYPES:
-        return getTypes();
       case PascalPackage.IDENTIFIER_LIST__NAMES:
         return getNames();
     }
@@ -154,13 +124,9 @@ public class identifier_listImpl extends variable_declarationImpl implements ide
   {
     switch (featureID)
     {
-      case PascalPackage.IDENTIFIER_LIST__TYPES:
-        getTypes().clear();
-        getTypes().addAll((Collection<? extends EObject>)newValue);
-        return;
       case PascalPackage.IDENTIFIER_LIST__NAMES:
         getNames().clear();
-        getNames().addAll((Collection<? extends String>)newValue);
+        getNames().addAll((Collection<? extends identifier>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -176,9 +142,6 @@ public class identifier_listImpl extends variable_declarationImpl implements ide
   {
     switch (featureID)
     {
-      case PascalPackage.IDENTIFIER_LIST__TYPES:
-        getTypes().clear();
-        return;
       case PascalPackage.IDENTIFIER_LIST__NAMES:
         getNames().clear();
         return;
@@ -196,109 +159,10 @@ public class identifier_listImpl extends variable_declarationImpl implements ide
   {
     switch (featureID)
     {
-      case PascalPackage.IDENTIFIER_LIST__TYPES:
-        return types != null && !types.isEmpty();
       case PascalPackage.IDENTIFIER_LIST__NAMES:
         return names != null && !names.isEmpty();
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
-  {
-    if (baseClass == scalar_type.class)
-    {
-      switch (derivedFeatureID)
-      {
-        default: return -1;
-      }
-    }
-    if (baseClass == formal_parameter_list.class)
-    {
-      switch (derivedFeatureID)
-      {
-        default: return -1;
-      }
-    }
-    if (baseClass == formal_parameter_section.class)
-    {
-      switch (derivedFeatureID)
-      {
-        case PascalPackage.IDENTIFIER_LIST__TYPES: return PascalPackage.FORMAL_PARAMETER_SECTION__TYPES;
-        default: return -1;
-      }
-    }
-    if (baseClass == parameter_group.class)
-    {
-      switch (derivedFeatureID)
-      {
-        default: return -1;
-      }
-    }
-    return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
-  {
-    if (baseClass == scalar_type.class)
-    {
-      switch (baseFeatureID)
-      {
-        default: return -1;
-      }
-    }
-    if (baseClass == formal_parameter_list.class)
-    {
-      switch (baseFeatureID)
-      {
-        default: return -1;
-      }
-    }
-    if (baseClass == formal_parameter_section.class)
-    {
-      switch (baseFeatureID)
-      {
-        case PascalPackage.FORMAL_PARAMETER_SECTION__TYPES: return PascalPackage.IDENTIFIER_LIST__TYPES;
-        default: return -1;
-      }
-    }
-    if (baseClass == parameter_group.class)
-    {
-      switch (baseFeatureID)
-      {
-        default: return -1;
-      }
-    }
-    return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (names: ");
-    result.append(names);
-    result.append(')');
-    return result.toString();
   }
 
 } //identifier_listImpl

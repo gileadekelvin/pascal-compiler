@@ -3,18 +3,14 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
-import java.util.Collection;
-
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.util.EDataTypeEList;
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.function_designator;
@@ -28,33 +24,43 @@ import org.xtext.compiler.pascal.pascal.parameter_list;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.function_designatorImpl#getNames <em>Names</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.function_designatorImpl#getTypes <em>Types</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.function_designatorImpl#getName_function <em>Name function</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.function_designatorImpl#getParameters <em>Parameters</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class function_designatorImpl extends factorImpl implements function_designator
+public class function_designatorImpl extends MinimalEObjectImpl.Container implements function_designator
 {
   /**
-   * The cached value of the '{@link #getNames() <em>Names</em>}' attribute list.
+   * The default value of the '{@link #getName_function() <em>Name function</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getNames()
+   * @see #getName_function()
    * @generated
    * @ordered
    */
-  protected EList<String> names;
+  protected static final String NAME_FUNCTION_EDEFAULT = null;
 
   /**
-   * The cached value of the '{@link #getTypes() <em>Types</em>}' containment reference list.
+   * The cached value of the '{@link #getName_function() <em>Name function</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getTypes()
+   * @see #getName_function()
    * @generated
    * @ordered
    */
-  protected EList<parameter_list> types;
+  protected String name_function = NAME_FUNCTION_EDEFAULT;
+
+  /**
+   * The cached value of the '{@link #getParameters() <em>Parameters</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getParameters()
+   * @generated
+   * @ordered
+   */
+  protected parameter_list parameters;
 
   /**
    * <!-- begin-user-doc -->
@@ -82,13 +88,9 @@ public class function_designatorImpl extends factorImpl implements function_desi
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<String> getNames()
+  public String getName_function()
   {
-    if (names == null)
-    {
-      names = new EDataTypeEList<String>(String.class, this, PascalPackage.FUNCTION_DESIGNATOR__NAMES);
-    }
-    return names;
+    return name_function;
   }
 
   /**
@@ -96,13 +98,60 @@ public class function_designatorImpl extends factorImpl implements function_desi
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<parameter_list> getTypes()
+  public void setName_function(String newName_function)
   {
-    if (types == null)
+    String oldName_function = name_function;
+    name_function = newName_function;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.FUNCTION_DESIGNATOR__NAME_FUNCTION, oldName_function, name_function));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public parameter_list getParameters()
+  {
+    return parameters;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetParameters(parameter_list newParameters, NotificationChain msgs)
+  {
+    parameter_list oldParameters = parameters;
+    parameters = newParameters;
+    if (eNotificationRequired())
     {
-      types = new EObjectContainmentEList<parameter_list>(parameter_list.class, this, PascalPackage.FUNCTION_DESIGNATOR__TYPES);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.FUNCTION_DESIGNATOR__PARAMETERS, oldParameters, newParameters);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
-    return types;
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setParameters(parameter_list newParameters)
+  {
+    if (newParameters != parameters)
+    {
+      NotificationChain msgs = null;
+      if (parameters != null)
+        msgs = ((InternalEObject)parameters).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.FUNCTION_DESIGNATOR__PARAMETERS, null, msgs);
+      if (newParameters != null)
+        msgs = ((InternalEObject)newParameters).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.FUNCTION_DESIGNATOR__PARAMETERS, null, msgs);
+      msgs = basicSetParameters(newParameters, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.FUNCTION_DESIGNATOR__PARAMETERS, newParameters, newParameters));
   }
 
   /**
@@ -115,8 +164,8 @@ public class function_designatorImpl extends factorImpl implements function_desi
   {
     switch (featureID)
     {
-      case PascalPackage.FUNCTION_DESIGNATOR__TYPES:
-        return ((InternalEList<?>)getTypes()).basicRemove(otherEnd, msgs);
+      case PascalPackage.FUNCTION_DESIGNATOR__PARAMETERS:
+        return basicSetParameters(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -131,10 +180,10 @@ public class function_designatorImpl extends factorImpl implements function_desi
   {
     switch (featureID)
     {
-      case PascalPackage.FUNCTION_DESIGNATOR__NAMES:
-        return getNames();
-      case PascalPackage.FUNCTION_DESIGNATOR__TYPES:
-        return getTypes();
+      case PascalPackage.FUNCTION_DESIGNATOR__NAME_FUNCTION:
+        return getName_function();
+      case PascalPackage.FUNCTION_DESIGNATOR__PARAMETERS:
+        return getParameters();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -144,19 +193,16 @@ public class function_designatorImpl extends factorImpl implements function_desi
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case PascalPackage.FUNCTION_DESIGNATOR__NAMES:
-        getNames().clear();
-        getNames().addAll((Collection<? extends String>)newValue);
+      case PascalPackage.FUNCTION_DESIGNATOR__NAME_FUNCTION:
+        setName_function((String)newValue);
         return;
-      case PascalPackage.FUNCTION_DESIGNATOR__TYPES:
-        getTypes().clear();
-        getTypes().addAll((Collection<? extends parameter_list>)newValue);
+      case PascalPackage.FUNCTION_DESIGNATOR__PARAMETERS:
+        setParameters((parameter_list)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -172,11 +218,11 @@ public class function_designatorImpl extends factorImpl implements function_desi
   {
     switch (featureID)
     {
-      case PascalPackage.FUNCTION_DESIGNATOR__NAMES:
-        getNames().clear();
+      case PascalPackage.FUNCTION_DESIGNATOR__NAME_FUNCTION:
+        setName_function(NAME_FUNCTION_EDEFAULT);
         return;
-      case PascalPackage.FUNCTION_DESIGNATOR__TYPES:
-        getTypes().clear();
+      case PascalPackage.FUNCTION_DESIGNATOR__PARAMETERS:
+        setParameters((parameter_list)null);
         return;
     }
     super.eUnset(featureID);
@@ -192,10 +238,10 @@ public class function_designatorImpl extends factorImpl implements function_desi
   {
     switch (featureID)
     {
-      case PascalPackage.FUNCTION_DESIGNATOR__NAMES:
-        return names != null && !names.isEmpty();
-      case PascalPackage.FUNCTION_DESIGNATOR__TYPES:
-        return types != null && !types.isEmpty();
+      case PascalPackage.FUNCTION_DESIGNATOR__NAME_FUNCTION:
+        return NAME_FUNCTION_EDEFAULT == null ? name_function != null : !NAME_FUNCTION_EDEFAULT.equals(name_function);
+      case PascalPackage.FUNCTION_DESIGNATOR__PARAMETERS:
+        return parameters != null;
     }
     return super.eIsSet(featureID);
   }
@@ -211,8 +257,8 @@ public class function_designatorImpl extends factorImpl implements function_desi
     if (eIsProxy()) return super.toString();
 
     StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (names: ");
-    result.append(names);
+    result.append(" (name_function: ");
+    result.append(name_function);
     result.append(')');
     return result.toString();
   }

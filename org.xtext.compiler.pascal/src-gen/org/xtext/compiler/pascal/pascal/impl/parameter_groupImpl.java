@@ -3,20 +3,56 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
+import org.xtext.compiler.pascal.pascal.identifier_list;
 import org.xtext.compiler.pascal.pascal.parameter_group;
+import org.xtext.compiler.pascal.pascal.type_identifier;
 
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>parameter group</b></em>'.
  * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.parameter_groupImpl#getNames <em>Names</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.parameter_groupImpl#getTypes <em>Types</em>}</li>
+ * </ul>
  *
  * @generated
  */
-public class parameter_groupImpl extends formal_parameter_sectionImpl implements parameter_group
+public class parameter_groupImpl extends MinimalEObjectImpl.Container implements parameter_group
 {
+  /**
+   * The cached value of the '{@link #getNames() <em>Names</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getNames()
+   * @generated
+   * @ordered
+   */
+  protected identifier_list names;
+
+  /**
+   * The cached value of the '{@link #getTypes() <em>Types</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getTypes()
+   * @generated
+   * @ordered
+   */
+  protected type_identifier types;
+
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -36,6 +72,196 @@ public class parameter_groupImpl extends formal_parameter_sectionImpl implements
   protected EClass eStaticClass()
   {
     return PascalPackage.Literals.PARAMETER_GROUP;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public identifier_list getNames()
+  {
+    return names;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetNames(identifier_list newNames, NotificationChain msgs)
+  {
+    identifier_list oldNames = names;
+    names = newNames;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.PARAMETER_GROUP__NAMES, oldNames, newNames);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setNames(identifier_list newNames)
+  {
+    if (newNames != names)
+    {
+      NotificationChain msgs = null;
+      if (names != null)
+        msgs = ((InternalEObject)names).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.PARAMETER_GROUP__NAMES, null, msgs);
+      if (newNames != null)
+        msgs = ((InternalEObject)newNames).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.PARAMETER_GROUP__NAMES, null, msgs);
+      msgs = basicSetNames(newNames, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.PARAMETER_GROUP__NAMES, newNames, newNames));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public type_identifier getTypes()
+  {
+    return types;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetTypes(type_identifier newTypes, NotificationChain msgs)
+  {
+    type_identifier oldTypes = types;
+    types = newTypes;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.PARAMETER_GROUP__TYPES, oldTypes, newTypes);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setTypes(type_identifier newTypes)
+  {
+    if (newTypes != types)
+    {
+      NotificationChain msgs = null;
+      if (types != null)
+        msgs = ((InternalEObject)types).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.PARAMETER_GROUP__TYPES, null, msgs);
+      if (newTypes != null)
+        msgs = ((InternalEObject)newTypes).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.PARAMETER_GROUP__TYPES, null, msgs);
+      msgs = basicSetTypes(newTypes, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.PARAMETER_GROUP__TYPES, newTypes, newTypes));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
+    {
+      case PascalPackage.PARAMETER_GROUP__NAMES:
+        return basicSetNames(null, msgs);
+      case PascalPackage.PARAMETER_GROUP__TYPES:
+        return basicSetTypes(null, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
+  {
+    switch (featureID)
+    {
+      case PascalPackage.PARAMETER_GROUP__NAMES:
+        return getNames();
+      case PascalPackage.PARAMETER_GROUP__TYPES:
+        return getTypes();
+    }
+    return super.eGet(featureID, resolve, coreType);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void eSet(int featureID, Object newValue)
+  {
+    switch (featureID)
+    {
+      case PascalPackage.PARAMETER_GROUP__NAMES:
+        setNames((identifier_list)newValue);
+        return;
+      case PascalPackage.PARAMETER_GROUP__TYPES:
+        setTypes((type_identifier)newValue);
+        return;
+    }
+    super.eSet(featureID, newValue);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void eUnset(int featureID)
+  {
+    switch (featureID)
+    {
+      case PascalPackage.PARAMETER_GROUP__NAMES:
+        setNames((identifier_list)null);
+        return;
+      case PascalPackage.PARAMETER_GROUP__TYPES:
+        setTypes((type_identifier)null);
+        return;
+    }
+    super.eUnset(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public boolean eIsSet(int featureID)
+  {
+    switch (featureID)
+    {
+      case PascalPackage.PARAMETER_GROUP__NAMES:
+        return names != null;
+      case PascalPackage.PARAMETER_GROUP__TYPES:
+        return types != null;
+    }
+    return super.eIsSet(featureID);
   }
 
 } //parameter_groupImpl

@@ -3,8 +3,6 @@
  */
 package org.xtext.compiler.pascal.pascal;
 
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -16,9 +14,9 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.term#getFactors <em>Factors</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.term#getOperators <em>Operators</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.term#getTerms <em>Terms</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.term#getFactor <em>Factor</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.term#getOperator <em>Operator</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.term#getTerm2 <em>Term2</em>}</li>
  * </ul>
  *
  * @see org.xtext.compiler.pascal.pascal.PascalPackage#getterm()
@@ -28,51 +26,81 @@ import org.eclipse.emf.ecore.EObject;
 public interface term extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Factors</b></em>' containment reference list.
-   * The list contents are of type {@link org.xtext.compiler.pascal.pascal.signed_factor}.
+   * Returns the value of the '<em><b>Factor</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Factors</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Factor</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Factors</em>' containment reference list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getterm_Factors()
+   * @return the value of the '<em>Factor</em>' containment reference.
+   * @see #setFactor(signed_factor)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getterm_Factor()
    * @model containment="true"
    * @generated
    */
-  EList<signed_factor> getFactors();
+  signed_factor getFactor();
 
   /**
-   * Returns the value of the '<em><b>Operators</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.term#getFactor <em>Factor</em>}' containment reference.
    * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Operators</em>' attribute list isn't clear,
-   * there really should be more of a description here...
-   * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Operators</em>' attribute list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getterm_Operators()
-   * @model unique="false"
+   * @param value the new value of the '<em>Factor</em>' containment reference.
+   * @see #getFactor()
    * @generated
    */
-  EList<String> getOperators();
+  void setFactor(signed_factor value);
 
   /**
-   * Returns the value of the '<em><b>Terms</b></em>' containment reference list.
-   * The list contents are of type {@link org.xtext.compiler.pascal.pascal.term}.
+   * Returns the value of the '<em><b>Operator</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Terms</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Operator</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Terms</em>' containment reference list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getterm_Terms()
+   * @return the value of the '<em>Operator</em>' attribute.
+   * @see #setOperator(String)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getterm_Operator()
+   * @model
+   * @generated
+   */
+  String getOperator();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.term#getOperator <em>Operator</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Operator</em>' attribute.
+   * @see #getOperator()
+   * @generated
+   */
+  void setOperator(String value);
+
+  /**
+   * Returns the value of the '<em><b>Term2</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Term2</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Term2</em>' containment reference.
+   * @see #setTerm2(term)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getterm_Term2()
    * @model containment="true"
    * @generated
    */
-  EList<term> getTerms();
+  term getTerm2();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.term#getTerm2 <em>Term2</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Term2</em>' containment reference.
+   * @see #getTerm2()
+   * @generated
+   */
+  void setTerm2(term value);
 
 } // term

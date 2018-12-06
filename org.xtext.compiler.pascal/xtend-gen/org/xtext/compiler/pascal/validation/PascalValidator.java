@@ -3,7 +3,46 @@
  */
 package org.xtext.compiler.pascal.validation;
 
+import java.util.ArrayList;
+import java.util.List;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.xtext.validation.Check;
+import org.xtext.compiler.pascal.pascal.actual_parameter;
+import org.xtext.compiler.pascal.pascal.array_type;
+import org.xtext.compiler.pascal.pascal.assignment_statement;
+import org.xtext.compiler.pascal.pascal.case_list_element;
+import org.xtext.compiler.pascal.pascal.case_statement;
+import org.xtext.compiler.pascal.pascal.const_list;
+import org.xtext.compiler.pascal.pascal.constant;
+import org.xtext.compiler.pascal.pascal.dynamic_array_type;
+import org.xtext.compiler.pascal.pascal.factor;
+import org.xtext.compiler.pascal.pascal.formal_parameter_list;
+import org.xtext.compiler.pascal.pascal.formal_parameter_section;
+import org.xtext.compiler.pascal.pascal.function_declaration;
+import org.xtext.compiler.pascal.pascal.function_designator;
+import org.xtext.compiler.pascal.pascal.identifier;
+import org.xtext.compiler.pascal.pascal.identifier_list;
+import org.xtext.compiler.pascal.pascal.parameter_group;
+import org.xtext.compiler.pascal.pascal.pascal;
+import org.xtext.compiler.pascal.pascal.procedure_declaration;
+import org.xtext.compiler.pascal.pascal.procedure_statement;
+import org.xtext.compiler.pascal.pascal.result_type;
+import org.xtext.compiler.pascal.pascal.signed_factor;
+import org.xtext.compiler.pascal.pascal.simple_expression;
+import org.xtext.compiler.pascal.pascal.simple_type;
+import org.xtext.compiler.pascal.pascal.structured_type;
+import org.xtext.compiler.pascal.pascal.subrange_type;
+import org.xtext.compiler.pascal.pascal.term;
+import org.xtext.compiler.pascal.pascal.type;
+import org.xtext.compiler.pascal.pascal.type_definition;
+import org.xtext.compiler.pascal.pascal.type_identifier;
+import org.xtext.compiler.pascal.pascal.unpacked_structured_type;
+import org.xtext.compiler.pascal.pascal.unsigned_number;
+import org.xtext.compiler.pascal.pascal.variable_declaration;
 import org.xtext.compiler.pascal.validation.AbstractPascalValidator;
+import org.xtext.compiler.pascal.validation.ExpressionTypeHelper;
+import org.xtext.compiler.pascal.validation.Structures;
+import org.xtext.compiler.pascal.validation.Variable;
 
 /**
  * This class contains custom validation rules.
@@ -12,4 +51,443 @@ import org.xtext.compiler.pascal.validation.AbstractPascalValidator;
  */
 @SuppressWarnings("all")
 public class PascalValidator extends AbstractPascalValidator {
+  @Check
+  public void restart(final pascal pascal) {
+    Structures.clear();
+  }
+  
+  @Check
+  public type checkTypeDefinition(final type_definition definition) {
+    type _xifexpression = null;
+    boolean _containsType = Structures.containsType(definition.getName());
+    if (_containsType) {
+      String error_message = String.format("Tipo \'%s\' já foi declarado", definition.getName());
+      this.error(error_message, null);
+    } else {
+      _xifexpression = Structures.putType(definition.getName(), definition.getType());
+    }
+    return _xifexpression;
+  }
+  
+  @Check
+  public void checkNotDeclaredVariable(final assignment_statement variable) {
+    String variable_id = variable.getDeclared_variable().getVariable_id();
+    boolean _containsVar = Structures.containsVar(variable_id);
+    boolean _not = (!_containsVar);
+    if (_not) {
+      String error_message = String.format("Variável \'%s\' não foi declarada", variable_id);
+      this.error(error_message, null);
+    }
+  }
+  
+  @Check
+  public void checkVariableDeclaration(final variable_declaration declared_variables) {
+    List<String> new_variables = new ArrayList<String>();
+    identifier_list names = declared_variables.getList_names();
+    if (((names != null) && (names.getNames() != null))) {
+      EList<identifier> _names = names.getNames();
+      for (final identifier id : _names) {
+        new_variables.add(id.getId());
+      }
+    }
+    for (final String name : new_variables) {
+      boolean _containsVar = Structures.containsVar(name);
+      boolean _not = (!_containsVar);
+      if (_not) {
+        simple_type _simple = declared_variables.getType_variable().getSimple();
+        boolean _tripleNotEquals = (_simple != null);
+        if (_tripleNotEquals) {
+          type_identifier custom_type = declared_variables.getType_variable().getSimple().getType();
+          String _id = custom_type.getId();
+          boolean _tripleNotEquals_1 = (_id != null);
+          if (_tripleNotEquals_1) {
+            boolean _containsType = Structures.containsType(custom_type.getId());
+            if (_containsType) {
+              declared_variables.setType_variable(Structures.getType(custom_type.getId()));
+            }
+          }
+        }
+        simple_type _simple_1 = declared_variables.getType_variable().getSimple();
+        boolean _tripleNotEquals_2 = (_simple_1 != null);
+        if (_tripleNotEquals_2) {
+          type_identifier type = declared_variables.getType_variable().getSimple().getType();
+          String _type = ExpressionTypeHelper.getType(type);
+          Variable newVar = new Variable(name, _type);
+          Structures.putVariable(name, newVar);
+        } else {
+          array_type _static_array = declared_variables.getType_variable().getStructured().getUnpacked().getStatic_array();
+          boolean _tripleNotEquals_3 = (_static_array != null);
+          if (_tripleNotEquals_3) {
+            type_identifier type_1 = declared_variables.getType_variable().getStructured().getUnpacked().getStatic_array().getType();
+            String _type_1 = ExpressionTypeHelper.getType(type_1);
+            Variable newVar_1 = new Variable(name, _type_1);
+            Structures.putVariable(name, newVar_1);
+          } else {
+            type_identifier type_2 = declared_variables.getType_variable().getStructured().getUnpacked().getDynamic().getType();
+            String _type_2 = ExpressionTypeHelper.getType(type_2);
+            Variable newVar_2 = new Variable(name, _type_2);
+            Structures.putVariable(name, newVar_2);
+          }
+        }
+      } else {
+        String error_message = String.format("Variável \'%s\' já foi declarada", name);
+        this.error(error_message, null);
+      }
+    }
+  }
+  
+  @Check
+  public void checkTypesOfDeclaredVariables(final variable_declaration declared_variables) {
+    type variable_type = declared_variables.getType_variable();
+    simple_type _simple = variable_type.getSimple();
+    boolean _tripleNotEquals = (_simple != null);
+    if (_tripleNotEquals) {
+      String type = ExpressionTypeHelper.getType(variable_type.getSimple().getType());
+      if (((((!type.equals("boolean")) && (!type.equals("integer"))) && (!type.equals("string"))) && 
+        (!Structures.containsType(type)))) {
+        String error_message = "Tipo precisa ser boolean, integer, string ou um tipo declarado";
+        this.error(error_message, null);
+      }
+    } else {
+      structured_type _structured = variable_type.getStructured();
+      boolean _tripleNotEquals_1 = (_structured != null);
+      if (_tripleNotEquals_1) {
+        unpacked_structured_type unpacked = variable_type.getStructured().getUnpacked();
+        array_type _static_array = unpacked.getStatic_array();
+        boolean _tripleNotEquals_2 = (_static_array != null);
+        if (_tripleNotEquals_2) {
+          String type_1 = ExpressionTypeHelper.getType(unpacked.getStatic_array().getType());
+          if (((((!type_1.equals("boolean")) && (!type_1.equals("integer"))) && (!type_1.equals("string"))) && 
+            (!Structures.containsType(type_1)))) {
+            String error_message_1 = "Tipo precisa ser boolean, integer, string ou um tipo declarado";
+            this.error(error_message_1, null);
+          }
+        } else {
+          dynamic_array_type _dynamic = unpacked.getDynamic();
+          boolean _tripleNotEquals_3 = (_dynamic != null);
+          if (_tripleNotEquals_3) {
+            String type_2 = ExpressionTypeHelper.getType(unpacked.getDynamic().getType());
+            if (((((!type_2.equals("boolean")) && (!type_2.equals("integer"))) && (!type_2.equals("string"))) && 
+              (!Structures.containsType(type_2)))) {
+              String error_message_2 = "Tipo precisa ser boolean, integer, string ou um tipo declarado";
+              this.error(error_message_2, null);
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  @Check
+  public void checkTypeFactor(final factor inst_factor) {
+    String variable_id = inst_factor.getVariable().getVariable_id();
+    boolean _containsVar = Structures.containsVar(variable_id);
+    boolean _not = (!_containsVar);
+    if (_not) {
+      String error_message = String.format("Variável \'%s\' não foi declarada", variable_id);
+      this.error(error_message, null);
+    }
+  }
+  
+  @Check
+  public void checkTypeSignedFactor(final signed_factor inst_signed_factor) {
+    String _signal = inst_signed_factor.getSignal();
+    boolean _tripleNotEquals = (_signal != null);
+    if (_tripleNotEquals) {
+      String type_factor = ExpressionTypeHelper.getTypeFactor(inst_signed_factor.getFactor());
+      boolean _equals = type_factor.equals("integer");
+      boolean _not = (!_equals);
+      if (_not) {
+        String error_message = String.format("Sinal inválido para o tipo \'%s\' utilizado", type_factor);
+        this.error(error_message, null);
+      }
+    }
+  }
+  
+  @Check
+  public String checkTypeTerm(final term inst_term) {
+    String operator = inst_term.getOperator();
+    if ((operator == null)) {
+      return ExpressionTypeHelper.getTypeSignedFactor(inst_term.getFactor());
+    } else {
+      String factor_type = ExpressionTypeHelper.getTypeSignedFactor(inst_term.getFactor());
+      String term2_type = ExpressionTypeHelper.getTypeTerm(inst_term.getTerm2());
+      boolean _equalsIgnoreCase = operator.equalsIgnoreCase("AND");
+      if (_equalsIgnoreCase) {
+        if (((!factor_type.equals("boolean")) || (!term2_type.equals("boolean")))) {
+          String error_message = "Operandos incompatíveis com a operação. A operação booleana AND exige dois operandos booleanos";
+          this.error(error_message, null);
+        }
+      } else {
+        if (((!factor_type.equals("integer")) || (!term2_type.equals("integer")))) {
+          String error_message_1 = String.format(
+            "Operandos incompatíveis com a operação. Dois inteiros são necessários para a operação aritmética \'%s\'", operator);
+          this.error(error_message_1, null);
+        }
+      }
+    }
+    return null;
+  }
+  
+  @Check
+  public String checkTypeSimpleExpression(final simple_expression inst_simple_exp) {
+    String operator = inst_simple_exp.getOperator();
+    if ((operator == null)) {
+      return ExpressionTypeHelper.getTypeTerm(inst_simple_exp.getTerm_exp());
+    } else {
+      String term1 = ExpressionTypeHelper.getTypeTerm(inst_simple_exp.getTerm_exp());
+      String simple_exp2 = ExpressionTypeHelper.getTypeSimpleExpression(inst_simple_exp.getExpression());
+      boolean _equalsIgnoreCase = operator.equalsIgnoreCase("OR");
+      if (_equalsIgnoreCase) {
+        if (((!term1.equals("boolean")) || (!simple_exp2.equals("boolean")))) {
+          String error_message = "Operandos incompatíveis com a operação. A operação booleana OR exige dois operandos booleanos";
+          this.error(error_message, null);
+        }
+      } else {
+        boolean _equals = operator.equals("+");
+        if (_equals) {
+          boolean _not = (!(term1.equals("integer") && simple_exp2.equals("integer")));
+          if (_not) {
+            String error_message_1 = "Operandos incompatíveis com a operação. Dois inteiros são necessários para a operação arimética \'+\'";
+            this.error(error_message_1, null);
+          }
+        } else {
+          if (((!term1.equals("integer")) || (!simple_exp2.equals("integer")))) {
+            String error_message_2 = "Operandos incompatíveis com a operação. Dois inteiros são necessários para a operação arimética \'-\'";
+            this.error(error_message_2, null);
+          }
+        }
+      }
+    }
+    return null;
+  }
+  
+  @Check
+  public void checkTypeAssignment(final assignment_statement variable) {
+    String expression_type = ExpressionTypeHelper.getTypeExpression(variable.getExpression());
+    String id_type = Structures.getVar(variable.getDeclared_variable().getVariable_id()).getType();
+    String variable_id = variable.getDeclared_variable().getVariable_id();
+    boolean _containsFunc = Structures.containsFunc(variable_id);
+    if (_containsFunc) {
+      boolean _equalsIgnoreCase = id_type.equalsIgnoreCase(expression_type);
+      boolean _not = (!_equalsIgnoreCase);
+      if (_not) {
+        String error_message = String.format("Tipo do retorno da função \'%s\' difere do esperado", variable_id);
+        this.error(error_message, null);
+      }
+    }
+    boolean _equalsIgnoreCase_1 = id_type.equalsIgnoreCase(expression_type);
+    boolean _not_1 = (!_equalsIgnoreCase_1);
+    if (_not_1) {
+      String error_message_1 = "Tipo da variável não condiz com o tipo da expressão atribuída";
+      this.error(error_message_1, null);
+    }
+  }
+  
+  @Check
+  public void checkCaseTypeExpression(final case_statement inst_case) {
+    String expression_type = ExpressionTypeHelper.getTypeExpression(inst_case.getExp());
+    EList<case_list_element> case_list = inst_case.getCase_list();
+    for (final case_list_element case_elem : case_list) {
+      const_list _consts = case_elem.getConsts();
+      boolean _tripleEquals = (_consts == null);
+      if (_tripleEquals) {
+        String error_message = "O \'case\' não pode ser usado sem as cláusulas de teste";
+        this.error(error_message, null);
+      } else {
+        EList<constant> _constants = case_elem.getConsts().getConstants();
+        for (final constant const_ : _constants) {
+          {
+            String type = ExpressionTypeHelper.getTypeConstant(const_);
+            if ((type != expression_type)) {
+              String error_message_1 = String.format(
+                "Tipo da expressão nas cláusulas são diferentes do tipo da expressão no \'case\' (%s)", expression_type);
+              this.error(error_message_1, null);
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  @Check
+  public void checkParameterDeclaration(final parameter_group parameter) {
+    identifier_list names = parameter.getNames();
+    type_identifier _types = parameter.getTypes();
+    String type = ExpressionTypeHelper.getType(((type_identifier) _types));
+    Variable newVar = null;
+    EList<identifier> temp_names = names.getNames();
+    for (final identifier id : temp_names) {
+      {
+        String _id = id.getId();
+        Variable _variable = new Variable(_id, type);
+        newVar = _variable;
+        Structures.putVariable(id.getId(), newVar);
+      }
+    }
+  }
+  
+  @Check
+  public void checkFunctionDeclaration(final function_declaration variable) {
+    String names = variable.getNames();
+    result_type _types = variable.getTypes();
+    String type = ExpressionTypeHelper.getType(((type_identifier) _types));
+    Variable newVar = new Variable(names, type);
+    Structures.putVariable(names, newVar);
+    ArrayList<Variable> parameters = new ArrayList<Variable>();
+    EList<formal_parameter_section> _parameters = variable.getParameters().getParameters();
+    for (final formal_parameter_section section : _parameters) {
+      EList<parameter_group> _parameters_1 = section.getParameters();
+      for (final parameter_group params : _parameters_1) {
+        {
+          type_identifier _types_1 = params.getTypes();
+          String param_type = ExpressionTypeHelper.getType(((type_identifier) _types_1));
+          Variable newParmVar = null;
+          EList<identifier> temp_names = params.getNames().getNames();
+          for (final identifier id : temp_names) {
+            {
+              String _id = id.getId();
+              Variable _variable = new Variable(_id, param_type);
+              newParmVar = _variable;
+              parameters.add(newParmVar);
+            }
+          }
+        }
+      }
+    }
+    Structures.putFunc(names, type, parameters);
+    this.checkParamsList(variable.getParameters());
+  }
+  
+  @Check
+  public void checkParamsList(final formal_parameter_list variable) {
+    EList<formal_parameter_section> _parameters = variable.getParameters();
+    for (final formal_parameter_section section : _parameters) {
+      EList<parameter_group> _parameters_1 = section.getParameters();
+      for (final parameter_group params : _parameters_1) {
+        this.checkParameterDeclaration(params);
+      }
+    }
+  }
+  
+  @Check
+  public void checkFunctionDesignator(final function_designator variable) {
+    String func_name = variable.getName_function();
+    boolean _containsFunc = Structures.containsFunc(func_name);
+    boolean _not = (!_containsFunc);
+    if (_not) {
+      String error_message = String.format("Subrotina \'%s\' não foi declarada", func_name);
+      this.error(error_message, null);
+    }
+    List<Variable> parameters = Structures.getFunc(func_name).getParameters();
+    int _size = variable.getParameters().getParameters().size();
+    int _size_1 = parameters.size();
+    boolean _notEquals = (_size != _size_1);
+    if (_notEquals) {
+      String error_message_1 = String.format("Número de  parâmetros da função \'%s\' difere do esperado", func_name);
+      this.error(error_message_1, null);
+    }
+    int index = 0;
+    EList<actual_parameter> _parameters = variable.getParameters().getParameters();
+    for (final actual_parameter observed : _parameters) {
+      {
+        boolean _equals = ExpressionTypeHelper.getTypeSimpleExpression(observed.getContent().getSimple()).toString().equals(
+          parameters.get(index).getType());
+        boolean _not_1 = (!_equals);
+        if (_not_1) {
+          String error_message_2 = String.format("Tipo do parâmetro \'%s\' da função \'%s\' difere do esperado", 
+            parameters.get(index).getName(), func_name);
+          this.error(error_message_2, null);
+        }
+        index++;
+      }
+    }
+  }
+  
+  @Check
+  public void checkProcedureDeclaration(final procedure_declaration variable) {
+    String names = variable.getNames();
+    ArrayList<Variable> parameters = new ArrayList<Variable>();
+    EList<formal_parameter_section> _parameters = variable.getParameters().getParameters();
+    for (final formal_parameter_section section : _parameters) {
+      EList<parameter_group> _parameters_1 = section.getParameters();
+      for (final parameter_group params : _parameters_1) {
+        {
+          type_identifier _types = params.getTypes();
+          String param_type = ExpressionTypeHelper.getType(((type_identifier) _types));
+          Variable newParmVar = null;
+          EList<identifier> temp_names = params.getNames().getNames();
+          for (final identifier id : temp_names) {
+            {
+              String _id = id.getId();
+              Variable _variable = new Variable(_id, param_type);
+              newParmVar = _variable;
+              parameters.add(newParmVar);
+            }
+          }
+        }
+      }
+    }
+    Structures.putProc(names, parameters);
+    this.checkParamsList(variable.getParameters());
+  }
+  
+  @Check
+  public void checkProcedureStatement(final procedure_statement variable) {
+    String proc_name = variable.getName_id();
+    boolean _containsProc = Structures.containsProc(proc_name);
+    boolean _not = (!_containsProc);
+    if (_not) {
+      String error_message = String.format("Subrotina \'%s\' não foi declarada", proc_name);
+      this.error(error_message, null);
+    }
+    List<Variable> parameters = Structures.getProc(proc_name).getParameters();
+    int _size = variable.getParameters().getParameters().size();
+    int _size_1 = parameters.size();
+    boolean _notEquals = (_size != _size_1);
+    if (_notEquals) {
+      String error_message_1 = String.format("Número de  parâmetros do procedimento \'%s\' difere do esperado", proc_name);
+      this.error(error_message_1, null);
+    }
+    int index = 0;
+    EList<actual_parameter> _parameters = variable.getParameters().getParameters();
+    for (final actual_parameter observed : _parameters) {
+      {
+        boolean _equals = ExpressionTypeHelper.getTypeSimpleExpression(observed.getContent().getSimple()).toString().equals(
+          parameters.get(index).getType());
+        boolean _not_1 = (!_equals);
+        if (_not_1) {
+          String error_message_2 = String.format("Tipo do parâmetro \'%s\' do procedimento \'%s\' difere do esperado", 
+            parameters.get(index).getName(), proc_name);
+          this.error(error_message_2, null);
+        }
+        index++;
+      }
+    }
+  }
+  
+  @Check
+  public void checkArrayRange(final subrange_type range) {
+    unsigned_number _uns_number = range.getConstantInit().getUns_number();
+    boolean _tripleEquals = (_uns_number == null);
+    if (_tripleEquals) {
+      String error_message = String.format("Índice inicial do intervalo não é do tipo inteiro.");
+      this.error(error_message, null);
+    } else {
+      unsigned_number _uns_number_1 = range.getConstantFinal().getUns_number();
+      boolean _tripleEquals_1 = (_uns_number_1 == null);
+      if (_tripleEquals_1) {
+        String error_message_1 = String.format("Índice final do intervalo não é do tipo inteiro.");
+        this.error(error_message_1, null);
+      } else {
+        String _numbers = range.getConstantFinal().getUns_number().getNumbers();
+        String _numbers_1 = range.getConstantInit().getUns_number().getNumbers();
+        boolean _lessThan = (_numbers.compareTo(_numbers_1) < 0);
+        if (_lessThan) {
+          String error_message_2 = String.format("Índice inicial do intervalo é maior que o índice final.");
+          this.error(error_message_2, null);
+        }
+      }
+    }
+  }
 }

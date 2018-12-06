@@ -3,12 +3,8 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
-import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -16,12 +12,10 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.eclipse.emf.ecore.util.EDataTypeEList;
-
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.expression;
 import org.xtext.compiler.pascal.pascal.factor;
-import org.xtext.compiler.pascal.pascal.set;
+import org.xtext.compiler.pascal.pascal.function_designator;
 import org.xtext.compiler.pascal.pascal.unsigned_constant;
 import org.xtext.compiler.pascal.pascal.variable;
 
@@ -35,10 +29,10 @@ import org.xtext.compiler.pascal.pascal.variable;
  * <ul>
  *   <li>{@link org.xtext.compiler.pascal.pascal.impl.factorImpl#getVariable <em>Variable</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.impl.factorImpl#getExpression <em>Expression</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.factorImpl#getFunction <em>Function</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.impl.factorImpl#getConstant <em>Constant</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.factorImpl#getSet <em>Set</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.factorImpl#getFactor <em>Factor</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.factorImpl#getBoolean <em>Boolean</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.factorImpl#getNot_factor <em>Not factor</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.factorImpl#getBool_factor <em>Bool factor</em>}</li>
  * </ul>
  *
  * @generated
@@ -66,6 +60,16 @@ public class factorImpl extends MinimalEObjectImpl.Container implements factor
   protected expression expression;
 
   /**
+   * The cached value of the '{@link #getFunction() <em>Function</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getFunction()
+   * @generated
+   * @ordered
+   */
+  protected function_designator function;
+
+  /**
    * The cached value of the '{@link #getConstant() <em>Constant</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -76,34 +80,34 @@ public class factorImpl extends MinimalEObjectImpl.Container implements factor
   protected unsigned_constant constant;
 
   /**
-   * The cached value of the '{@link #getSet() <em>Set</em>}' containment reference.
+   * The cached value of the '{@link #getNot_factor() <em>Not factor</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getSet()
+   * @see #getNot_factor()
    * @generated
    * @ordered
    */
-  protected set set;
+  protected factor not_factor;
 
   /**
-   * The cached value of the '{@link #getFactor() <em>Factor</em>}' containment reference.
+   * The default value of the '{@link #getBool_factor() <em>Bool factor</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getFactor()
+   * @see #getBool_factor()
    * @generated
    * @ordered
    */
-  protected factor factor;
+  protected static final String BOOL_FACTOR_EDEFAULT = null;
 
   /**
-   * The cached value of the '{@link #getBoolean() <em>Boolean</em>}' attribute list.
+   * The cached value of the '{@link #getBool_factor() <em>Bool factor</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getBoolean()
+   * @see #getBool_factor()
    * @generated
    * @ordered
    */
-  protected EList<String> boolean_;
+  protected String bool_factor = BOOL_FACTOR_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -227,6 +231,54 @@ public class factorImpl extends MinimalEObjectImpl.Container implements factor
    * <!-- end-user-doc -->
    * @generated
    */
+  public function_designator getFunction()
+  {
+    return function;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetFunction(function_designator newFunction, NotificationChain msgs)
+  {
+    function_designator oldFunction = function;
+    function = newFunction;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.FACTOR__FUNCTION, oldFunction, newFunction);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setFunction(function_designator newFunction)
+  {
+    if (newFunction != function)
+    {
+      NotificationChain msgs = null;
+      if (function != null)
+        msgs = ((InternalEObject)function).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.FACTOR__FUNCTION, null, msgs);
+      if (newFunction != null)
+        msgs = ((InternalEObject)newFunction).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.FACTOR__FUNCTION, null, msgs);
+      msgs = basicSetFunction(newFunction, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.FACTOR__FUNCTION, newFunction, newFunction));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public unsigned_constant getConstant()
   {
     return constant;
@@ -275,9 +327,9 @@ public class factorImpl extends MinimalEObjectImpl.Container implements factor
    * <!-- end-user-doc -->
    * @generated
    */
-  public set getSet()
+  public factor getNot_factor()
   {
-    return set;
+    return not_factor;
   }
 
   /**
@@ -285,13 +337,13 @@ public class factorImpl extends MinimalEObjectImpl.Container implements factor
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetSet(set newSet, NotificationChain msgs)
+  public NotificationChain basicSetNot_factor(factor newNot_factor, NotificationChain msgs)
   {
-    set oldSet = set;
-    set = newSet;
+    factor oldNot_factor = not_factor;
+    not_factor = newNot_factor;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.FACTOR__SET, oldSet, newSet);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.FACTOR__NOT_FACTOR, oldNot_factor, newNot_factor);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -302,20 +354,20 @@ public class factorImpl extends MinimalEObjectImpl.Container implements factor
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setSet(set newSet)
+  public void setNot_factor(factor newNot_factor)
   {
-    if (newSet != set)
+    if (newNot_factor != not_factor)
     {
       NotificationChain msgs = null;
-      if (set != null)
-        msgs = ((InternalEObject)set).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.FACTOR__SET, null, msgs);
-      if (newSet != null)
-        msgs = ((InternalEObject)newSet).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.FACTOR__SET, null, msgs);
-      msgs = basicSetSet(newSet, msgs);
+      if (not_factor != null)
+        msgs = ((InternalEObject)not_factor).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.FACTOR__NOT_FACTOR, null, msgs);
+      if (newNot_factor != null)
+        msgs = ((InternalEObject)newNot_factor).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.FACTOR__NOT_FACTOR, null, msgs);
+      msgs = basicSetNot_factor(newNot_factor, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.FACTOR__SET, newSet, newSet));
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.FACTOR__NOT_FACTOR, newNot_factor, newNot_factor));
   }
 
   /**
@@ -323,9 +375,9 @@ public class factorImpl extends MinimalEObjectImpl.Container implements factor
    * <!-- end-user-doc -->
    * @generated
    */
-  public factor getFactor()
+  public String getBool_factor()
   {
-    return factor;
+    return bool_factor;
   }
 
   /**
@@ -333,51 +385,12 @@ public class factorImpl extends MinimalEObjectImpl.Container implements factor
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetFactor(factor newFactor, NotificationChain msgs)
+  public void setBool_factor(String newBool_factor)
   {
-    factor oldFactor = factor;
-    factor = newFactor;
+    String oldBool_factor = bool_factor;
+    bool_factor = newBool_factor;
     if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.FACTOR__FACTOR, oldFactor, newFactor);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setFactor(factor newFactor)
-  {
-    if (newFactor != factor)
-    {
-      NotificationChain msgs = null;
-      if (factor != null)
-        msgs = ((InternalEObject)factor).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.FACTOR__FACTOR, null, msgs);
-      if (newFactor != null)
-        msgs = ((InternalEObject)newFactor).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.FACTOR__FACTOR, null, msgs);
-      msgs = basicSetFactor(newFactor, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.FACTOR__FACTOR, newFactor, newFactor));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EList<String> getBoolean()
-  {
-    if (boolean_ == null)
-    {
-      boolean_ = new EDataTypeEList<String>(String.class, this, PascalPackage.FACTOR__BOOLEAN);
-    }
-    return boolean_;
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.FACTOR__BOOL_FACTOR, oldBool_factor, bool_factor));
   }
 
   /**
@@ -394,12 +407,12 @@ public class factorImpl extends MinimalEObjectImpl.Container implements factor
         return basicSetVariable(null, msgs);
       case PascalPackage.FACTOR__EXPRESSION:
         return basicSetExpression(null, msgs);
+      case PascalPackage.FACTOR__FUNCTION:
+        return basicSetFunction(null, msgs);
       case PascalPackage.FACTOR__CONSTANT:
         return basicSetConstant(null, msgs);
-      case PascalPackage.FACTOR__SET:
-        return basicSetSet(null, msgs);
-      case PascalPackage.FACTOR__FACTOR:
-        return basicSetFactor(null, msgs);
+      case PascalPackage.FACTOR__NOT_FACTOR:
+        return basicSetNot_factor(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -418,14 +431,14 @@ public class factorImpl extends MinimalEObjectImpl.Container implements factor
         return getVariable();
       case PascalPackage.FACTOR__EXPRESSION:
         return getExpression();
+      case PascalPackage.FACTOR__FUNCTION:
+        return getFunction();
       case PascalPackage.FACTOR__CONSTANT:
         return getConstant();
-      case PascalPackage.FACTOR__SET:
-        return getSet();
-      case PascalPackage.FACTOR__FACTOR:
-        return getFactor();
-      case PascalPackage.FACTOR__BOOLEAN:
-        return getBoolean();
+      case PascalPackage.FACTOR__NOT_FACTOR:
+        return getNot_factor();
+      case PascalPackage.FACTOR__BOOL_FACTOR:
+        return getBool_factor();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -435,7 +448,6 @@ public class factorImpl extends MinimalEObjectImpl.Container implements factor
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
@@ -447,18 +459,17 @@ public class factorImpl extends MinimalEObjectImpl.Container implements factor
       case PascalPackage.FACTOR__EXPRESSION:
         setExpression((expression)newValue);
         return;
+      case PascalPackage.FACTOR__FUNCTION:
+        setFunction((function_designator)newValue);
+        return;
       case PascalPackage.FACTOR__CONSTANT:
         setConstant((unsigned_constant)newValue);
         return;
-      case PascalPackage.FACTOR__SET:
-        setSet((set)newValue);
+      case PascalPackage.FACTOR__NOT_FACTOR:
+        setNot_factor((factor)newValue);
         return;
-      case PascalPackage.FACTOR__FACTOR:
-        setFactor((factor)newValue);
-        return;
-      case PascalPackage.FACTOR__BOOLEAN:
-        getBoolean().clear();
-        getBoolean().addAll((Collection<? extends String>)newValue);
+      case PascalPackage.FACTOR__BOOL_FACTOR:
+        setBool_factor((String)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -480,17 +491,17 @@ public class factorImpl extends MinimalEObjectImpl.Container implements factor
       case PascalPackage.FACTOR__EXPRESSION:
         setExpression((expression)null);
         return;
+      case PascalPackage.FACTOR__FUNCTION:
+        setFunction((function_designator)null);
+        return;
       case PascalPackage.FACTOR__CONSTANT:
         setConstant((unsigned_constant)null);
         return;
-      case PascalPackage.FACTOR__SET:
-        setSet((set)null);
+      case PascalPackage.FACTOR__NOT_FACTOR:
+        setNot_factor((factor)null);
         return;
-      case PascalPackage.FACTOR__FACTOR:
-        setFactor((factor)null);
-        return;
-      case PascalPackage.FACTOR__BOOLEAN:
-        getBoolean().clear();
+      case PascalPackage.FACTOR__BOOL_FACTOR:
+        setBool_factor(BOOL_FACTOR_EDEFAULT);
         return;
     }
     super.eUnset(featureID);
@@ -510,14 +521,14 @@ public class factorImpl extends MinimalEObjectImpl.Container implements factor
         return variable != null;
       case PascalPackage.FACTOR__EXPRESSION:
         return expression != null;
+      case PascalPackage.FACTOR__FUNCTION:
+        return function != null;
       case PascalPackage.FACTOR__CONSTANT:
         return constant != null;
-      case PascalPackage.FACTOR__SET:
-        return set != null;
-      case PascalPackage.FACTOR__FACTOR:
-        return factor != null;
-      case PascalPackage.FACTOR__BOOLEAN:
-        return boolean_ != null && !boolean_.isEmpty();
+      case PascalPackage.FACTOR__NOT_FACTOR:
+        return not_factor != null;
+      case PascalPackage.FACTOR__BOOL_FACTOR:
+        return BOOL_FACTOR_EDEFAULT == null ? bool_factor != null : !BOOL_FACTOR_EDEFAULT.equals(bool_factor);
     }
     return super.eIsSet(featureID);
   }
@@ -533,8 +544,8 @@ public class factorImpl extends MinimalEObjectImpl.Container implements factor
     if (eIsProxy()) return super.toString();
 
     StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (boolean: ");
-    result.append(boolean_);
+    result.append(" (bool_factor: ");
+    result.append(bool_factor);
     result.append(')');
     return result.toString();
   }

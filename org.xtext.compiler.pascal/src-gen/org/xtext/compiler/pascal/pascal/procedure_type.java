@@ -3,7 +3,7 @@
  */
 package org.xtext.compiler.pascal.pascal;
 
-import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,22 +21,32 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface procedure_type extends type_definition
+public interface procedure_type extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Types</b></em>' containment reference list.
-   * The list contents are of type {@link org.xtext.compiler.pascal.pascal.formal_parameter_list}.
+   * Returns the value of the '<em><b>Types</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Types</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Types</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Types</em>' containment reference list.
+   * @return the value of the '<em>Types</em>' containment reference.
+   * @see #setTypes(formal_parameter_list)
    * @see org.xtext.compiler.pascal.pascal.PascalPackage#getprocedure_type_Types()
    * @model containment="true"
    * @generated
    */
-  EList<formal_parameter_list> getTypes();
+  formal_parameter_list getTypes();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.procedure_type#getTypes <em>Types</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Types</em>' containment reference.
+   * @see #getTypes()
+   * @generated
+   */
+  void setTypes(formal_parameter_list value);
 
 } // procedure_type

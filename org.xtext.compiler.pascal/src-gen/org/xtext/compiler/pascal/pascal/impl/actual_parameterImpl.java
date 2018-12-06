@@ -3,20 +3,18 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
-import java.util.Collection;
-
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.actual_parameter;
+import org.xtext.compiler.pascal.pascal.expression;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,22 +24,22 @@ import org.xtext.compiler.pascal.pascal.actual_parameter;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.actual_parameterImpl#getTypes <em>Types</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.actual_parameterImpl#getContent <em>Content</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class actual_parameterImpl extends parameter_listImpl implements actual_parameter
+public class actual_parameterImpl extends MinimalEObjectImpl.Container implements actual_parameter
 {
   /**
-   * The cached value of the '{@link #getTypes() <em>Types</em>}' containment reference list.
+   * The cached value of the '{@link #getContent() <em>Content</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getTypes()
+   * @see #getContent()
    * @generated
    * @ordered
    */
-  protected EList<actual_parameter> types;
+  protected expression content;
 
   /**
    * <!-- begin-user-doc -->
@@ -69,13 +67,47 @@ public class actual_parameterImpl extends parameter_listImpl implements actual_p
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<actual_parameter> getTypes()
+  public expression getContent()
   {
-    if (types == null)
+    return content;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetContent(expression newContent, NotificationChain msgs)
+  {
+    expression oldContent = content;
+    content = newContent;
+    if (eNotificationRequired())
     {
-      types = new EObjectContainmentEList<actual_parameter>(actual_parameter.class, this, PascalPackage.ACTUAL_PARAMETER__TYPES);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.ACTUAL_PARAMETER__CONTENT, oldContent, newContent);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
-    return types;
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setContent(expression newContent)
+  {
+    if (newContent != content)
+    {
+      NotificationChain msgs = null;
+      if (content != null)
+        msgs = ((InternalEObject)content).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.ACTUAL_PARAMETER__CONTENT, null, msgs);
+      if (newContent != null)
+        msgs = ((InternalEObject)newContent).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.ACTUAL_PARAMETER__CONTENT, null, msgs);
+      msgs = basicSetContent(newContent, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.ACTUAL_PARAMETER__CONTENT, newContent, newContent));
   }
 
   /**
@@ -88,8 +120,8 @@ public class actual_parameterImpl extends parameter_listImpl implements actual_p
   {
     switch (featureID)
     {
-      case PascalPackage.ACTUAL_PARAMETER__TYPES:
-        return ((InternalEList<?>)getTypes()).basicRemove(otherEnd, msgs);
+      case PascalPackage.ACTUAL_PARAMETER__CONTENT:
+        return basicSetContent(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -104,8 +136,8 @@ public class actual_parameterImpl extends parameter_listImpl implements actual_p
   {
     switch (featureID)
     {
-      case PascalPackage.ACTUAL_PARAMETER__TYPES:
-        return getTypes();
+      case PascalPackage.ACTUAL_PARAMETER__CONTENT:
+        return getContent();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -115,15 +147,13 @@ public class actual_parameterImpl extends parameter_listImpl implements actual_p
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case PascalPackage.ACTUAL_PARAMETER__TYPES:
-        getTypes().clear();
-        getTypes().addAll((Collection<? extends actual_parameter>)newValue);
+      case PascalPackage.ACTUAL_PARAMETER__CONTENT:
+        setContent((expression)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -139,8 +169,8 @@ public class actual_parameterImpl extends parameter_listImpl implements actual_p
   {
     switch (featureID)
     {
-      case PascalPackage.ACTUAL_PARAMETER__TYPES:
-        getTypes().clear();
+      case PascalPackage.ACTUAL_PARAMETER__CONTENT:
+        setContent((expression)null);
         return;
     }
     super.eUnset(featureID);
@@ -156,8 +186,8 @@ public class actual_parameterImpl extends parameter_listImpl implements actual_p
   {
     switch (featureID)
     {
-      case PascalPackage.ACTUAL_PARAMETER__TYPES:
-        return types != null && !types.isEmpty();
+      case PascalPackage.ACTUAL_PARAMETER__CONTENT:
+        return content != null;
     }
     return super.eIsSet(featureID);
   }

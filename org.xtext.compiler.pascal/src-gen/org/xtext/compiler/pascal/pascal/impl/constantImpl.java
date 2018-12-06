@@ -3,16 +3,17 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
-import java.util.Collection;
-
-import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.util.EDataTypeEList;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.constant;
+import org.xtext.compiler.pascal.pascal.unsigned_number;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,9 +23,12 @@ import org.xtext.compiler.pascal.pascal.constant;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.constantImpl#getNames <em>Names</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.constantImpl#getUns_number <em>Uns number</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.constantImpl#getSig_number <em>Sig number</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.constantImpl#getName_id <em>Name id</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.constantImpl#getSig_name_id <em>Sig name id</em>}</li>
  *   <li>{@link org.xtext.compiler.pascal.pascal.impl.constantImpl#getString <em>String</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.constantImpl#getNumbers <em>Numbers</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.constantImpl#getBooltype <em>Booltype</em>}</li>
  * </ul>
  *
  * @generated
@@ -32,34 +36,104 @@ import org.xtext.compiler.pascal.pascal.constant;
 public class constantImpl extends constant_definitionImpl implements constant
 {
   /**
-   * The cached value of the '{@link #getNames() <em>Names</em>}' attribute list.
+   * The cached value of the '{@link #getUns_number() <em>Uns number</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getNames()
+   * @see #getUns_number()
    * @generated
    * @ordered
    */
-  protected EList<String> names;
+  protected unsigned_number uns_number;
 
   /**
-   * The cached value of the '{@link #getString() <em>String</em>}' attribute list.
+   * The cached value of the '{@link #getSig_number() <em>Sig number</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getSig_number()
+   * @generated
+   * @ordered
+   */
+  protected unsigned_number sig_number;
+
+  /**
+   * The default value of the '{@link #getName_id() <em>Name id</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getName_id()
+   * @generated
+   * @ordered
+   */
+  protected static final String NAME_ID_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getName_id() <em>Name id</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getName_id()
+   * @generated
+   * @ordered
+   */
+  protected String name_id = NAME_ID_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #getSig_name_id() <em>Sig name id</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getSig_name_id()
+   * @generated
+   * @ordered
+   */
+  protected static final String SIG_NAME_ID_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getSig_name_id() <em>Sig name id</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getSig_name_id()
+   * @generated
+   * @ordered
+   */
+  protected String sig_name_id = SIG_NAME_ID_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #getString() <em>String</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getString()
    * @generated
    * @ordered
    */
-  protected EList<String> string;
+  protected static final String STRING_EDEFAULT = null;
 
   /**
-   * The cached value of the '{@link #getNumbers() <em>Numbers</em>}' attribute list.
+   * The cached value of the '{@link #getString() <em>String</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getNumbers()
+   * @see #getString()
    * @generated
    * @ordered
    */
-  protected EList<String> numbers;
+  protected String string = STRING_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #getBooltype() <em>Booltype</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getBooltype()
+   * @generated
+   * @ordered
+   */
+  protected static final String BOOLTYPE_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getBooltype() <em>Booltype</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getBooltype()
+   * @generated
+   * @ordered
+   */
+  protected String booltype = BOOLTYPE_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -87,13 +161,9 @@ public class constantImpl extends constant_definitionImpl implements constant
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<String> getNames()
+  public unsigned_number getUns_number()
   {
-    if (names == null)
-    {
-      names = new EDataTypeEList<String>(String.class, this, PascalPackage.CONSTANT__NAMES);
-    }
-    return names;
+    return uns_number;
   }
 
   /**
@@ -101,12 +171,140 @@ public class constantImpl extends constant_definitionImpl implements constant
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<String> getString()
+  public NotificationChain basicSetUns_number(unsigned_number newUns_number, NotificationChain msgs)
   {
-    if (string == null)
+    unsigned_number oldUns_number = uns_number;
+    uns_number = newUns_number;
+    if (eNotificationRequired())
     {
-      string = new EDataTypeEList<String>(String.class, this, PascalPackage.CONSTANT__STRING);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.CONSTANT__UNS_NUMBER, oldUns_number, newUns_number);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setUns_number(unsigned_number newUns_number)
+  {
+    if (newUns_number != uns_number)
+    {
+      NotificationChain msgs = null;
+      if (uns_number != null)
+        msgs = ((InternalEObject)uns_number).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.CONSTANT__UNS_NUMBER, null, msgs);
+      if (newUns_number != null)
+        msgs = ((InternalEObject)newUns_number).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.CONSTANT__UNS_NUMBER, null, msgs);
+      msgs = basicSetUns_number(newUns_number, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.CONSTANT__UNS_NUMBER, newUns_number, newUns_number));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public unsigned_number getSig_number()
+  {
+    return sig_number;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetSig_number(unsigned_number newSig_number, NotificationChain msgs)
+  {
+    unsigned_number oldSig_number = sig_number;
+    sig_number = newSig_number;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.CONSTANT__SIG_NUMBER, oldSig_number, newSig_number);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setSig_number(unsigned_number newSig_number)
+  {
+    if (newSig_number != sig_number)
+    {
+      NotificationChain msgs = null;
+      if (sig_number != null)
+        msgs = ((InternalEObject)sig_number).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.CONSTANT__SIG_NUMBER, null, msgs);
+      if (newSig_number != null)
+        msgs = ((InternalEObject)newSig_number).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.CONSTANT__SIG_NUMBER, null, msgs);
+      msgs = basicSetSig_number(newSig_number, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.CONSTANT__SIG_NUMBER, newSig_number, newSig_number));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String getName_id()
+  {
+    return name_id;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setName_id(String newName_id)
+  {
+    String oldName_id = name_id;
+    name_id = newName_id;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.CONSTANT__NAME_ID, oldName_id, name_id));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String getSig_name_id()
+  {
+    return sig_name_id;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setSig_name_id(String newSig_name_id)
+  {
+    String oldSig_name_id = sig_name_id;
+    sig_name_id = newSig_name_id;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.CONSTANT__SIG_NAME_ID, oldSig_name_id, sig_name_id));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String getString()
+  {
     return string;
   }
 
@@ -115,13 +313,53 @@ public class constantImpl extends constant_definitionImpl implements constant
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<String> getNumbers()
+  public void setString(String newString)
   {
-    if (numbers == null)
+    String oldString = string;
+    string = newString;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.CONSTANT__STRING, oldString, string));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String getBooltype()
+  {
+    return booltype;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setBooltype(String newBooltype)
+  {
+    String oldBooltype = booltype;
+    booltype = newBooltype;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.CONSTANT__BOOLTYPE, oldBooltype, booltype));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
     {
-      numbers = new EDataTypeEList<String>(String.class, this, PascalPackage.CONSTANT__NUMBERS);
+      case PascalPackage.CONSTANT__UNS_NUMBER:
+        return basicSetUns_number(null, msgs);
+      case PascalPackage.CONSTANT__SIG_NUMBER:
+        return basicSetSig_number(null, msgs);
     }
-    return numbers;
+    return super.eInverseRemove(otherEnd, featureID, msgs);
   }
 
   /**
@@ -134,12 +372,18 @@ public class constantImpl extends constant_definitionImpl implements constant
   {
     switch (featureID)
     {
-      case PascalPackage.CONSTANT__NAMES:
-        return getNames();
+      case PascalPackage.CONSTANT__UNS_NUMBER:
+        return getUns_number();
+      case PascalPackage.CONSTANT__SIG_NUMBER:
+        return getSig_number();
+      case PascalPackage.CONSTANT__NAME_ID:
+        return getName_id();
+      case PascalPackage.CONSTANT__SIG_NAME_ID:
+        return getSig_name_id();
       case PascalPackage.CONSTANT__STRING:
         return getString();
-      case PascalPackage.CONSTANT__NUMBERS:
-        return getNumbers();
+      case PascalPackage.CONSTANT__BOOLTYPE:
+        return getBooltype();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -149,23 +393,28 @@ public class constantImpl extends constant_definitionImpl implements constant
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case PascalPackage.CONSTANT__NAMES:
-        getNames().clear();
-        getNames().addAll((Collection<? extends String>)newValue);
+      case PascalPackage.CONSTANT__UNS_NUMBER:
+        setUns_number((unsigned_number)newValue);
+        return;
+      case PascalPackage.CONSTANT__SIG_NUMBER:
+        setSig_number((unsigned_number)newValue);
+        return;
+      case PascalPackage.CONSTANT__NAME_ID:
+        setName_id((String)newValue);
+        return;
+      case PascalPackage.CONSTANT__SIG_NAME_ID:
+        setSig_name_id((String)newValue);
         return;
       case PascalPackage.CONSTANT__STRING:
-        getString().clear();
-        getString().addAll((Collection<? extends String>)newValue);
+        setString((String)newValue);
         return;
-      case PascalPackage.CONSTANT__NUMBERS:
-        getNumbers().clear();
-        getNumbers().addAll((Collection<? extends String>)newValue);
+      case PascalPackage.CONSTANT__BOOLTYPE:
+        setBooltype((String)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -181,14 +430,23 @@ public class constantImpl extends constant_definitionImpl implements constant
   {
     switch (featureID)
     {
-      case PascalPackage.CONSTANT__NAMES:
-        getNames().clear();
+      case PascalPackage.CONSTANT__UNS_NUMBER:
+        setUns_number((unsigned_number)null);
+        return;
+      case PascalPackage.CONSTANT__SIG_NUMBER:
+        setSig_number((unsigned_number)null);
+        return;
+      case PascalPackage.CONSTANT__NAME_ID:
+        setName_id(NAME_ID_EDEFAULT);
+        return;
+      case PascalPackage.CONSTANT__SIG_NAME_ID:
+        setSig_name_id(SIG_NAME_ID_EDEFAULT);
         return;
       case PascalPackage.CONSTANT__STRING:
-        getString().clear();
+        setString(STRING_EDEFAULT);
         return;
-      case PascalPackage.CONSTANT__NUMBERS:
-        getNumbers().clear();
+      case PascalPackage.CONSTANT__BOOLTYPE:
+        setBooltype(BOOLTYPE_EDEFAULT);
         return;
     }
     super.eUnset(featureID);
@@ -204,12 +462,18 @@ public class constantImpl extends constant_definitionImpl implements constant
   {
     switch (featureID)
     {
-      case PascalPackage.CONSTANT__NAMES:
-        return names != null && !names.isEmpty();
+      case PascalPackage.CONSTANT__UNS_NUMBER:
+        return uns_number != null;
+      case PascalPackage.CONSTANT__SIG_NUMBER:
+        return sig_number != null;
+      case PascalPackage.CONSTANT__NAME_ID:
+        return NAME_ID_EDEFAULT == null ? name_id != null : !NAME_ID_EDEFAULT.equals(name_id);
+      case PascalPackage.CONSTANT__SIG_NAME_ID:
+        return SIG_NAME_ID_EDEFAULT == null ? sig_name_id != null : !SIG_NAME_ID_EDEFAULT.equals(sig_name_id);
       case PascalPackage.CONSTANT__STRING:
-        return string != null && !string.isEmpty();
-      case PascalPackage.CONSTANT__NUMBERS:
-        return numbers != null && !numbers.isEmpty();
+        return STRING_EDEFAULT == null ? string != null : !STRING_EDEFAULT.equals(string);
+      case PascalPackage.CONSTANT__BOOLTYPE:
+        return BOOLTYPE_EDEFAULT == null ? booltype != null : !BOOLTYPE_EDEFAULT.equals(booltype);
     }
     return super.eIsSet(featureID);
   }
@@ -225,12 +489,14 @@ public class constantImpl extends constant_definitionImpl implements constant
     if (eIsProxy()) return super.toString();
 
     StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (names: ");
-    result.append(names);
+    result.append(" (name_id: ");
+    result.append(name_id);
+    result.append(", sig_name_id: ");
+    result.append(sig_name_id);
     result.append(", string: ");
     result.append(string);
-    result.append(", numbers: ");
-    result.append(numbers);
+    result.append(", booltype: ");
+    result.append(booltype);
     result.append(')');
     return result.toString();
   }

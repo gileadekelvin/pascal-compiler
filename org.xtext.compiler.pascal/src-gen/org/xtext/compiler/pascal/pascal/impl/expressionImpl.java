@@ -3,22 +3,18 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
-import java.util.Collection;
-
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.util.EDataTypeEList;
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.expression;
+import org.xtext.compiler.pascal.pascal.simple_expression;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,33 +24,22 @@ import org.xtext.compiler.pascal.pascal.expression;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.expressionImpl#getExpressions <em>Expressions</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.expressionImpl#getOperators <em>Operators</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.expressionImpl#getSimple <em>Simple</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class expressionImpl extends actual_parameterImpl implements expression
+public class expressionImpl extends MinimalEObjectImpl.Container implements expression
 {
   /**
-   * The cached value of the '{@link #getExpressions() <em>Expressions</em>}' containment reference list.
+   * The cached value of the '{@link #getSimple() <em>Simple</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getExpressions()
+   * @see #getSimple()
    * @generated
    * @ordered
    */
-  protected EList<EObject> expressions;
-
-  /**
-   * The cached value of the '{@link #getOperators() <em>Operators</em>}' attribute list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getOperators()
-   * @generated
-   * @ordered
-   */
-  protected EList<String> operators;
+  protected simple_expression simple;
 
   /**
    * <!-- begin-user-doc -->
@@ -82,13 +67,9 @@ public class expressionImpl extends actual_parameterImpl implements expression
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<EObject> getExpressions()
+  public simple_expression getSimple()
   {
-    if (expressions == null)
-    {
-      expressions = new EObjectContainmentEList<EObject>(EObject.class, this, PascalPackage.EXPRESSION__EXPRESSIONS);
-    }
-    return expressions;
+    return simple;
   }
 
   /**
@@ -96,13 +77,37 @@ public class expressionImpl extends actual_parameterImpl implements expression
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<String> getOperators()
+  public NotificationChain basicSetSimple(simple_expression newSimple, NotificationChain msgs)
   {
-    if (operators == null)
+    simple_expression oldSimple = simple;
+    simple = newSimple;
+    if (eNotificationRequired())
     {
-      operators = new EDataTypeEList<String>(String.class, this, PascalPackage.EXPRESSION__OPERATORS);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.EXPRESSION__SIMPLE, oldSimple, newSimple);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
-    return operators;
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setSimple(simple_expression newSimple)
+  {
+    if (newSimple != simple)
+    {
+      NotificationChain msgs = null;
+      if (simple != null)
+        msgs = ((InternalEObject)simple).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.EXPRESSION__SIMPLE, null, msgs);
+      if (newSimple != null)
+        msgs = ((InternalEObject)newSimple).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.EXPRESSION__SIMPLE, null, msgs);
+      msgs = basicSetSimple(newSimple, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.EXPRESSION__SIMPLE, newSimple, newSimple));
   }
 
   /**
@@ -115,8 +120,8 @@ public class expressionImpl extends actual_parameterImpl implements expression
   {
     switch (featureID)
     {
-      case PascalPackage.EXPRESSION__EXPRESSIONS:
-        return ((InternalEList<?>)getExpressions()).basicRemove(otherEnd, msgs);
+      case PascalPackage.EXPRESSION__SIMPLE:
+        return basicSetSimple(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -131,10 +136,8 @@ public class expressionImpl extends actual_parameterImpl implements expression
   {
     switch (featureID)
     {
-      case PascalPackage.EXPRESSION__EXPRESSIONS:
-        return getExpressions();
-      case PascalPackage.EXPRESSION__OPERATORS:
-        return getOperators();
+      case PascalPackage.EXPRESSION__SIMPLE:
+        return getSimple();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -144,19 +147,13 @@ public class expressionImpl extends actual_parameterImpl implements expression
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case PascalPackage.EXPRESSION__EXPRESSIONS:
-        getExpressions().clear();
-        getExpressions().addAll((Collection<? extends EObject>)newValue);
-        return;
-      case PascalPackage.EXPRESSION__OPERATORS:
-        getOperators().clear();
-        getOperators().addAll((Collection<? extends String>)newValue);
+      case PascalPackage.EXPRESSION__SIMPLE:
+        setSimple((simple_expression)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -172,11 +169,8 @@ public class expressionImpl extends actual_parameterImpl implements expression
   {
     switch (featureID)
     {
-      case PascalPackage.EXPRESSION__EXPRESSIONS:
-        getExpressions().clear();
-        return;
-      case PascalPackage.EXPRESSION__OPERATORS:
-        getOperators().clear();
+      case PascalPackage.EXPRESSION__SIMPLE:
+        setSimple((simple_expression)null);
         return;
     }
     super.eUnset(featureID);
@@ -192,29 +186,10 @@ public class expressionImpl extends actual_parameterImpl implements expression
   {
     switch (featureID)
     {
-      case PascalPackage.EXPRESSION__EXPRESSIONS:
-        return expressions != null && !expressions.isEmpty();
-      case PascalPackage.EXPRESSION__OPERATORS:
-        return operators != null && !operators.isEmpty();
+      case PascalPackage.EXPRESSION__SIMPLE:
+        return simple != null;
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (operators: ");
-    result.append(operators);
-    result.append(')');
-    return result.toString();
   }
 
 } //expressionImpl

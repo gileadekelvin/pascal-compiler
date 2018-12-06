@@ -60,6 +60,15 @@ public interface PascalFactory extends EFactory
   identifier_list createidentifier_list();
 
   /**
+   * Returns a new object of class '<em>identifier</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>identifier</em>'.
+   * @generated
+   */
+  identifier createidentifier();
+
+  /**
    * Returns a new object of class '<em>block</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -94,6 +103,24 @@ public interface PascalFactory extends EFactory
    * @generated
    */
   constant createconstant();
+
+  /**
+   * Returns a new object of class '<em>type definition part</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>type definition part</em>'.
+   * @generated
+   */
+  type_definition_part createtype_definition_part();
+
+  /**
+   * Returns a new object of class '<em>type definition</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>type definition</em>'.
+   * @generated
+   */
+  type_definition createtype_definition();
 
   /**
    * Returns a new object of class '<em>variable declaration part</em>'.
@@ -148,15 +175,6 @@ public interface PascalFactory extends EFactory
    * @generated
    */
   unlabelled_statement createunlabelled_statement();
-
-  /**
-   * Returns a new object of class '<em>label</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>label</em>'.
-   * @generated
-   */
-  label createlabel();
 
   /**
    * Returns a new object of class '<em>simple statement</em>'.
@@ -231,33 +249,6 @@ public interface PascalFactory extends EFactory
   factor createfactor();
 
   /**
-   * Returns a new object of class '<em>set</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>set</em>'.
-   * @generated
-   */
-  set createset();
-
-  /**
-   * Returns a new object of class '<em>element List</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>element List</em>'.
-   * @generated
-   */
-  elementList createelementList();
-
-  /**
-   * Returns a new object of class '<em>element</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>element</em>'.
-   * @generated
-   */
-  element createelement();
-
-  /**
    * Returns a new object of class '<em>type</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -276,15 +267,6 @@ public interface PascalFactory extends EFactory
   simple_type createsimple_type();
 
   /**
-   * Returns a new object of class '<em>scalar type</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>scalar type</em>'.
-   * @generated
-   */
-  scalar_type createscalar_type();
-
-  /**
    * Returns a new object of class '<em>subrange type</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -294,6 +276,69 @@ public interface PascalFactory extends EFactory
   subrange_type createsubrange_type();
 
   /**
+   * Returns a new object of class '<em>structured type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>structured type</em>'.
+   * @generated
+   */
+  structured_type createstructured_type();
+
+  /**
+   * Returns a new object of class '<em>unpacked structured type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>unpacked structured type</em>'.
+   * @generated
+   */
+  unpacked_structured_type createunpacked_structured_type();
+
+  /**
+   * Returns a new object of class '<em>dynamic array type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>dynamic array type</em>'.
+   * @generated
+   */
+  dynamic_array_type createdynamic_array_type();
+
+  /**
+   * Returns a new object of class '<em>array type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>array type</em>'.
+   * @generated
+   */
+  array_type createarray_type();
+
+  /**
+   * Returns a new object of class '<em>type list</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>type list</em>'.
+   * @generated
+   */
+  type_list createtype_list();
+
+  /**
+   * Returns a new object of class '<em>index type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>index type</em>'.
+   * @generated
+   */
+  index_type createindex_type();
+
+  /**
+   * Returns a new object of class '<em>component type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>component type</em>'.
+   * @generated
+   */
+  component_type createcomponent_type();
+
+  /**
    * Returns a new object of class '<em>type identifier</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -301,15 +346,6 @@ public interface PascalFactory extends EFactory
    * @generated
    */
   type_identifier createtype_identifier();
-
-  /**
-   * Returns a new object of class '<em>string type</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>string type</em>'.
-   * @generated
-   */
-  string_type createstring_type();
 
   /**
    * Returns a new object of class '<em>unsigned constant</em>'.
@@ -328,15 +364,6 @@ public interface PascalFactory extends EFactory
    * @generated
    */
   unsigned_number createunsigned_number();
-
-  /**
-   * Returns a new object of class '<em>constant chr</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>constant chr</em>'.
-   * @generated
-   */
-  constant_chr createconstant_chr();
 
   /**
    * Returns a new object of class '<em>procedure statement</em>'.
@@ -366,6 +393,51 @@ public interface PascalFactory extends EFactory
   actual_parameter createactual_parameter();
 
   /**
+   * Returns a new object of class '<em>structured statement</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>structured statement</em>'.
+   * @generated
+   */
+  structured_statement createstructured_statement();
+
+  /**
+   * Returns a new object of class '<em>conditional statement</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>conditional statement</em>'.
+   * @generated
+   */
+  conditional_statement createconditional_statement();
+
+  /**
+   * Returns a new object of class '<em>case statement</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>case statement</em>'.
+   * @generated
+   */
+  case_statement createcase_statement();
+
+  /**
+   * Returns a new object of class '<em>case list element</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>case list element</em>'.
+   * @generated
+   */
+  case_list_element createcase_list_element();
+
+  /**
+   * Returns a new object of class '<em>const list</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>const list</em>'.
+   * @generated
+   */
+  const_list createconst_list();
+
+  /**
    * Returns a new object of class '<em>procedure and function declaration part</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -391,15 +463,6 @@ public interface PascalFactory extends EFactory
    * @generated
    */
   procedure_declaration createprocedure_declaration();
-
-  /**
-   * Returns a new object of class '<em>type definition</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>type definition</em>'.
-   * @generated
-   */
-  type_definition createtype_definition();
 
   /**
    * Returns a new object of class '<em>procedure type</em>'.

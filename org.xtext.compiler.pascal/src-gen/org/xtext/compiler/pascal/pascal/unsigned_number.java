@@ -3,17 +3,50 @@
  */
 package org.xtext.compiler.pascal.pascal;
 
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>unsigned number</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.unsigned_number#getNumbers <em>Numbers</em>}</li>
+ * </ul>
  *
  * @see org.xtext.compiler.pascal.pascal.PascalPackage#getunsigned_number()
  * @model
  * @generated
  */
-public interface unsigned_number extends constant
+public interface unsigned_number extends EObject
 {
+  /**
+   * Returns the value of the '<em><b>Numbers</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Numbers</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Numbers</em>' attribute.
+   * @see #setNumbers(String)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getunsigned_number_Numbers()
+   * @model
+   * @generated
+   */
+  String getNumbers();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.unsigned_number#getNumbers <em>Numbers</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Numbers</em>' attribute.
+   * @see #getNumbers()
+   * @generated
+   */
+  void setNumbers(String value);
+
 } // unsigned_number

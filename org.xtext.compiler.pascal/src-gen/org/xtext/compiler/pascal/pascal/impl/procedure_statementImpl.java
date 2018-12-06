@@ -3,20 +3,14 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
-import java.util.Collection;
-
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
-import org.eclipse.emf.ecore.util.EDataTypeEList;
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.parameter_list;
@@ -30,8 +24,8 @@ import org.xtext.compiler.pascal.pascal.procedure_statement;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.procedure_statementImpl#getNames <em>Names</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.procedure_statementImpl#getTypes <em>Types</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.procedure_statementImpl#getName_id <em>Name id</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.procedure_statementImpl#getParameters <em>Parameters</em>}</li>
  * </ul>
  *
  * @generated
@@ -39,24 +33,34 @@ import org.xtext.compiler.pascal.pascal.procedure_statement;
 public class procedure_statementImpl extends MinimalEObjectImpl.Container implements procedure_statement
 {
   /**
-   * The cached value of the '{@link #getNames() <em>Names</em>}' attribute list.
+   * The default value of the '{@link #getName_id() <em>Name id</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getNames()
+   * @see #getName_id()
    * @generated
    * @ordered
    */
-  protected EList<String> names;
+  protected static final String NAME_ID_EDEFAULT = null;
 
   /**
-   * The cached value of the '{@link #getTypes() <em>Types</em>}' containment reference list.
+   * The cached value of the '{@link #getName_id() <em>Name id</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getTypes()
+   * @see #getName_id()
    * @generated
    * @ordered
    */
-  protected EList<parameter_list> types;
+  protected String name_id = NAME_ID_EDEFAULT;
+
+  /**
+   * The cached value of the '{@link #getParameters() <em>Parameters</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getParameters()
+   * @generated
+   * @ordered
+   */
+  protected parameter_list parameters;
 
   /**
    * <!-- begin-user-doc -->
@@ -84,13 +88,9 @@ public class procedure_statementImpl extends MinimalEObjectImpl.Container implem
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<String> getNames()
+  public String getName_id()
   {
-    if (names == null)
-    {
-      names = new EDataTypeEList<String>(String.class, this, PascalPackage.PROCEDURE_STATEMENT__NAMES);
-    }
-    return names;
+    return name_id;
   }
 
   /**
@@ -98,13 +98,60 @@ public class procedure_statementImpl extends MinimalEObjectImpl.Container implem
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<parameter_list> getTypes()
+  public void setName_id(String newName_id)
   {
-    if (types == null)
+    String oldName_id = name_id;
+    name_id = newName_id;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.PROCEDURE_STATEMENT__NAME_ID, oldName_id, name_id));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public parameter_list getParameters()
+  {
+    return parameters;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetParameters(parameter_list newParameters, NotificationChain msgs)
+  {
+    parameter_list oldParameters = parameters;
+    parameters = newParameters;
+    if (eNotificationRequired())
     {
-      types = new EObjectContainmentEList<parameter_list>(parameter_list.class, this, PascalPackage.PROCEDURE_STATEMENT__TYPES);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.PROCEDURE_STATEMENT__PARAMETERS, oldParameters, newParameters);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
-    return types;
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setParameters(parameter_list newParameters)
+  {
+    if (newParameters != parameters)
+    {
+      NotificationChain msgs = null;
+      if (parameters != null)
+        msgs = ((InternalEObject)parameters).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.PROCEDURE_STATEMENT__PARAMETERS, null, msgs);
+      if (newParameters != null)
+        msgs = ((InternalEObject)newParameters).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.PROCEDURE_STATEMENT__PARAMETERS, null, msgs);
+      msgs = basicSetParameters(newParameters, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.PROCEDURE_STATEMENT__PARAMETERS, newParameters, newParameters));
   }
 
   /**
@@ -117,8 +164,8 @@ public class procedure_statementImpl extends MinimalEObjectImpl.Container implem
   {
     switch (featureID)
     {
-      case PascalPackage.PROCEDURE_STATEMENT__TYPES:
-        return ((InternalEList<?>)getTypes()).basicRemove(otherEnd, msgs);
+      case PascalPackage.PROCEDURE_STATEMENT__PARAMETERS:
+        return basicSetParameters(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -133,10 +180,10 @@ public class procedure_statementImpl extends MinimalEObjectImpl.Container implem
   {
     switch (featureID)
     {
-      case PascalPackage.PROCEDURE_STATEMENT__NAMES:
-        return getNames();
-      case PascalPackage.PROCEDURE_STATEMENT__TYPES:
-        return getTypes();
+      case PascalPackage.PROCEDURE_STATEMENT__NAME_ID:
+        return getName_id();
+      case PascalPackage.PROCEDURE_STATEMENT__PARAMETERS:
+        return getParameters();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -146,19 +193,16 @@ public class procedure_statementImpl extends MinimalEObjectImpl.Container implem
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case PascalPackage.PROCEDURE_STATEMENT__NAMES:
-        getNames().clear();
-        getNames().addAll((Collection<? extends String>)newValue);
+      case PascalPackage.PROCEDURE_STATEMENT__NAME_ID:
+        setName_id((String)newValue);
         return;
-      case PascalPackage.PROCEDURE_STATEMENT__TYPES:
-        getTypes().clear();
-        getTypes().addAll((Collection<? extends parameter_list>)newValue);
+      case PascalPackage.PROCEDURE_STATEMENT__PARAMETERS:
+        setParameters((parameter_list)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -174,11 +218,11 @@ public class procedure_statementImpl extends MinimalEObjectImpl.Container implem
   {
     switch (featureID)
     {
-      case PascalPackage.PROCEDURE_STATEMENT__NAMES:
-        getNames().clear();
+      case PascalPackage.PROCEDURE_STATEMENT__NAME_ID:
+        setName_id(NAME_ID_EDEFAULT);
         return;
-      case PascalPackage.PROCEDURE_STATEMENT__TYPES:
-        getTypes().clear();
+      case PascalPackage.PROCEDURE_STATEMENT__PARAMETERS:
+        setParameters((parameter_list)null);
         return;
     }
     super.eUnset(featureID);
@@ -194,10 +238,10 @@ public class procedure_statementImpl extends MinimalEObjectImpl.Container implem
   {
     switch (featureID)
     {
-      case PascalPackage.PROCEDURE_STATEMENT__NAMES:
-        return names != null && !names.isEmpty();
-      case PascalPackage.PROCEDURE_STATEMENT__TYPES:
-        return types != null && !types.isEmpty();
+      case PascalPackage.PROCEDURE_STATEMENT__NAME_ID:
+        return NAME_ID_EDEFAULT == null ? name_id != null : !NAME_ID_EDEFAULT.equals(name_id);
+      case PascalPackage.PROCEDURE_STATEMENT__PARAMETERS:
+        return parameters != null;
     }
     return super.eIsSet(featureID);
   }
@@ -213,8 +257,8 @@ public class procedure_statementImpl extends MinimalEObjectImpl.Container implem
     if (eIsProxy()) return super.toString();
 
     StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (names: ");
-    result.append(names);
+    result.append(" (name_id: ");
+    result.append(name_id);
     result.append(')');
     return result.toString();
   }

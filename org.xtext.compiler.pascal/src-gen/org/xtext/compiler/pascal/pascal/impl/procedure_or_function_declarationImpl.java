@@ -3,22 +3,18 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
-import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import org.eclipse.emf.ecore.util.EDataTypeEList;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
-import org.xtext.compiler.pascal.pascal.block;
+import org.xtext.compiler.pascal.pascal.function_declaration;
+import org.xtext.compiler.pascal.pascal.procedure_declaration;
 import org.xtext.compiler.pascal.pascal.procedure_or_function_declaration;
 
 /**
@@ -29,33 +25,33 @@ import org.xtext.compiler.pascal.pascal.procedure_or_function_declaration;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.procedure_or_function_declarationImpl#getNames <em>Names</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.procedure_or_function_declarationImpl#getBlock <em>Block</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.procedure_or_function_declarationImpl#getProc <em>Proc</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.procedure_or_function_declarationImpl#getFunc <em>Func</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class procedure_or_function_declarationImpl extends procedure_and_function_declaration_partImpl implements procedure_or_function_declaration
+public class procedure_or_function_declarationImpl extends MinimalEObjectImpl.Container implements procedure_or_function_declaration
 {
   /**
-   * The cached value of the '{@link #getNames() <em>Names</em>}' attribute list.
+   * The cached value of the '{@link #getProc() <em>Proc</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getNames()
+   * @see #getProc()
    * @generated
    * @ordered
    */
-  protected EList<String> names;
+  protected procedure_declaration proc;
 
   /**
-   * The cached value of the '{@link #getBlock() <em>Block</em>}' containment reference.
+   * The cached value of the '{@link #getFunc() <em>Func</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getBlock()
+   * @see #getFunc()
    * @generated
    * @ordered
    */
-  protected block block;
+  protected function_declaration func;
 
   /**
    * <!-- begin-user-doc -->
@@ -83,13 +79,9 @@ public class procedure_or_function_declarationImpl extends procedure_and_functio
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<String> getNames()
+  public procedure_declaration getProc()
   {
-    if (names == null)
-    {
-      names = new EDataTypeEList<String>(String.class, this, PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__NAMES);
-    }
-    return names;
+    return proc;
   }
 
   /**
@@ -97,23 +89,13 @@ public class procedure_or_function_declarationImpl extends procedure_and_functio
    * <!-- end-user-doc -->
    * @generated
    */
-  public block getBlock()
+  public NotificationChain basicSetProc(procedure_declaration newProc, NotificationChain msgs)
   {
-    return block;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetBlock(block newBlock, NotificationChain msgs)
-  {
-    block oldBlock = block;
-    block = newBlock;
+    procedure_declaration oldProc = proc;
+    proc = newProc;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__BLOCK, oldBlock, newBlock);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__PROC, oldProc, newProc);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -124,20 +106,68 @@ public class procedure_or_function_declarationImpl extends procedure_and_functio
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setBlock(block newBlock)
+  public void setProc(procedure_declaration newProc)
   {
-    if (newBlock != block)
+    if (newProc != proc)
     {
       NotificationChain msgs = null;
-      if (block != null)
-        msgs = ((InternalEObject)block).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__BLOCK, null, msgs);
-      if (newBlock != null)
-        msgs = ((InternalEObject)newBlock).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__BLOCK, null, msgs);
-      msgs = basicSetBlock(newBlock, msgs);
+      if (proc != null)
+        msgs = ((InternalEObject)proc).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__PROC, null, msgs);
+      if (newProc != null)
+        msgs = ((InternalEObject)newProc).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__PROC, null, msgs);
+      msgs = basicSetProc(newProc, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__BLOCK, newBlock, newBlock));
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__PROC, newProc, newProc));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public function_declaration getFunc()
+  {
+    return func;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetFunc(function_declaration newFunc, NotificationChain msgs)
+  {
+    function_declaration oldFunc = func;
+    func = newFunc;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__FUNC, oldFunc, newFunc);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setFunc(function_declaration newFunc)
+  {
+    if (newFunc != func)
+    {
+      NotificationChain msgs = null;
+      if (func != null)
+        msgs = ((InternalEObject)func).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__FUNC, null, msgs);
+      if (newFunc != null)
+        msgs = ((InternalEObject)newFunc).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__FUNC, null, msgs);
+      msgs = basicSetFunc(newFunc, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__FUNC, newFunc, newFunc));
   }
 
   /**
@@ -150,8 +180,10 @@ public class procedure_or_function_declarationImpl extends procedure_and_functio
   {
     switch (featureID)
     {
-      case PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__BLOCK:
-        return basicSetBlock(null, msgs);
+      case PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__PROC:
+        return basicSetProc(null, msgs);
+      case PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__FUNC:
+        return basicSetFunc(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -166,10 +198,10 @@ public class procedure_or_function_declarationImpl extends procedure_and_functio
   {
     switch (featureID)
     {
-      case PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__NAMES:
-        return getNames();
-      case PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__BLOCK:
-        return getBlock();
+      case PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__PROC:
+        return getProc();
+      case PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__FUNC:
+        return getFunc();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -179,18 +211,16 @@ public class procedure_or_function_declarationImpl extends procedure_and_functio
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__NAMES:
-        getNames().clear();
-        getNames().addAll((Collection<? extends String>)newValue);
+      case PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__PROC:
+        setProc((procedure_declaration)newValue);
         return;
-      case PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__BLOCK:
-        setBlock((block)newValue);
+      case PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__FUNC:
+        setFunc((function_declaration)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -206,11 +236,11 @@ public class procedure_or_function_declarationImpl extends procedure_and_functio
   {
     switch (featureID)
     {
-      case PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__NAMES:
-        getNames().clear();
+      case PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__PROC:
+        setProc((procedure_declaration)null);
         return;
-      case PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__BLOCK:
-        setBlock((block)null);
+      case PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__FUNC:
+        setFunc((function_declaration)null);
         return;
     }
     super.eUnset(featureID);
@@ -226,29 +256,12 @@ public class procedure_or_function_declarationImpl extends procedure_and_functio
   {
     switch (featureID)
     {
-      case PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__NAMES:
-        return names != null && !names.isEmpty();
-      case PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__BLOCK:
-        return block != null;
+      case PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__PROC:
+        return proc != null;
+      case PascalPackage.PROCEDURE_OR_FUNCTION_DECLARATION__FUNC:
+        return func != null;
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (names: ");
-    result.append(names);
-    result.append(')');
-    return result.toString();
   }
 
 } //procedure_or_function_declarationImpl

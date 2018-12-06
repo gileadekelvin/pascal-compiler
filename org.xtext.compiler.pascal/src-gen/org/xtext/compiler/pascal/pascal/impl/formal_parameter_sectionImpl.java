@@ -10,14 +10,16 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.formal_parameter_section;
+import org.xtext.compiler.pascal.pascal.parameter_group;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,22 +29,22 @@ import org.xtext.compiler.pascal.pascal.formal_parameter_section;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.formal_parameter_sectionImpl#getTypes <em>Types</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.formal_parameter_sectionImpl#getParameters <em>Parameters</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class formal_parameter_sectionImpl extends formal_parameter_listImpl implements formal_parameter_section
+public class formal_parameter_sectionImpl extends MinimalEObjectImpl.Container implements formal_parameter_section
 {
   /**
-   * The cached value of the '{@link #getTypes() <em>Types</em>}' containment reference list.
+   * The cached value of the '{@link #getParameters() <em>Parameters</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getTypes()
+   * @see #getParameters()
    * @generated
    * @ordered
    */
-  protected EList<EObject> types;
+  protected EList<parameter_group> parameters;
 
   /**
    * <!-- begin-user-doc -->
@@ -70,13 +72,13 @@ public class formal_parameter_sectionImpl extends formal_parameter_listImpl impl
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<EObject> getTypes()
+  public EList<parameter_group> getParameters()
   {
-    if (types == null)
+    if (parameters == null)
     {
-      types = new EObjectContainmentEList<EObject>(EObject.class, this, PascalPackage.FORMAL_PARAMETER_SECTION__TYPES);
+      parameters = new EObjectContainmentEList<parameter_group>(parameter_group.class, this, PascalPackage.FORMAL_PARAMETER_SECTION__PARAMETERS);
     }
-    return types;
+    return parameters;
   }
 
   /**
@@ -89,8 +91,8 @@ public class formal_parameter_sectionImpl extends formal_parameter_listImpl impl
   {
     switch (featureID)
     {
-      case PascalPackage.FORMAL_PARAMETER_SECTION__TYPES:
-        return ((InternalEList<?>)getTypes()).basicRemove(otherEnd, msgs);
+      case PascalPackage.FORMAL_PARAMETER_SECTION__PARAMETERS:
+        return ((InternalEList<?>)getParameters()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -105,8 +107,8 @@ public class formal_parameter_sectionImpl extends formal_parameter_listImpl impl
   {
     switch (featureID)
     {
-      case PascalPackage.FORMAL_PARAMETER_SECTION__TYPES:
-        return getTypes();
+      case PascalPackage.FORMAL_PARAMETER_SECTION__PARAMETERS:
+        return getParameters();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -122,9 +124,9 @@ public class formal_parameter_sectionImpl extends formal_parameter_listImpl impl
   {
     switch (featureID)
     {
-      case PascalPackage.FORMAL_PARAMETER_SECTION__TYPES:
-        getTypes().clear();
-        getTypes().addAll((Collection<? extends EObject>)newValue);
+      case PascalPackage.FORMAL_PARAMETER_SECTION__PARAMETERS:
+        getParameters().clear();
+        getParameters().addAll((Collection<? extends parameter_group>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -140,8 +142,8 @@ public class formal_parameter_sectionImpl extends formal_parameter_listImpl impl
   {
     switch (featureID)
     {
-      case PascalPackage.FORMAL_PARAMETER_SECTION__TYPES:
-        getTypes().clear();
+      case PascalPackage.FORMAL_PARAMETER_SECTION__PARAMETERS:
+        getParameters().clear();
         return;
     }
     super.eUnset(featureID);
@@ -157,8 +159,8 @@ public class formal_parameter_sectionImpl extends formal_parameter_listImpl impl
   {
     switch (featureID)
     {
-      case PascalPackage.FORMAL_PARAMETER_SECTION__TYPES:
-        return types != null && !types.isEmpty();
+      case PascalPackage.FORMAL_PARAMETER_SECTION__PARAMETERS:
+        return parameters != null && !parameters.isEmpty();
     }
     return super.eIsSet(featureID);
   }

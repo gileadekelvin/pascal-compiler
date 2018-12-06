@@ -3,7 +3,6 @@
  */
 package org.xtext.compiler.pascal.pascal;
 
-import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,8 +13,10 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.type_identifier#getNames <em>Names</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.type_identifier#getType <em>Type</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.type_identifier#getId <em>Id</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.type_identifier#getBoolean <em>Boolean</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.type_identifier#getInteger <em>Integer</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.type_identifier#getString <em>String</em>}</li>
  * </ul>
  *
  * @see org.xtext.compiler.pascal.pascal.PascalPackage#gettype_identifier()
@@ -25,35 +26,107 @@ import org.eclipse.emf.common.util.EList;
 public interface type_identifier extends result_type
 {
   /**
-   * Returns the value of the '<em><b>Names</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * Returns the value of the '<em><b>Id</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Names</em>' attribute list isn't clear,
+   * If the meaning of the '<em>Id</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Names</em>' attribute list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#gettype_identifier_Names()
-   * @model unique="false"
+   * @return the value of the '<em>Id</em>' attribute.
+   * @see #setId(String)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#gettype_identifier_Id()
+   * @model
    * @generated
    */
-  EList<String> getNames();
+  String getId();
 
   /**
-   * Returns the value of the '<em><b>Type</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.type_identifier#getId <em>Id</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Id</em>' attribute.
+   * @see #getId()
+   * @generated
+   */
+  void setId(String value);
+
+  /**
+   * Returns the value of the '<em><b>Boolean</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Type</em>' attribute list isn't clear,
+   * If the meaning of the '<em>Boolean</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Type</em>' attribute list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#gettype_identifier_Type()
-   * @model unique="false"
+   * @return the value of the '<em>Boolean</em>' attribute.
+   * @see #setBoolean(String)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#gettype_identifier_Boolean()
+   * @model
    * @generated
    */
-  EList<String> getType();
+  String getBoolean();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.type_identifier#getBoolean <em>Boolean</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Boolean</em>' attribute.
+   * @see #getBoolean()
+   * @generated
+   */
+  void setBoolean(String value);
+
+  /**
+   * Returns the value of the '<em><b>Integer</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Integer</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Integer</em>' attribute.
+   * @see #setInteger(String)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#gettype_identifier_Integer()
+   * @model
+   * @generated
+   */
+  String getInteger();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.type_identifier#getInteger <em>Integer</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Integer</em>' attribute.
+   * @see #getInteger()
+   * @generated
+   */
+  void setInteger(String value);
+
+  /**
+   * Returns the value of the '<em><b>String</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>String</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>String</em>' attribute.
+   * @see #setString(String)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#gettype_identifier_String()
+   * @model
+   * @generated
+   */
+  String getString();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.type_identifier#getString <em>String</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>String</em>' attribute.
+   * @see #getString()
+   * @generated
+   */
+  void setString(String value);
 
 } // type_identifier

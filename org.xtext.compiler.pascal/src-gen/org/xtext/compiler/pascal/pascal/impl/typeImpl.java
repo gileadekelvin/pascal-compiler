@@ -3,20 +3,17 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
-import java.util.Collection;
-
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.xtext.compiler.pascal.pascal.PascalPackage;
 import org.xtext.compiler.pascal.pascal.simple_type;
+import org.xtext.compiler.pascal.pascal.structured_type;
 import org.xtext.compiler.pascal.pascal.type;
 
 /**
@@ -27,22 +24,33 @@ import org.xtext.compiler.pascal.pascal.type;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.typeImpl#getType <em>Type</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.typeImpl#getSimple <em>Simple</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.typeImpl#getStructured <em>Structured</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class typeImpl extends type_definitionImpl implements type
+public class typeImpl extends component_typeImpl implements type
 {
   /**
-   * The cached value of the '{@link #getType() <em>Type</em>}' containment reference list.
+   * The cached value of the '{@link #getSimple() <em>Simple</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getType()
+   * @see #getSimple()
    * @generated
    * @ordered
    */
-  protected EList<simple_type> type;
+  protected simple_type simple;
+
+  /**
+   * The cached value of the '{@link #getStructured() <em>Structured</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getStructured()
+   * @generated
+   * @ordered
+   */
+  protected structured_type structured;
 
   /**
    * <!-- begin-user-doc -->
@@ -70,13 +78,95 @@ public class typeImpl extends type_definitionImpl implements type
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<simple_type> getType()
+  public simple_type getSimple()
   {
-    if (type == null)
+    return simple;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetSimple(simple_type newSimple, NotificationChain msgs)
+  {
+    simple_type oldSimple = simple;
+    simple = newSimple;
+    if (eNotificationRequired())
     {
-      type = new EObjectContainmentEList<simple_type>(simple_type.class, this, PascalPackage.TYPE__TYPE);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.TYPE__SIMPLE, oldSimple, newSimple);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
-    return type;
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setSimple(simple_type newSimple)
+  {
+    if (newSimple != simple)
+    {
+      NotificationChain msgs = null;
+      if (simple != null)
+        msgs = ((InternalEObject)simple).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.TYPE__SIMPLE, null, msgs);
+      if (newSimple != null)
+        msgs = ((InternalEObject)newSimple).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.TYPE__SIMPLE, null, msgs);
+      msgs = basicSetSimple(newSimple, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.TYPE__SIMPLE, newSimple, newSimple));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public structured_type getStructured()
+  {
+    return structured;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetStructured(structured_type newStructured, NotificationChain msgs)
+  {
+    structured_type oldStructured = structured;
+    structured = newStructured;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.TYPE__STRUCTURED, oldStructured, newStructured);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setStructured(structured_type newStructured)
+  {
+    if (newStructured != structured)
+    {
+      NotificationChain msgs = null;
+      if (structured != null)
+        msgs = ((InternalEObject)structured).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.TYPE__STRUCTURED, null, msgs);
+      if (newStructured != null)
+        msgs = ((InternalEObject)newStructured).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.TYPE__STRUCTURED, null, msgs);
+      msgs = basicSetStructured(newStructured, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.TYPE__STRUCTURED, newStructured, newStructured));
   }
 
   /**
@@ -89,8 +179,10 @@ public class typeImpl extends type_definitionImpl implements type
   {
     switch (featureID)
     {
-      case PascalPackage.TYPE__TYPE:
-        return ((InternalEList<?>)getType()).basicRemove(otherEnd, msgs);
+      case PascalPackage.TYPE__SIMPLE:
+        return basicSetSimple(null, msgs);
+      case PascalPackage.TYPE__STRUCTURED:
+        return basicSetStructured(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -105,8 +197,10 @@ public class typeImpl extends type_definitionImpl implements type
   {
     switch (featureID)
     {
-      case PascalPackage.TYPE__TYPE:
-        return getType();
+      case PascalPackage.TYPE__SIMPLE:
+        return getSimple();
+      case PascalPackage.TYPE__STRUCTURED:
+        return getStructured();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -116,15 +210,16 @@ public class typeImpl extends type_definitionImpl implements type
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case PascalPackage.TYPE__TYPE:
-        getType().clear();
-        getType().addAll((Collection<? extends simple_type>)newValue);
+      case PascalPackage.TYPE__SIMPLE:
+        setSimple((simple_type)newValue);
+        return;
+      case PascalPackage.TYPE__STRUCTURED:
+        setStructured((structured_type)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -140,8 +235,11 @@ public class typeImpl extends type_definitionImpl implements type
   {
     switch (featureID)
     {
-      case PascalPackage.TYPE__TYPE:
-        getType().clear();
+      case PascalPackage.TYPE__SIMPLE:
+        setSimple((simple_type)null);
+        return;
+      case PascalPackage.TYPE__STRUCTURED:
+        setStructured((structured_type)null);
         return;
     }
     super.eUnset(featureID);
@@ -157,8 +255,10 @@ public class typeImpl extends type_definitionImpl implements type
   {
     switch (featureID)
     {
-      case PascalPackage.TYPE__TYPE:
-        return type != null && !type.isEmpty();
+      case PascalPackage.TYPE__SIMPLE:
+        return simple != null;
+      case PascalPackage.TYPE__STRUCTURED:
+        return structured != null;
     }
     return super.eIsSet(featureID);
   }

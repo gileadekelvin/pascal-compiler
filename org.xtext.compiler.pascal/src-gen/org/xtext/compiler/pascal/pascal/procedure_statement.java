@@ -3,8 +3,6 @@
  */
 package org.xtext.compiler.pascal.pascal;
 
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -16,8 +14,8 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.procedure_statement#getNames <em>Names</em>}</li>
- *   <li>{@link org.xtext.compiler.pascal.pascal.procedure_statement#getTypes <em>Types</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.procedure_statement#getName_id <em>Name id</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.procedure_statement#getParameters <em>Parameters</em>}</li>
  * </ul>
  *
  * @see org.xtext.compiler.pascal.pascal.PascalPackage#getprocedure_statement()
@@ -27,35 +25,55 @@ import org.eclipse.emf.ecore.EObject;
 public interface procedure_statement extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Names</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * Returns the value of the '<em><b>Name id</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Names</em>' attribute list isn't clear,
+   * If the meaning of the '<em>Name id</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Names</em>' attribute list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getprocedure_statement_Names()
-   * @model unique="false"
+   * @return the value of the '<em>Name id</em>' attribute.
+   * @see #setName_id(String)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getprocedure_statement_Name_id()
+   * @model
    * @generated
    */
-  EList<String> getNames();
+  String getName_id();
 
   /**
-   * Returns the value of the '<em><b>Types</b></em>' containment reference list.
-   * The list contents are of type {@link org.xtext.compiler.pascal.pascal.parameter_list}.
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.procedure_statement#getName_id <em>Name id</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Name id</em>' attribute.
+   * @see #getName_id()
+   * @generated
+   */
+  void setName_id(String value);
+
+  /**
+   * Returns the value of the '<em><b>Parameters</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Types</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Parameters</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Types</em>' containment reference list.
-   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getprocedure_statement_Types()
+   * @return the value of the '<em>Parameters</em>' containment reference.
+   * @see #setParameters(parameter_list)
+   * @see org.xtext.compiler.pascal.pascal.PascalPackage#getprocedure_statement_Parameters()
    * @model containment="true"
    * @generated
    */
-  EList<parameter_list> getTypes();
+  parameter_list getParameters();
+
+  /**
+   * Sets the value of the '{@link org.xtext.compiler.pascal.pascal.procedure_statement#getParameters <em>Parameters</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Parameters</em>' containment reference.
+   * @see #getParameters()
+   * @generated
+   */
+  void setParameters(parameter_list value);
 
 } // procedure_statement

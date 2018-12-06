@@ -3,17 +3,17 @@
  */
 package org.xtext.compiler.pascal.pascal.impl;
 
-import java.util.Collection;
-
-import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.eclipse.emf.ecore.util.EDataTypeEList;
-
 import org.xtext.compiler.pascal.pascal.PascalPackage;
+import org.xtext.compiler.pascal.pascal.type;
 import org.xtext.compiler.pascal.pascal.type_definition;
 
 /**
@@ -24,7 +24,8 @@ import org.xtext.compiler.pascal.pascal.type_definition;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.compiler.pascal.pascal.impl.type_definitionImpl#getNames <em>Names</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.type_definitionImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.xtext.compiler.pascal.pascal.impl.type_definitionImpl#getType <em>Type</em>}</li>
  * </ul>
  *
  * @generated
@@ -32,14 +33,34 @@ import org.xtext.compiler.pascal.pascal.type_definition;
 public class type_definitionImpl extends MinimalEObjectImpl.Container implements type_definition
 {
   /**
-   * The cached value of the '{@link #getNames() <em>Names</em>}' attribute list.
+   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getNames()
+   * @see #getName()
    * @generated
    * @ordered
    */
-  protected EList<String> names;
+  protected static final String NAME_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getName()
+   * @generated
+   * @ordered
+   */
+  protected String name = NAME_EDEFAULT;
+
+  /**
+   * The cached value of the '{@link #getType() <em>Type</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getType()
+   * @generated
+   * @ordered
+   */
+  protected type type;
 
   /**
    * <!-- begin-user-doc -->
@@ -67,13 +88,86 @@ public class type_definitionImpl extends MinimalEObjectImpl.Container implements
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<String> getNames()
+  public String getName()
   {
-    if (names == null)
+    return name;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setName(String newName)
+  {
+    String oldName = name;
+    name = newName;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.TYPE_DEFINITION__NAME, oldName, name));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public type getType()
+  {
+    return type;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetType(type newType, NotificationChain msgs)
+  {
+    type oldType = type;
+    type = newType;
+    if (eNotificationRequired())
     {
-      names = new EDataTypeEList<String>(String.class, this, PascalPackage.TYPE_DEFINITION__NAMES);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PascalPackage.TYPE_DEFINITION__TYPE, oldType, newType);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
-    return names;
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setType(type newType)
+  {
+    if (newType != type)
+    {
+      NotificationChain msgs = null;
+      if (type != null)
+        msgs = ((InternalEObject)type).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PascalPackage.TYPE_DEFINITION__TYPE, null, msgs);
+      if (newType != null)
+        msgs = ((InternalEObject)newType).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PascalPackage.TYPE_DEFINITION__TYPE, null, msgs);
+      msgs = basicSetType(newType, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, PascalPackage.TYPE_DEFINITION__TYPE, newType, newType));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
+    {
+      case PascalPackage.TYPE_DEFINITION__TYPE:
+        return basicSetType(null, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
   }
 
   /**
@@ -86,8 +180,10 @@ public class type_definitionImpl extends MinimalEObjectImpl.Container implements
   {
     switch (featureID)
     {
-      case PascalPackage.TYPE_DEFINITION__NAMES:
-        return getNames();
+      case PascalPackage.TYPE_DEFINITION__NAME:
+        return getName();
+      case PascalPackage.TYPE_DEFINITION__TYPE:
+        return getType();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -97,15 +193,16 @@ public class type_definitionImpl extends MinimalEObjectImpl.Container implements
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case PascalPackage.TYPE_DEFINITION__NAMES:
-        getNames().clear();
-        getNames().addAll((Collection<? extends String>)newValue);
+      case PascalPackage.TYPE_DEFINITION__NAME:
+        setName((String)newValue);
+        return;
+      case PascalPackage.TYPE_DEFINITION__TYPE:
+        setType((type)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -121,8 +218,11 @@ public class type_definitionImpl extends MinimalEObjectImpl.Container implements
   {
     switch (featureID)
     {
-      case PascalPackage.TYPE_DEFINITION__NAMES:
-        getNames().clear();
+      case PascalPackage.TYPE_DEFINITION__NAME:
+        setName(NAME_EDEFAULT);
+        return;
+      case PascalPackage.TYPE_DEFINITION__TYPE:
+        setType((type)null);
         return;
     }
     super.eUnset(featureID);
@@ -138,8 +238,10 @@ public class type_definitionImpl extends MinimalEObjectImpl.Container implements
   {
     switch (featureID)
     {
-      case PascalPackage.TYPE_DEFINITION__NAMES:
-        return names != null && !names.isEmpty();
+      case PascalPackage.TYPE_DEFINITION__NAME:
+        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      case PascalPackage.TYPE_DEFINITION__TYPE:
+        return type != null;
     }
     return super.eIsSet(featureID);
   }
@@ -155,8 +257,8 @@ public class type_definitionImpl extends MinimalEObjectImpl.Container implements
     if (eIsProxy()) return super.toString();
 
     StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (names: ");
-    result.append(names);
+    result.append(" (name: ");
+    result.append(name);
     result.append(')');
     return result.toString();
   }
